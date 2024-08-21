@@ -18,8 +18,8 @@ const Navbar = () => {
           </div>
         </div>
         <div className="space-x-4">
-          <Link href={""}>About us</Link>
-          <Link href={""}>Services</Link>
+          <Link href={"#AboutUs"}>About us</Link>
+          <Link href={"#services"}>Services</Link>
           <Link href={""}>Events</Link>
           <Link href={""}>Contact us</Link>
         </div>
