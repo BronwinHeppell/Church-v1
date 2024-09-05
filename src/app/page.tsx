@@ -6,6 +6,7 @@ import Services from "./sections/services";
 import MissionStatement from "./sections/mission-statement";
 import AboutUs from "./sections/about";
 import Events from "./sections/events";
+import Footer from "./sections/footer";
 
 const Home: React.FC = () => {
   return (
@@ -14,13 +15,16 @@ const Home: React.FC = () => {
 
       <Hero />
 
-      <Services />
+      <main className="max-w-4xl mx-auto px-10">
+        <Services />
 
-      <MissionStatement />
+        <MissionStatement />
 
-      <AboutUs />
+        <AboutUs />
 
-      <Events />
+        <Events />
+      </main>
+      <Footer />
     </>
   );
 };
