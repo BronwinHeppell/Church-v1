@@ -8,13 +8,13 @@ const Navbar = () => {
       <div className="flex justify-between items-center px-4 max-w-screen-xl mx-auto md:flex md:px-8">
         <div className="flex items-center justify-between md:block">
           <div className="w-100 my-2">
-            <Image
+            {/* <Image
               src="/assets/logo.svg"
               alt="Background Image"
               objectFit="contain"
               width={150}
               height={0}
-            ></Image>
+            ></Image> */}
           </div>
           <div className="md:hidden">
             <button

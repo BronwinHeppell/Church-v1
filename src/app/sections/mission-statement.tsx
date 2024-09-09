@@ -50,7 +50,7 @@ const MissionStatement = () => {
 
       <div className="rounded-xl">
         <Image
-          src="/assets/hero.jpg"
+          src="/assets/Mission.jpg"
           alt="Background Image"
           className="rounded-lg shadow-md overflow-hidden"
           width={450}

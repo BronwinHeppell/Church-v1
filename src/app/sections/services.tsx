@@ -12,19 +12,19 @@ const Services = () => {
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Card
-            title="Title"
-            description="Description"
-            imageUrl="/assets/hero.jpg"
+            title="Sunday Services 7am"
+            description="Join us for worship every Sunday at Corpus Christ"
+            imageUrl="/assets/SundayS1.jpg"
           />
           <Card
-            title="Title"
-            description="Description"
-            imageUrl="/assets/hero.jpg"
+            title="Sunday Services 9am"
+            description="Join us for worship every Sunday at Corpus Christ"
+            imageUrl="/assets/SundayS2.jpg"
           />{" "}
           <Card
-            title="Title"
-            description="Description"
-            imageUrl="/assets/hero.jpg"
+            title="Kids Sunday School"
+            description="Join us for worship every Sunday at Corpus Christ"
+            imageUrl="/assets/SundaySchool.jpg"
           />
         </div>
       </div>

@@ -15,14 +15,14 @@ const Events = () => {
         <div className="flex gap-8 items-center">
           <div className="relative h-[150px] w-[150px]">
             <Image
-              src="/assets/hero.jpg"
+              src="/assets/CakeSale.jpg"
               alt="Background Image"
               className="rounded-xl shadow-md overflow-hidden object-cover"
               fill
             />
           </div>
           <div className="text-left">
-            <h3>Cake Sale Day</h3>
+            <h3 className="font-bold">Cake Sale Day</h3>
             <p>Sun, Feb 09, 2024 • Corpus Christi Church</p>
             <br />
             <p>
@@ -34,14 +34,14 @@ const Events = () => {
         <div className="flex gap-8 items-center">
           <div className="relative h-[150px] w-[150px]">
             <Image
-              src="/assets/hero.jpg"
+              src="/assets/biblestudy.jpg"
               alt="Background Image"
               className="rounded-xl shadow-md overflow-hidden object-cover"
               fill
             />
           </div>
           <div className="text-left">
-            <h3>Cake Sale Day</h3>
+            <h3 className="font-bold">Bible Study Group</h3>
             <p>Sun, Feb 09, 2024 • Corpus Christi Church</p>
             <br />
             <p>
@@ -53,14 +53,14 @@ const Events = () => {
         <div className="flex gap-8 items-center">
           <div className="relative h-[150px] w-[150px]">
             <Image
-              src="/assets/hero.jpg"
+              src="/assets/Youthfel.jpg"
               alt="Background Image"
               className="rounded-xl shadow-md overflow-hidden object-cover"
               fill
             />
           </div>
-          <div className="text-left">
-            <h3>Cake Sale Day</h3>
+          <div className="text-left ">
+            <h3 className="font-bold">Youth Fellowship</h3>
             <p>Sun, Feb 09, 2024 • Corpus Christi Church</p>
             <br />
             <p>
