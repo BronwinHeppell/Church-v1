@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import Image from "next/image";
 import Map from "../../shared/components/map";
@@ -11,7 +10,7 @@ const Footer = () => {
   };
 
   return (
-    <footer id="Footer" className="bg-gray-200 text-center p-4">
+    <footer id="Footer" className="bg-gray-200 text-center p-4 ">
       <div className="container mx-auto flex flex-wrap justify-center items-center">
         <div className="w-full md:w-1/3 lg:w-1/3 xl:w-1/3 p-4">
           <h5 className="uppercase text-gray-600">Contact Us</h5>
