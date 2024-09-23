@@ -7,6 +7,7 @@ import MissionStatement from "./sections/mission-statement";
 import AboutUs from "./sections/about";
 import Events from "./sections/events";
 import Footer from "./sections/footer";
+import { FAQ } from "./sections/faq";
 
 const Home: React.FC = () => {
   return (
@@ -23,7 +24,10 @@ const Home: React.FC = () => {
         <AboutUs />
 
         <Events />
+
+        <FAQ />
       </main>
+
       <Footer />
     </>
   );

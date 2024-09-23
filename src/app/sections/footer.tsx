@@ -17,40 +17,21 @@ const Footer = () => {
           <p onClick={() => showInMapClicked()}>
             Address: 482 De Bron Rd, Garsfontein, Pretoria, 0042
           </p>
-          <p>Phone:</p>
-          <p>Email:</p>
+          <p>Phone: (012) 993 5161</p>
+          <p>Email:garsfontein.acsa@gmail.com</p>
         </div>
         <div className="w-full md:w-1/3 lg:w-1/3 xl:w-1/3 p-4 text-center flex flex-col justify-center items-center gap-4">
-          <Image
-            src="/assets/icons/instagram.svg"
-            alt="Background Image"
-            className=""
-            width={30}
-            height={30}
-          />
-          <h5 className="uppercase text-gray-600">Social icons here</h5>
+          <h5 className="uppercase text-gray-600">Donate</h5>
           <div className="flex gap-4">
-            <Image
-              src="/assets/icons/instagram.svg"
-              alt="Background Image"
-              className=""
-              width={30}
-              height={30}
-            />
-            <Image
-              src="/assets/icons/instagram.svg"
-              alt="Background Image"
-              className=""
-              width={30}
-              height={30}
-            />
-            <Image
-              src="/assets/icons/instagram.svg"
-              alt="Background Image"
-              className=""
-              width={30}
-              height={30}
-            />
+            <a href="/assets/pdf/Banking_Details.pdf" download>
+              <Image
+                src="assets/icons/heart.svg"
+                alt="Download PDF"
+                className=""
+                width={40}
+                height={40}
+              />
+            </a>
           </div>
         </div>
         <div className="w-full md:w-1/3 lg:w-1/3 xl:w-1/3 p-4">
