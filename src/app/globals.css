@@ -2,20 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
-    html {
-      scroll-behavior: smooth
-    }
-  }
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-  
-  body {
-    animation: fadeIn 2s ease-in-out;
-  }
-  
+	html {
+		scroll-behavior: smooth;
+	}
+}
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+body {
+	animation: fadeIn 2s ease-in-out;
+	/* background-color: #f2f3f4; */
+}
