@@ -17,8 +17,8 @@ const Card: React.FC<CardProps> = ({ title, description, imageUrl }) => {
         height={482}
         className="w-full h-64 object-cover"
       />
-      <div className="p-6 text-center">
-        <h3 className="text-xl font-medium text-gray-800 mb-2">{title}</h3>
+      <div className="p-6 text-center min-h-40">
+        <h3 className="text-xl font-medium mb-2">{title}</h3>
         <p className="text-gray-700 text-base">{description}</p>
       </div>
     </div>
