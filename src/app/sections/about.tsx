@@ -1,4 +1,5 @@
 import { HeaderText } from '@/shared/components/headerText';
+import { prefix } from '@/shared/core/prefix';
 import Image from 'next/image';
 
 const AboutUs = () => {
@@ -6,7 +7,7 @@ const AboutUs = () => {
 		<section className="grid grid-cols-1 items-center gap-8 py-10 md:grid-cols-2" id="AboutUs">
 			<div className="flex h-full items-center justify-center rounded-xl">
 				<Image
-					src="/static/hero.jpg"
+					src={`${prefix}/static/hero.jpg`}
 					alt="About Us Image"
 					className="w-full overflow-hidden rounded-lg object-cover shadow-md sm:h-80"
 					width={450}
