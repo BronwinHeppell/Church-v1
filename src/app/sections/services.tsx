@@ -1,5 +1,11 @@
 import Card from '@/shared/components/card';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/shared/components/carousel';
+import {
+	Carousel,
+	CarouselContent,
+	CarouselItem,
+	CarouselNext,
+	CarouselPrevious,
+} from '@/shared/components/carousel';
 import { HeaderText, SubHeaderText } from '@/shared/components/headerText';
 
 const Services = () => {
@@ -12,31 +18,31 @@ const Services = () => {
 					<SubHeaderText text="Join us for worship every Sunday at Corpus Christi" />
 				</div>
 				<Carousel>
-					<CarouselContent className="py-2 h-full">
-						<CarouselItem className="sm:basis-1/3 w-full sm:max-w-64">
+					<CarouselContent className="h-full py-2">
+						<CarouselItem className="w-full sm:max-w-64 sm:basis-1/3">
 							<Card
 								title="Sunday Services 7am"
 								description="Join us for worship every Sunday at Corpus Christ"
-								imageUrl="/assets/SundayS1.jpg"
+								imageUrl="/static/SundayS1.jpg"
 							/>
 						</CarouselItem>
-						<CarouselItem className="sm:basis-1/3 w-full sm:max-w-64">
+						<CarouselItem className="w-full sm:max-w-64 sm:basis-1/3">
 							<Card
 								title="Sunday Services 9am"
 								description="Join us for worship every Sunday at Corpus Christ"
-								imageUrl="/assets/SundayS2.jpg"
+								imageUrl="/static/SundayS2.jpg"
 							/>{' '}
 						</CarouselItem>
-						<CarouselItem className="sm:basis-1/3 w-full sm:max-w-64">
+						<CarouselItem className="w-full sm:max-w-64 sm:basis-1/3">
 							<Card
 								title="Kids Sunday School"
 								description="Join us for worship every Sunday at Corpus Christ"
-								imageUrl="/assets/SundaySchool.jpg"
+								imageUrl="/static/SundaySchool.jpg"
 							/>
 						</CarouselItem>
 					</CarouselContent>
-					<CarouselPrevious className=' sm:hidden' />
-					<CarouselNext className='sm:hidden' />
+					<CarouselPrevious className="sm:hidden" />
+					<CarouselNext className="sm:hidden" />
 				</Carousel>
 			</div>
 		</section>
