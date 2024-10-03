@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 interface CardProps {
@@ -8,11 +9,17 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, description, imageUrl }) => {
   return (
-    <div className="border border-gray-300 rounded-lg overflow-hidden shadow-md w-72">
-      <img src={imageUrl} alt={title} className="w-full h-auto" />
-      <div className="p-4">
-        <h2 className="text-xl font-semibold mb-2">{title}</h2>
-        <p className="text-gray-700">{description}</p>
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <Image
+        src={imageUrl}
+        alt=""
+        width={389}
+        height={482}
+        className="w-full h-64 object-cover"
+      />
+      <div className="p-6 text-center min-h-40">
+        <h3 className="text-xl font-medium mb-2">{title}</h3>
+        <p className="text-gray-700 text-base">{description}</p>
       </div>
     </div>
   );
