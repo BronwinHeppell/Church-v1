@@ -1,4 +1,5 @@
 import { HeaderText, SubHeaderText } from '@/shared/components/headerText';
+import { prefix } from '@/shared/core/prefix';
 import Image from 'next/image';
 
 const MissionStatement = () => {
@@ -18,7 +19,7 @@ const MissionStatement = () => {
 				<div className="flex flex-col space-x-0 md:flex-row md:space-x-2">
 					<div>
 						<Image
-							src="/static/cross.png"
+							src={`${prefix}/static/cross.png`}
 							alt="Cross Image"
 							className="p-3"
 							width={60}
@@ -32,7 +33,7 @@ const MissionStatement = () => {
 					</div>
 					<div>
 						<Image
-							src="/static/bible.png"
+							src={`${prefix}/static/bible.png`}
 							alt="Bible Image"
 							className="p-3"
 							width={60}
@@ -48,7 +49,7 @@ const MissionStatement = () => {
 
 			<div className="hidden h-full items-center justify-center rounded-xl md:flex">
 				<Image
-					src="/static/Mission.jpg"
+					src={`${prefix}/static/Mission.jpg`}
 					alt="Mission Statement Image"
 					className="w-full overflow-hidden rounded-lg object-cover shadow-md sm:h-80"
 					width={450}

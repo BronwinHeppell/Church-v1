@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Map from '@/shared/components/map';
 import { merriweather } from '@/shared/core/fonts';
 import Link from 'next/link';
+import { prefix } from '@/shared/core/prefix';
 
 const ContactDetails = () => {
 	const showInMapClicked = () => {
@@ -48,7 +49,7 @@ const Socials = () => {
 		<div className="flex w-full flex-col items-center justify-center text-center">
 			<div className="flex flex-col items-center">
 				<Image
-					src="/static/logo/logo_small.svg"
+					src={`${prefix}/static/logo/logo_small.svg`}
 					alt="Small Logo"
 					className=""
 					width={150}
@@ -58,7 +59,7 @@ const Socials = () => {
 				<div className="flex justify-center">
 					<Link href="">
 						<Image
-							src="/static/icons/instagram.svg"
+							src={`${prefix}/static/icons/instagram.svg`}
 							alt="Instagram Image"
 							width={20}
 							height={0}
@@ -67,7 +68,7 @@ const Socials = () => {
 					</Link>
 					<Link href="">
 						<Image
-							src="/static/icons/facebook.svg"
+							src={`${prefix}/static/icons/facebook.svg`}
 							alt="Facebook Image"
 							width={20}
 							height={0}
@@ -76,7 +77,7 @@ const Socials = () => {
 					</Link>
 					<Link href="">
 						<Image
-							src="/static/icons/whatsapp.svg"
+							src={`${prefix}/static/icons/whatsapp.svg`}
 							alt="Whatsapp Image"
 							width={20}
 							height={0}

@@ -1,8 +1,8 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
 import { MouseEventHandler, useState } from 'react';
+import { prefix } from '../core/prefix';
 
 type drawerProps = {
 	isOpen: boolean;
@@ -17,7 +17,13 @@ function MobileDrawer({ isOpen, onClose }: drawerProps) {
 	return (
 		<>
 			<div className="cursor-pointer rounded-full p-3 hover:bg-gray-100" onClick={onClose}>
-				<Image src="/static/icons/menu.svg" alt="Menu Image" className="" width={20} height={20} />
+				<Image
+					src={`${prefix}/static/icons/menu.svg`}
+					alt="Menu Image"
+					className=""
+					width={20}
+					height={20}
+				/>
 			</div>
 			<main
 				className={
@@ -35,10 +41,10 @@ function MobileDrawer({ isOpen, onClose }: drawerProps) {
 				>
 					<article className="relative flex h-full w-screen max-w-lg flex-col space-y-6 overflow-y-scroll pb-10">
 						<Image
-							src="/static/icons/close.svg"
+							src={`${prefix}/static/icons/close.svg`}
 							alt="Background Image"
 							width={20}
-							height={0}
+							height={20}
 							className="m-5 cursor-pointer object-contain"
 							onClick={onClose}
 						/>
@@ -98,7 +104,7 @@ const Navbar = () => {
 	return (
 		<nav className="sticky top-0 z-50 flex h-20 w-full items-center justify-between bg-white px-4">
 			<Image
-				src="/static/logo/nav_logo.svg"
+				src={`${prefix}/static/logo/nav_logo.svg`}
 				alt="Background Image"
 				width={160}
 				height={0}

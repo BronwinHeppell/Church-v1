@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { HeaderText } from '@/shared/components/headerText';
+import { prefix } from '@/shared/core/prefix';
 
 const Hero = () => {
 	return (
@@ -10,7 +11,7 @@ const Hero = () => {
 		>
 			<div className="absolute inset-0">
 				<Image
-					src="/static/hero.jpg"
+					src={`${prefix}/static/hero.jpg`}
 					alt="Background Image"
 					className="h-full w-full object-cover object-center brightness-[0.85]"
 					width={0}
