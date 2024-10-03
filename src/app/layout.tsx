@@ -5,18 +5,18 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Corpus Christi Anglican Church",
+	title: 'Corpus Christi Anglican Church',
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <link rel="icon" href="/assets/icons/favicon.ico" sizes="any" />
-      <body className={inter.className}>{children}</body>
-    </html>
-  );
+	return (
+		<html lang="en">
+			<link rel="icon" href="/icon.ico" sizes="any" />
+			<body className={inter.className}>{children}</body>
+		</html>
+	);
 }
