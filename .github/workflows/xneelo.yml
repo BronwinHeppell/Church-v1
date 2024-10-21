@@ -74,4 +74,4 @@ jobs:
           username: ${{ secrets.FTP_USER_NAME }}
           password: ${{ secrets.FTP_USER_PASSWORD }}
           server-dir: public_html/
-          local-dir: ./out
+          local-dir: ./out/
