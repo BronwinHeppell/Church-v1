@@ -2,7 +2,7 @@
 #
 # To get started with Next.js see: https://nextjs.org/docs/getting-started
 #
-name: Deploy Next.js site to Pages
+name: Deploy to Xneelo
 
 on:
   # Runs on pushes targeting the default branch
@@ -38,6 +38,8 @@ jobs:
       NEXT_PUBLIC_FIREBASE_APP_ID: ${{secrets.NEXT_PUBLIC_FIREBASE_APP_ID}}
       NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: ${{secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID}}
       NEXT_PUBLIC_BASE_PATH: ${{secrets.NEXT_PUBLIC_BASE_PATH}}
+      FTP_USER_NAME: ${{secrets.FTP_USER_NAME}}
+      FTP_USER_PASSWORD: ${{secrets.FTP_USER_PASSWORD}}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
