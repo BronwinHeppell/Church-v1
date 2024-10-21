@@ -80,4 +80,3 @@ jobs:
           server: https://corpus-christi-garsfontein.org
           username: ${{ secrets.FTP_USER_NAME }}
           password: ${{ secrets.FTP_USER_PASSWORD }}
-          local-dir: out
