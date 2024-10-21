@@ -5,15 +5,7 @@ on:
   push:
     branches: ["master"]
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Choose the environment to deploy to'
-        required: true
-        default: 'Xneelo'
-        options:
-          - Xneelo
-          - github-pages  
-
+  
 # Sets permissions of the GITHUB_TOKEN to allow deployment
 permissions:
   contents: read
@@ -82,3 +74,4 @@ jobs:
           username: ${{ secrets.FTP_USER_NAME }}
           password: ${{ secrets.FTP_USER_PASSWORD }}
           server-dir: public_html/
+          local-dir: ./out
