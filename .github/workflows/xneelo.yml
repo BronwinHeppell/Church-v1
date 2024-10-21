@@ -77,7 +77,7 @@ jobs:
       - name: 📂 Sync files to Xneelo
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: corpus-christi-garsfontein.org
+          server: 197.221.14.50
           username: ${{ secrets.FTP_USER_NAME }}
           password: ${{ secrets.FTP_USER_PASSWORD }}
           port: 22
