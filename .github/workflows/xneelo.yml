@@ -28,6 +28,7 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
+    environment: Xneelo
     env: 
       NEXT_PUBLIC_MAPBOX_KEY:  ${{ secrets.NEXT_PUBLIC_MAPBOX_KEY }}
       NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
@@ -80,3 +81,4 @@ jobs:
           server: 197.221.14.50
           username: ${{ secrets.FTP_USER_NAME }}
           password: ${{ secrets.FTP_USER_PASSWORD }}
+          server-dir: public_html/
