@@ -56,7 +56,7 @@ const Socials = () => {
 					height={150}
 				/>
 				<p>Join us for worship every Sunday at Corpus Christi</p>
-				<div className="flex justify-center">
+				{/* <div className="flex justify-center">
 					<Link href="">
 						<Image
 							src={`${prefix}/static/icons/instagram.svg`}
@@ -84,7 +84,7 @@ const Socials = () => {
 							className="m-3 transform cursor-pointer object-contain transition duration-200 ease-out hover:scale-110"
 						/>
 					</Link>
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);
