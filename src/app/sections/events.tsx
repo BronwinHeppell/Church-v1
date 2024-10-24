@@ -1,17 +1,17 @@
 'use client';
 import { db, storage } from '@/lib/firebase';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/shared/components/accordion';
 import { HeaderText, SubHeaderText } from '@/shared/components/headerText';
 import { collection, getDocs } from 'firebase/firestore';
 import { getDownloadURL, ref } from 'firebase/storage';
 import Image from 'next/image';
-import React, { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const EventItem = (event: Event) => {
 	return (
 		<>
-			<div className="flex items-center gap-4 sm:gap-8">
-				<div className="relative h-[150px] w-[150px]">
+			<div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 w-full">
+				<div className="relative h-36 w-36 min-w-36 ">
 					<Image
 						src={event.image ?? ''}
 						alt="Event Image"
@@ -25,7 +25,13 @@ const EventItem = (event: Event) => {
 						{event.date} • {event.location}
 					</p>
 					<br />
-					<p className="text-sm sm:text-base">{event.description}</p>
+					<p className="text-sm sm:text-base whitespace-pre-wrap">{`${event.shortDescription}`}</p>
+					<Accordion type="single" collapsible>
+						<AccordionItem value={event.id ?? ''}>
+							<AccordionTrigger className="text-center text-sm">View more</AccordionTrigger>
+							<AccordionContent className="text-start whitespace-pre-line">{event.longDescription}</AccordionContent>
+						</AccordionItem>
+					</Accordion>
 				</div>
 			</div>
 			<hr className="my-10" />
@@ -39,7 +45,8 @@ interface Event {
 	date?: string;
 	title?: string;
 	location?: string;
-	description?: string;
+	shortDescription?: string;
+	longDescription?: string;
 }
 
 const Events = () => {
@@ -55,13 +62,15 @@ const Events = () => {
 
 				const eventsData = (await Promise.all(
 					eventSnapshot.docs.map(async (doc) => {
-						const url = await getDownloadURL(ref(storage, 'images/CakeSale.jpg'));
+						const url = await getDownloadURL(ref(storage, `images/${doc.data().image}`));
 
 						return {
 							id: doc.id,
 							...doc.data(),
-							date: new Date(doc.data().date * 1000).toDateString(),
+							date: doc.data().date.toDate().toDateString(),
 							image: url,
+							shortDescription: doc.data().shortDescription.replace(/\\n/g, "\n"),
+							longDescription: doc.data().longDescription.replace(/\\n/g, "\n"),
 						};
 					}),
 				)) as Event[];
@@ -83,7 +92,7 @@ const Events = () => {
 				<div className="mb-5 space-y-2 text-center">
 					<SubHeaderText text="Discover" />
 					<HeaderText text="Upcoming Events" />
-					<SubHeaderText text="   Stay updated with our upcoming church events and join us!" />
+					<SubHeaderText text="Stay updated with our upcoming church events and join us!" />
 				</div>
 				<hr className="my-10" />
 				{loading ? (
