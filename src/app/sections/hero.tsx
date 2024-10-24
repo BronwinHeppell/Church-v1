@@ -16,7 +16,7 @@ const Hero = () => {
 					className="h-full w-full object-cover object-center brightness-[0.85]"
 					width={0}
 					height={0}
-					layout="fill"
+					fill
 				/>
 			</div>
 			<div className="absolute m-auto mx-4 max-w-[550px] space-y-4 rounded-[30px] border-2 border-white px-8 py-8 text-center backdrop-blur-sm">
