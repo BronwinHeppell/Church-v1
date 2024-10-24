@@ -1,5 +1,4 @@
 import Navbar from '@/shared/components/navbar';
-import Head from 'next/head';
 import React from 'react';
 import AboutUs from './sections/about';
 import Events from './sections/events';
@@ -8,10 +7,15 @@ import Footer from './sections/footer';
 import Hero from './sections/hero';
 import MissionStatement from './sections/mission-statement';
 import Services from './sections/services';
+import { jsonLd } from '@/shared/core/jsonLd';
 
 const Home: React.FC = () => {
 	return (
 		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
 			<Navbar />
 
 			<Hero />
