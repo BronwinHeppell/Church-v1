@@ -115,7 +115,7 @@ const EventSkeleton = () => (
 			<div className="bg-line/60 rounded-base relative aspect-3/2 w-full overflow-hidden md:aspect-4/3">
 				<div
 					className="absolute inset-0 bg-gradient-to-r from-transparent via-[rgb(var(--scrim)/0.06)] to-transparent"
-					style={{ animation: 'cc-shimmer 1.6s ease-in-out infinite' }}
+					style={{ animation: 'cc-shimmer 1.6s cubic-bezier(0.32, 0.72, 0, 1) infinite' }}
 				/>
 			</div>
 		</div>

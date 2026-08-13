@@ -24,7 +24,7 @@ const AccordionTrigger = React.forwardRef<
 		<AccordionPrimitive.Trigger
 			ref={ref}
 			className={cn(
-				'group text-ink flex flex-1 items-start justify-between gap-6 py-5 text-left transition-colors',
+				'group text-ink ease-fluid flex flex-1 items-start justify-between gap-6 py-5 text-left transition-colors duration-300',
 				'hover:text-accent [&[data-state=open]>svg]:rotate-45',
 				className,
 			)}
@@ -34,7 +34,7 @@ const AccordionTrigger = React.forwardRef<
 			<Plus
 				strokeWidth={1.5}
 				aria-hidden
-				className="text-muted mt-1 size-5 shrink-0 transition-transform duration-200"
+				className="text-muted ease-fluid mt-1 size-5 shrink-0 transition-transform duration-300"
 			/>
 		</AccordionPrimitive.Trigger>
 	</AccordionPrimitive.Header>
