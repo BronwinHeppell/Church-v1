@@ -4,17 +4,6 @@ import { Reveal } from '@/shared/components/reveal';
 import { MAPS_URL } from '@/shared/core/parish';
 import { prefix } from '@/shared/core/prefix';
 
-/*
-	The card layout from the original site, rebuilt on the current palette.
-	Three services, each with a photograph, title and one line of detail.
-
-	It is a scroll-snap row on phones rather than a JS carousel: it swipes the
-	same way, but embla-carousel-react does not need to come back as a
-	dependency. On sm and up it is a plain three column grid.
-
-	Shadows are tinted with the scrim channels rather than pure black, which
-	on a warm sage paper is the difference between depth and grime.
-*/
 type ServiceCard = {
 	title: string;
 	detail: string;

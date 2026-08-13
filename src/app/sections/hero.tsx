@@ -4,24 +4,6 @@ import { Button } from '@/shared/components/button';
 import { Reveal } from '@/shared/components/reveal';
 import { prefix } from '@/shared/core/prefix';
 
-/*
-	The original hero: full-bleed photograph, centred text inside an outlined,
-	blurred panel, now with the two calls to action the old one lacked.
-
-	Contrast is the one thing done differently. backdrop-blur alone does not
-	guarantee legibility, because a blurred bright photograph is still bright.
-	So the panel carries a translucent scrim fill as well as the blur: a 30%
-	scrim on the photograph plus a 50% fill on the panel puts the near-white
-	type at 5.1:1 even over a pure white patch of the image, which clears
-	WCAG AA. Neither value is decorative, so changing them changes contrast.
-
-	Also min-h-[calc(100dvh-72px)] rather than the old h-[100vh], which made
-	the section jump as mobile Safari showed and hid its address bar.
-
-	The 30px panel radius is a deliberate exception to the 4px shape scale
-	used everywhere else: it is the signature of this hero, and the hero is a
-	single moment rather than part of the page's component rhythm.
-*/
 const Hero = () => {
 	const opt = `${prefix}/static/opt`;
 
@@ -40,12 +22,10 @@ const Hero = () => {
 				alt="Corpus Christi Anglican Church in Garsfontein, Pretoria"
 				fetchPriority="high"
 				decoding="async"
-				className="absolute inset-0 h-full w-full object-cover object-center"
+				className="absolute inset-0 h-full w-full object-cover object-center brightness-[0.85]"
 			/>
-			<div className="absolute inset-0 bg-[rgb(var(--scrim)/0.30)]" aria-hidden />
-
 			<Reveal mode="mount" className="relative mx-5 w-full max-w-[550px]">
-				<div className="text-on-image rounded-[30px] border-2 border-white/85 bg-[rgb(var(--scrim)/0.50)] px-7 py-9 text-center backdrop-blur-sm sm:px-9">
+				<div className="text-on-image rounded-[30px] border-2 border-white/85 px-7 py-9 text-center backdrop-blur-md backdrop-brightness-[0.5] sm:px-9">
 					<h1 className="font-display text-[2rem] leading-[1.12] sm:text-[2.5rem]">
 						Welcome to Corpus Christi Anglican Church
 					</h1>
