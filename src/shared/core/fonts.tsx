@@ -1,7 +1,13 @@
-import { Merriweather } from "next/font/google";
+import { EB_Garamond, Outfit } from 'next/font/google';
 
-export const merriweather = Merriweather({
-    weight: '400',
-    subsets: ['latin'],
-    display: 'swap',
+export const ebGaramond = EB_Garamond({
+	subsets: ['latin'],
+	display: 'swap',
+	variable: '--font-eb-garamond',
+});
+
+export const outfit = Outfit({
+	subsets: ['latin'],
+	display: 'swap',
+	variable: '--font-outfit',
 });

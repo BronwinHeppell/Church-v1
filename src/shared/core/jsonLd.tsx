@@ -1,24 +1,30 @@
+import { PARISH, SERVICE_TIMES } from './parish';
+
 export const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "https://www.corpus-christi-garsfontein.org"
-    },
-    "headline": "Corpus Christi Anglican Church | Worship in Garsfontein, Pretoria",
-    "image": "https://www.corpus-christi-garsfontein.org/static/hero.jpg",
-    "author": {
-        "@type": "Organization",
-        "name": "Corpus Christi Angilican Church"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "Creative Code Co.",
-        "logo": {
-            "@type": "ImageObject",
-            "url": ""
-        }
-    },
-    "datePublished": "2024-10-15T12:05:11+0200",
-    "dateModified": "2024-10-15T12:05:11+0200"
+	'@context': 'https://schema.org',
+	'@type': 'Church',
+	'@id': `${PARISH.url}/#church`,
+	name: PARISH.name,
+	url: PARISH.url,
+	image: `${PARISH.url}/static/hero.jpg`,
+	telephone: PARISH.phone,
+	email: PARISH.email,
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: PARISH.street,
+		addressLocality: PARISH.suburb,
+		addressRegion: PARISH.city,
+		postalCode: PARISH.postalCode,
+		addressCountry: PARISH.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: PARISH.lat,
+		longitude: PARISH.lng,
+	},
+	openingHoursSpecification: SERVICE_TIMES.map((opens) => ({
+		'@type': 'OpeningHoursSpecification',
+		dayOfWeek: 'https://schema.org/Sunday',
+		opens,
+	})),
 };
