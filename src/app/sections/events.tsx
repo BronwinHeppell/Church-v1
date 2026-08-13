@@ -203,7 +203,7 @@ const Events = () => {
 
 	return (
 		<section id="Events" className="border-line border-b">
-			<div className="shell px-5 py-20 md:py-24">
+			<div className="shell px-5 py-20 md:px-10 md:py-24">
 				<Reveal className="max-w-2xl">
 					<SectionTitle>Upcoming events</SectionTitle>
 					<Lede className="mt-5">

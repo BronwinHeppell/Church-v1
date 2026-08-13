@@ -4,7 +4,7 @@ import { prefix } from '@/shared/core/prefix';
 const MissionStatement = () => {
 	return (
 		<section id="MissionStatement" className="border-line border-b">
-			<div className="shell px-5 py-20 md:py-24">
+			<div className="shell px-5 py-20 md:px-10 md:py-24">
 				<Reveal>
 					<h2 className="font-display max-w-[26ch] text-[2rem] leading-[1.12] md:text-[2.5rem]">
 						Sharing God’s love and spreading the message
@@ -20,8 +20,8 @@ const MissionStatement = () => {
 						{/* eslint-disable-next-line @next/next/no-img-element */}
 						<img
 							src={`${prefix}/static/opt/mission-768.webp`}
-							srcSet={`${prefix}/static/opt/mission-768.webp 768w, ${prefix}/static/opt/mission-1280.webp 1280w`}
-							sizes="(max-width: 700px) 100vw, 660px"
+							srcSet={`${prefix}/static/opt/mission-768.webp 768w, ${prefix}/static/opt/mission-1280.webp 1280w, ${prefix}/static/opt/mission-1920.webp 1920w`}
+							sizes="(max-width: 1280px) 100vw, 1280px"
 							alt="Members of the Corpus Christi congregation gathered together"
 							loading="lazy"
 							decoding="async"

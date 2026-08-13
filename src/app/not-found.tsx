@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
 	return (
-		<main className="shell flex min-h-[100dvh] flex-col px-5 py-10">
+		<main className="shell flex min-h-[100dvh] flex-col px-5 py-10 md:px-10">
 			<Link href="/" aria-label="Corpus Christi Anglican Church, home">
 				<Wordmark width={158} className="text-ink" />
 			</Link>

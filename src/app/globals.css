@@ -80,7 +80,7 @@
 @utility shell {
 	margin-inline: auto;
 	width: 100%;
-	max-width: 700px;
+	max-width: 80rem;
 }
 
 @utility prose-body {

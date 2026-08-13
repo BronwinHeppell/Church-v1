@@ -33,21 +33,21 @@ const CARDS: ServiceCard[] = [
 ];
 
 const SRCSET: Record<string, string> = {
-	'service-early': `${prefix}/static/opt/service-early-320.webp 320w, ${prefix}/static/opt/service-early-640.webp 640w`,
-	'sunday-service': `${prefix}/static/opt/sunday-service-320.webp 320w, ${prefix}/static/opt/sunday-service-480.webp 480w`,
-	'sunday-school': `${prefix}/static/opt/sunday-school-320.webp 320w, ${prefix}/static/opt/sunday-school-640.webp 640w`,
+	'service-early': `${prefix}/static/opt/service-early-640.webp 640w, ${prefix}/static/opt/service-early-960.webp 960w`,
+	'sunday-service': `${prefix}/static/opt/sunday-service-640.webp 640w, ${prefix}/static/opt/sunday-service-960.webp 960w`,
+	'sunday-school': `${prefix}/static/opt/sunday-school-640.webp 640w, ${prefix}/static/opt/sunday-school-960.webp 960w`,
 };
 
 const FALLBACK: Record<string, string> = {
-	'service-early': `${prefix}/static/opt/service-early-640.webp`,
-	'sunday-service': `${prefix}/static/opt/sunday-service-480.webp`,
-	'sunday-school': `${prefix}/static/opt/sunday-school-640.webp`,
+	'service-early': `${prefix}/static/opt/service-early-960.webp`,
+	'sunday-service': `${prefix}/static/opt/sunday-service-960.webp`,
+	'sunday-school': `${prefix}/static/opt/sunday-school-960.webp`,
 };
 
 const Services = () => {
 	return (
 		<section id="services" className="border-line border-b">
-			<div className="shell px-5 py-20 md:py-24">
+			<div className="shell px-5 py-20 md:px-10 md:py-24">
 				<Reveal>
 					<SectionTitle>Sunday at Corpus Christi</SectionTitle>
 					<Lede className="mt-5">
@@ -66,7 +66,7 @@ const Services = () => {
 								<img
 									src={FALLBACK[card.img]}
 									srcSet={SRCSET[card.img]}
-									sizes="(max-width: 640px) 74vw, 215px"
+									sizes="(max-width: 640px) 74vw, 410px"
 									alt={card.alt}
 									loading="lazy"
 									decoding="async"
