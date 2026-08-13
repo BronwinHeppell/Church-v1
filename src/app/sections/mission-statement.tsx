@@ -1,52 +1,71 @@
+import { SectionTitle } from '@/shared/components/heading';
 import { Reveal } from '@/shared/components/reveal';
 import { prefix } from '@/shared/core/prefix';
 
+const VALUES = [
+	{
+		icon: 'cross.png',
+		alt: '',
+		title: 'Our Mission',
+		body: 'To inspire and empower individuals to live a Christ-centered life and make a positive impact.',
+	},
+	{
+		icon: 'bible.png',
+		alt: '',
+		title: 'Core Values',
+		body: 'Faith, Love, Compassion, Community and Service are at the heart of everything we do.',
+	},
+];
+
 const MissionStatement = () => {
 	return (
-		<section id="MissionStatement" className="border-line border-b">
+		<section id="MissionStatement">
 			<div className="shell px-5 py-20 md:px-10 md:py-24">
-				<Reveal>
-					<h2 className="font-display max-w-[26ch] text-[2rem] leading-[1.12] md:text-[2.5rem]">
-						Sharing God’s love and spreading the message
-					</h2>
-					<p className="prose-body text-muted mt-6">
-						At Corpus Christi, we are dedicated to serving our community and nurturing a strong
-						relationship with God. Join us in worship and fellowship.
-					</p>
-				</Reveal>
+				<div className="measure grid items-center gap-10 md:grid-cols-2 md:gap-14">
+					<Reveal>
+						<SectionTitle className="max-w-[22ch]">
+							Sharing God’s love and spreading the message
+						</SectionTitle>
+						<p className="text-ink mt-5 text-[1.0625rem] leading-relaxed font-semibold">
+							At Corpus Christi, we are dedicated to serving our community and nurturing a strong
+							relationship with God. Join us in worship and fellowship.
+						</p>
 
-				<Reveal delay={0.1}>
-					<div className="rounded-base relative mt-10 overflow-hidden">
-						{/* eslint-disable-next-line @next/next/no-img-element */}
-						<img
-							src={`${prefix}/static/opt/mission-768.webp`}
-							srcSet={`${prefix}/static/opt/mission-768.webp 768w, ${prefix}/static/opt/mission-1280.webp 1280w, ${prefix}/static/opt/mission-1920.webp 1920w`}
-							sizes="(max-width: 1280px) 100vw, 1280px"
-							alt="Members of the Corpus Christi congregation gathered together"
-							loading="lazy"
-							decoding="async"
-							className="aspect-16/10 w-full object-cover"
-						/>
-					</div>
-				</Reveal>
+						<div className="mt-8 grid gap-7 sm:grid-cols-2">
+							{VALUES.map((v) => (
+								<div key={v.title}>
+									{/* eslint-disable-next-line @next/next/no-img-element */}
+									<img
+										src={`${prefix}/static/${v.icon}`}
+										alt={v.alt}
+										width={36}
+										height={36}
+										loading="lazy"
+										decoding="async"
+										className="size-9"
+									/>
+									<h3 className="font-ui text-ink mt-3 text-sm font-bold">{v.title}</h3>
+									<p className="text-muted mt-1.5 text-sm leading-relaxed">{v.body}</p>
+								</div>
+							))}
+						</div>
+					</Reveal>
 
-				<Reveal delay={0.15}>
-					<div className="mt-10 grid gap-8 sm:grid-cols-2">
-						<div className="border-line border-t pt-5">
-							<h3 className="font-ui text-ink text-[0.9375rem] font-medium">Our mission</h3>
-							<p className="prose-body text-muted mt-3 text-base">
-								To inspire and empower individuals to live a Christ-centered life and make a
-								positive impact.
-							</p>
+					<Reveal delay={0.1}>
+						<div className="rounded-base card-lift overflow-hidden">
+							{/* eslint-disable-next-line @next/next/no-img-element */}
+							<img
+								src={`${prefix}/static/opt/mission-768.webp`}
+								srcSet={`${prefix}/static/opt/mission-768.webp 768w, ${prefix}/static/opt/mission-1280.webp 1280w`}
+								sizes="(max-width: 768px) 100vw, 430px"
+								alt="Bread and a chalice laid out for communion"
+								loading="lazy"
+								decoding="async"
+								className="aspect-4/3 w-full object-cover"
+							/>
 						</div>
-						<div className="border-line border-t pt-5">
-							<h3 className="font-ui text-ink text-[0.9375rem] font-medium">Core values</h3>
-							<p className="prose-body text-muted mt-3 text-base">
-								Faith, Love, Compassion, Community and Service are at the heart of everything we do.
-							</p>
-						</div>
-					</div>
-				</Reveal>
+					</Reveal>
+				</div>
 			</div>
 		</section>
 	);

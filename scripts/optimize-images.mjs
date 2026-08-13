@@ -52,6 +52,28 @@ function report() {
 	});
 }
 
+const SVG_ASSETS = [{ src: 'logo/logo_small.svg', name: 'crest', width: 320, quality: 88 }];
+
+async function optimizeSvgAssets() {
+	for (const item of SVG_ASSETS) {
+		const srcPath = join(STATIC, item.src);
+		if (!existsSync(srcPath)) {
+			console.warn(`  SKIP (missing): ${item.src}`);
+			continue;
+		}
+		const buf = await sharp(srcPath, { density: 200 })
+			.resize({ width: item.width })
+			.webp({ quality: item.quality })
+			.toBuffer();
+		const { writeFileSync } = await import('node:fs');
+		writeFileSync(join(OUT, `${item.name}-${item.width}.webp`), buf);
+		console.log(
+			`\n  ${item.src}  ${kb(statSync(srcPath).size)} KB` +
+				`\n    ${item.width}w   -> opt/${item.name}-${item.width}.webp  ${kb(buf.length)} KB`,
+		);
+	}
+}
+
 async function optimize() {
 	mkdirSync(OUT, { recursive: true });
 	let before = 0;
@@ -89,6 +111,8 @@ async function optimize() {
 			);
 		}
 	}
+
+	await optimizeSvgAssets();
 
 	console.log(
 		`\n  Originals kept in place. Derivatives total ${kb(after)} KB (largest set) vs ${kb(before)} KB of originals.\n`,

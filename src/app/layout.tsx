@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { ebGaramond, outfit } from '@/shared/core/fonts';
+import { inter, merriweather } from '@/shared/core/fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -63,7 +63,7 @@ export const viewport: Viewport = {
 	initialScale: 1,
 
 	colorScheme: 'light',
-	themeColor: '#f2f3ef',
+	themeColor: '#ffffff',
 };
 
 export default function RootLayout({
@@ -72,7 +72,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" className={`${ebGaramond.variable} ${outfit.variable}`}>
+		<html lang="en" className={`${merriweather.variable} ${inter.variable}`}>
 			<head>
 				<link rel="icon" href="/icon.ico" sizes="any" />
 			</head>

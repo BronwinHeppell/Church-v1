@@ -1,19 +1,23 @@
 @import 'tailwindcss';
 
 @theme {
-	--color-paper: #f2f3ef;
-	--color-surface: #fbfbf9;
-	--color-ink: #17201b;
-	--color-muted: #5a6560;
-	--color-line: #d6dad3;
-	--color-accent: #1e4d3b;
-	--color-accent-ink: #fbfbf9;
-	--color-on-image: #fbfbf9;
+	--color-paper: #ffffff;
+	--color-surface: #ffffff;
+	--color-ink: #1f2937;
+	--color-muted: #4b5563;
+	--color-line: #e5e7eb;
+	--color-accent: #1f2937;
+	--color-accent-ink: #ffffff;
+	--color-on-image: #ffffff;
 
-	--font-display: var(--font-eb-garamond), ui-serif, Georgia, serif;
-	--font-ui: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+	--color-footer: #2b2b2b;
+	--color-footer-ink: #ffffff;
+	--color-footer-muted: #cbcbcb;
 
-	--radius-base: 4px;
+	--font-display: var(--font-merriweather), ui-serif, Georgia, serif;
+	--font-ui: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+	--radius-base: 8px;
 
 	--ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
 
@@ -22,7 +26,7 @@
 }
 
 :root {
-	--scrim: 22 28 24;
+	--scrim: 17 24 39;
 }
 
 @layer base {
@@ -47,8 +51,8 @@
 	h2,
 	h3 {
 		font-family: var(--font-display);
-		font-weight: 500;
-		letter-spacing: -0.01em;
+		font-weight: 400;
+		letter-spacing: -0.005em;
 		text-wrap: balance;
 	}
 
@@ -56,23 +60,13 @@
 		text-wrap: pretty;
 	}
 
-	body::after {
-		content: '';
-		position: fixed;
-		inset: 0;
-		z-index: 60;
-		pointer-events: none;
-		opacity: 0.025;
-		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
-	}
-
 	::selection {
-		background-color: var(--color-accent);
-		color: var(--color-accent-ink);
+		background-color: var(--color-ink);
+		color: var(--color-paper);
 	}
 
 	:focus-visible {
-		outline: 2px solid var(--color-accent);
+		outline: 2px solid var(--color-ink);
 		outline-offset: 3px;
 	}
 }
@@ -83,11 +77,30 @@
 	max-width: 80rem;
 }
 
+@utility measure {
+	margin-inline: auto;
+	width: 100%;
+	max-width: 56rem;
+}
+
 @utility prose-body {
-	font-family: var(--font-display);
+	font-family: var(--font-ui);
 	font-size: 1.0625rem;
 	line-height: 1.7;
 	max-width: 65ch;
+}
+
+@utility eyebrow {
+	font-family: var(--font-ui);
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: var(--color-muted);
+}
+
+@utility card-lift {
+	box-shadow:
+		0 1px 2px rgb(var(--scrim) / 0.04),
+		0 10px 26px -10px rgb(var(--scrim) / 0.12);
 }
 
 @utility numerals {
