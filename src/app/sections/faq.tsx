@@ -28,13 +28,6 @@ const FAQItem = ({ title, content, keyValue }: ItemProps) => {
 	);
 };
 
-/*
-	Sticky aside plus accordion. The parish wrote these five answers itself
-	and they are the most genuinely useful content on the site, so the copy
-	is preserved verbatim and only the container changed. The aside stays in
-	view while a long answer is open, which is where the contact details
-	belong: several of these answers end with "speak to the priest".
-*/
 export const FAQ = () => {
 	return (
 		<section className="border-line border-b" id="faq">

@@ -58,11 +58,10 @@ export const metadata: Metadata = {
 	},
 };
 
-/* Next 15+ requires viewport to be its own export, not a metadata key. */
 export const viewport: Viewport = {
 	width: 'device-width',
 	initialScale: 1,
-	/* Light only, by request: the page does not follow the device setting. */
+
 	colorScheme: 'light',
 	themeColor: '#f2f3ef',
 };
@@ -78,14 +77,6 @@ export default function RootLayout({
 				<link rel="icon" href="/icon.ico" sizes="any" />
 			</head>
 			<body>
-				{/*
-					Keyboard users would otherwise have to tab through all six nav
-					items and the donate link on every visit before reaching content.
-					Visually hidden until it receives focus.
-
-					z-index scale for the whole site: 50 sticky nav and mobile
-					drawer, 60 the paper-grain overlay, 70 this skip link.
-				*/}
 				<a
 					href="#main"
 					className="focus:rounded-base focus:bg-accent focus:text-accent-ink sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[70] focus:px-4 focus:py-2"

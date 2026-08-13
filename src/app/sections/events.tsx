@@ -19,13 +19,13 @@ export interface EventInterface {
 	shortDescription: string;
 	additionalInformation: string;
 	location: string;
-	/** Readable full date, e.g. "9 November 2026". */
+
 	date: string;
-	/** Lead numeral for the date block, e.g. "09". */
+
 	day?: string;
-	/** Short month for the date block, e.g. "Nov". */
+
 	month?: string;
-	/** Machine-readable date for <time datetime>. */
+
 	iso?: string;
 	imagePreview: string;
 	image?: string;
@@ -101,7 +101,6 @@ const EventRow = ({ event, index }: { event: EventInterface; index: number }) =>
 	);
 };
 
-/* Skeletons mirror the real row: date block, text column, thumbnail. */
 const EventSkeleton = () => (
 	<li className="border-line border-t" aria-hidden>
 		<div className="grid gap-5 py-10 sm:grid-cols-[4.25rem_minmax(0,1fr)_8rem] sm:gap-6 md:py-12">
@@ -131,11 +130,6 @@ const Events = () => {
 
 		const fetchEvents = async () => {
 			try {
-				/*
-					Imported here rather than at module scope so the Firebase SDK
-					lands in its own on-demand chunk instead of the page's initial
-					bundle. It is only ever needed once this effect runs.
-				*/
 				const [{ collection, getDocs }, { getDownloadURL, ref }, { db, storage }] =
 					await Promise.all([
 						import('firebase/firestore'),
@@ -153,9 +147,7 @@ const Events = () => {
 						if (data?.image) {
 							try {
 								imageUrl = await getDownloadURL(ref(storage, `images/${data.image}`));
-							} catch {
-								// An event without a usable image simply renders without one.
-							}
+							} catch {}
 						}
 
 						let eventDate: Date | null = null;
@@ -190,8 +182,6 @@ const Events = () => {
 
 				const upcoming = rows
 					.filter((e) => e._eventDate !== null && e._eventDate >= today)
-					// The previous version never sorted, so Firestore document
-					// order decided the running order of the calendar.
 					.sort((a, b) => a._eventDate!.getTime() - b._eventDate!.getTime())
 					.map(({ _eventDate, ...rest }) => rest);
 
@@ -259,12 +249,7 @@ const Events = () => {
 				)}
 
 				{state === 'error' && (
-					<div
-						role="alert"
-						className="border-line rounded-base -mt-px border p-8 md:p-12"
-						// Border stays neutral rather than red: a failed events
-						// fetch is not the visitor's error to worry about.
-					>
+					<div role="alert" className="border-line rounded-base -mt-px border p-8 md:p-12">
 						<h3 className="font-display text-2xl">We could not load the events list</h3>
 						<p className="prose-body text-muted mt-3 text-base">
 							Something went wrong fetching the calendar. Please try again shortly, or contact the
