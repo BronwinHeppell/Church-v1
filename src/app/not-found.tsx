@@ -44,13 +44,13 @@ export default function NotFound() {
 						<h2 className="font-ui text-muted text-[0.8125rem] font-medium">Contact</h2>
 						<a
 							href={PARISH.phoneHref}
-							className="font-ui text-ink hover:text-accent mt-2 block text-[0.9375rem] transition-colors"
+							className="font-ui text-ink hover:text-accent ease-fluid mt-2 block text-[0.9375rem] transition-colors duration-300"
 						>
 							{PARISH.phone}
 						</a>
 						<a
 							href={`mailto:${PARISH.email}`}
-							className="font-ui text-ink hover:text-accent block text-[0.9375rem] break-words transition-colors"
+							className="font-ui text-ink hover:text-accent ease-fluid block text-[0.9375rem] break-words transition-colors duration-300"
 						>
 							{PARISH.email}
 						</a>
@@ -61,7 +61,7 @@ export default function NotFound() {
 							href={MAPS_URL}
 							target="_blank"
 							rel="noreferrer"
-							className="font-ui text-ink hover:text-accent mt-2 block text-[0.9375rem] transition-colors"
+							className="font-ui text-ink hover:text-accent ease-fluid mt-2 block text-[0.9375rem] transition-colors duration-300"
 						>
 							{PARISH.street}, {PARISH.suburb}
 						</a>

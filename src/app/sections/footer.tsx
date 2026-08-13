@@ -34,13 +34,13 @@ const Footer = () => {
 							<h2 className="text-muted text-[0.8125rem] font-medium">Contact</h2>
 							<a
 								href={PARISH.phoneHref}
-								className="text-ink hover:text-accent mt-2 block transition-colors"
+								className="text-ink hover:text-accent ease-fluid mt-2 block transition-colors duration-300"
 							>
 								{PARISH.phone}
 							</a>
 							<a
 								href={`mailto:${PARISH.email}`}
-								className="text-ink hover:text-accent block break-words transition-colors"
+								className="text-ink hover:text-accent ease-fluid block break-words transition-colors duration-300"
 							>
 								{PARISH.email}
 							</a>
@@ -51,7 +51,7 @@ const Footer = () => {
 								href={MAPS_URL}
 								target="_blank"
 								rel="noreferrer"
-								className="text-ink hover:text-accent mt-2 block transition-colors"
+								className="text-ink hover:text-accent ease-fluid mt-2 block transition-colors duration-300"
 							>
 								{PARISH.street}, {PARISH.suburb},
 								<br />

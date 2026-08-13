@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '@/shared/components/button';
 import { Reveal } from '@/shared/components/reveal';
 import { prefix } from '@/shared/core/prefix';
@@ -53,8 +54,13 @@ const Hero = () => {
 						and spiritual growth.
 					</p>
 					<div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-						<Button asChild>
-							<Link href="#services">Plan your visit</Link>
+						<Button asChild className="group gap-2.5 pr-2">
+							<Link href="#services">
+								Plan your visit
+								<span className="bg-accent-ink/15 ease-fluid flex size-7 items-center justify-center rounded-full transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105">
+									<ArrowRight strokeWidth={1.5} className="size-3.5" aria-hidden />
+								</span>
+							</Link>
 						</Button>
 						<Button asChild variant="onImage">
 							<Link href="#Events">Upcoming events</Link>
