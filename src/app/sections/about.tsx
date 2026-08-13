@@ -5,14 +5,14 @@ import { prefix } from '@/shared/core/prefix';
 const AboutUs = () => {
 	return (
 		<section id="AboutUs" className="border-line border-b">
-			<div className="shell grid gap-8 px-5 py-20 md:grid-cols-[0.9fr_1.1fr] md:items-center md:gap-10 md:py-24">
+			<div className="shell grid gap-8 px-5 py-20 md:grid-cols-[0.9fr_1.1fr] md:items-center md:gap-12 md:px-10 md:py-24">
 				<Reveal>
 					<div className="rounded-base overflow-hidden">
 						{/* eslint-disable-next-line @next/next/no-img-element */}
 						<img
 							src={`${prefix}/static/opt/community-640.webp`}
-							srcSet={`${prefix}/static/opt/community-640.webp 640w, ${prefix}/static/opt/community-1024.webp 1024w`}
-							sizes="(max-width: 768px) 100vw, 320px"
+							srcSet={`${prefix}/static/opt/community-640.webp 640w, ${prefix}/static/opt/community-1024.webp 1024w, ${prefix}/static/opt/community-1400.webp 1400w`}
+							sizes="(max-width: 768px) 100vw, 42vw"
 							alt="Members of the parish together at a Corpus Christi gathering"
 							loading="lazy"
 							decoding="async"

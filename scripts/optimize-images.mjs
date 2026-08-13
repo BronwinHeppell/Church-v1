@@ -10,9 +10,9 @@ const MANIFEST = [
 	{ src: 'hero.jpg', name: 'hero', widths: [768, 1280, 1920], quality: 86 },
 	{ src: 'Mission.jpg', name: 'mission', widths: [768, 1280, 1920], quality: 76 },
 	{ src: 'Youthfel.jpg', name: 'community', widths: [640, 1024, 1400], quality: 78 },
-	{ src: 'SundayS2.jpg', name: 'sunday-service', widths: [320, 480, 768], quality: 78 },
-	{ src: 'SundayS1.jpg', name: 'service-early', widths: [320, 640], quality: 78 },
-	{ src: 'SundaySchool.jpg', name: 'sunday-school', widths: [320, 640], quality: 78 },
+	{ src: 'SundayS2.jpg', name: 'sunday-service', widths: [640, 960], quality: 78 },
+	{ src: 'SundayS1.jpg', name: 'service-early', widths: [640, 960], quality: 78 },
+	{ src: 'SundaySchool.jpg', name: 'sunday-school', widths: [640, 960], quality: 78 },
 ];
 
 const kb = (bytes) => Math.round(bytes / 1024);

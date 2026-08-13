@@ -31,7 +31,7 @@ const FAQItem = ({ title, content, keyValue }: ItemProps) => {
 export const FAQ = () => {
 	return (
 		<section className="border-line border-b" id="faq">
-			<div className="shell px-5 py-20 md:py-24">
+			<div className="shell px-5 py-20 md:px-10 md:py-24">
 				<div>
 					<Reveal>
 						<SectionTitle>Frequently asked questions</SectionTitle>

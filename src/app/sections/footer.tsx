@@ -8,7 +8,7 @@ const Footer = () => {
 
 	return (
 		<footer id="Footer" className="bg-surface">
-			<div className="shell px-5 py-16">
+			<div className="shell px-5 py-16 md:px-10">
 				<div className="grid gap-10 sm:grid-cols-2">
 					<div>
 						<Wordmark width={168} className="text-ink" />

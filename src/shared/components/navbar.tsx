@@ -74,7 +74,7 @@ const Navbar = () => {
 		<header className="bg-paper/90 border-line sticky top-0 z-50 border-b backdrop-blur-sm">
 			<nav
 				aria-label="Main"
-				className="mx-auto flex h-[72px] w-full max-w-[1400px] items-center justify-between px-5 md:px-10"
+				className="mx-auto flex h-[72px] w-full max-w-7xl items-center justify-between px-5 md:px-10"
 			>
 				<Link href="#home" aria-label="Corpus Christi Anglican Church, back to top">
 					<Wordmark width={158} className="text-ink" />
