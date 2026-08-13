@@ -1,8 +1,130 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+	--color-paper: #f2f3ef;
+	--color-surface: #fbfbf9;
+	--color-ink: #17201b;
+	--color-muted: #5a6560;
+	--color-line: #d6dad3;
+	--color-accent: #1e4d3b;
+	--color-accent-ink: #fbfbf9;
+	--color-on-image: #fbfbf9;
+
+	--font-display: var(--font-eb-garamond), ui-serif, Georgia, serif;
+	--font-ui: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+
+	--radius-base: 4px;
+
+	--animate-accordion-down: accordion-down 0.22s ease-out;
+	--animate-accordion-up: accordion-up 0.22s ease-out;
+}
+
+:root {
+	--scrim: 22 28 24;
+}
+
 @layer base {
 	html {
-		scroll-behavior: smooth;
+		scroll-padding-top: 5.5rem;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		html {
+			scroll-behavior: smooth;
+		}
+	}
+
+	body {
+		background-color: var(--color-paper);
+		color: var(--color-ink);
+		font-family: var(--font-ui);
+		-webkit-font-smoothing: antialiased;
+	}
+
+	h1,
+	h2,
+	h3 {
+		font-family: var(--font-display);
+		font-weight: 500;
+		letter-spacing: -0.01em;
+		text-wrap: balance;
+	}
+
+	p {
+		text-wrap: pretty;
+	}
+
+	body::after {
+		content: '';
+		position: fixed;
+		inset: 0;
+		z-index: 60;
+		pointer-events: none;
+		opacity: 0.025;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+	}
+
+	::selection {
+		background-color: var(--color-accent);
+		color: var(--color-accent-ink);
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 3px;
+	}
+}
+
+@utility shell {
+	margin-inline: auto;
+	width: 100%;
+	max-width: 700px;
+}
+
+@utility prose-body {
+	font-family: var(--font-display);
+	font-size: 1.0625rem;
+	line-height: 1.7;
+	max-width: 65ch;
+}
+
+@utility numerals {
+	font-variant-numeric: lining-nums tabular-nums;
+}
+
+@keyframes cc-shimmer {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(100%);
+	}
+}
+
+@keyframes accordion-down {
+	from {
+		height: 0;
+	}
+	to {
+		height: var(--radix-accordion-content-height);
+	}
+}
+
+@keyframes accordion-up {
+	from {
+		height: var(--radix-accordion-content-height);
+	}
+	to {
+		height: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
 	}
 }

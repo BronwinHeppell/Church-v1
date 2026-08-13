@@ -1,124 +1,173 @@
 'use client';
-import Image from 'next/image';
+
 import Link from 'next/link';
-import { MouseEventHandler, useState } from 'react';
-import { prefix } from '../core/prefix';
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { Menu, X } from 'lucide-react';
+import { Wordmark } from './wordmark';
 
-type drawerProps = {
-	isOpen: boolean;
-	onClose: MouseEventHandler;
-};
+const LINKS = [
+	{ label: 'Services', href: '#services' },
+	{ label: 'About us', href: '#AboutUs' },
+	{ label: 'Events', href: '#Events' },
+	{ label: 'FAQ', href: '#faq' },
+	{ label: 'Contact us', href: '#Footer' },
+] as const;
 
-type NavProps = {
-	onClick?: MouseEventHandler;
-};
+const linkClass = 'font-ui text-[0.9375rem] transition-colors duration-200 hover:text-ink';
 
-function MobileDrawer({ isOpen, onClose }: drawerProps) {
-	return (
-		<>
-			<div className="cursor-pointer rounded-full p-3 hover:bg-gray-100" onClick={onClose}>
-				<Image
-					src={`${prefix}/static/icons/menu.svg`}
-					alt="Menu Image"
-					className=""
-					width={20}
-					height={20}
-				/>
-			</div>
-			<main
-				className={
-					'fixed inset-0 z-10 transform overflow-hidden bg-gray-900 bg-opacity-25 ease-in-out ' +
-					(isOpen
-						? ' translate-x-0 opacity-100 transition-opacity duration-500'
-						: ' translate-x-full opacity-0 transition-all delay-500')
+function useActiveSection(ids: readonly string[]) {
+	const [active, setActive] = useState<string | null>(null);
+
+	useEffect(() => {
+		const els = ids
+			.map((id) => document.getElementById(id))
+			.filter((el): el is HTMLElement => el !== null);
+		if (!els.length) return;
+
+		const visible = new Map<string, number>();
+		const io = new IntersectionObserver(
+			(entries) => {
+				for (const e of entries) {
+					if (e.isIntersecting) visible.set(e.target.id, e.intersectionRatio);
+					else visible.delete(e.target.id);
 				}
-			>
-				<section
-					className={
-						'delay-400 absolute right-0 h-full w-screen max-w-lg transform bg-white shadow-xl transition-all duration-500 ease-in-out ' +
-						(isOpen ? ' translate-x-0' : ' translate-x-full')
-					}
-				>
-					<article className="relative flex h-full w-screen max-w-lg flex-col space-y-6 overflow-y-scroll pb-10">
-						<Image
-							src={`${prefix}/static/icons/close.svg`}
-							alt="Background Image"
-							width={20}
-							height={20}
-							className="m-5 cursor-pointer object-contain"
-							onClick={onClose}
-						/>
-						<NavItems onClick={onClose} />
-					</article>
-				</section>
-			</main>
-		</>
-	);
+				if (!visible.size) return;
+				const [top] = [...visible.entries()].sort((a, b) => b[1] - a[1]);
+				setActive(top[0]);
+			},
+			{ rootMargin: '-45% 0px -45% 0px', threshold: [0, 0.25, 0.5, 1] },
+		);
+
+		els.forEach((el) => io.observe(el));
+		return () => io.disconnect();
+	}, [ids]);
+
+	return active;
 }
 
-function NavItems({ onClick }: NavProps) {
-	const linkStyle = `cursor-pointer rounded-lg px-3 py-2 text-slate-800  hover:scale-[110%] hover:text-slate-900 transition transform duration-200 ease-out uppercase`;
+const SECTION_IDS = ['home', 'services', 'MissionStatement', 'AboutUs', 'Events', 'faq', 'Footer'];
 
-	return (
-		<div className="flex flex-col items-center justify-center space-y-2 text-sm uppercase sm:space-x-1 md:flex-row md:space-y-0">
-			<Link href={'#services'}>
-				<button className={linkStyle} onClick={onClick}>
-					Services
-				</button>
-			</Link>
-			<Link href={'#AboutUs'}>
-				<button className={linkStyle} onClick={onClick}>
-					About us
-				</button>
-			</Link>
-			<Link href={'#Events'}>
-				<button className={linkStyle} onClick={onClick}>
-					Events
-				</button>
-			</Link>
-			<Link href={'#faq'}>
-				<button className={linkStyle} onClick={onClick}>
-					FAQ
-				</button>
-			</Link>
-			<Link href={'#Footer'}>
-				<button className={linkStyle} onClick={onClick}>
-					Contact us
-				</button>
-			</Link>
-			<Link href={'/static/pdf/Banking_Details.pdf'} target="_blank">
-				<p className={linkStyle} onClick={onClick}>
-					Donate
-				</p>
-			</Link>
-		</div>
-	);
-}
+const donateClass =
+	'font-ui rounded-base border border-line px-3.5 py-2 text-[0.9375rem] text-ink transition-colors duration-200 hover:border-accent hover:text-accent active:translate-y-[1px]';
+
 const Navbar = () => {
-	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+	const [open, setOpen] = useState(false);
+	const reduce = useReducedMotion();
+	const active = useActiveSection(SECTION_IDS);
 
-	const handleDrawerToggle = () => {
-		setIsDrawerOpen(!isDrawerOpen);
-	};
+	useEffect(() => {
+		if (!open) return;
+		const onKey = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') setOpen(false);
+		};
+		document.addEventListener('keydown', onKey);
+		document.body.style.overflow = 'hidden';
+		return () => {
+			document.removeEventListener('keydown', onKey);
+			document.body.style.overflow = '';
+		};
+	}, [open]);
 
 	return (
-		<nav className="sticky top-0 z-50 flex h-20 w-full items-center justify-between bg-white px-4">
-			<Image
-				src={`${prefix}/static/logo/nav_logo.svg`}
-				alt="Background Image"
-				width={160}
-				height={0}
-				className="cursor-pointer object-contain"
-				onClick={() => window.scrollTo(0, 0)}
-			/>
-			<div className="hidden md:block">
-				<NavItems />
-			</div>
+		<header className="bg-paper/90 border-line sticky top-0 z-50 border-b backdrop-blur-sm">
+			<nav
+				aria-label="Main"
+				className="mx-auto flex h-[72px] w-full max-w-[1400px] items-center justify-between px-5 md:px-10"
+			>
+				<Link href="#home" aria-label="Corpus Christi Anglican Church, back to top">
+					<Wordmark width={158} className="text-ink" />
+				</Link>
 
-			<div className="md:hidden">
-				<MobileDrawer isOpen={isDrawerOpen} onClose={handleDrawerToggle} />
-			</div>
-		</nav>
+				<div className="hidden items-center gap-7 lg:flex">
+					{LINKS.map((l) => {
+						const current = active === l.href.slice(1);
+						return (
+							<Link
+								key={l.href}
+								href={l.href}
+								aria-current={current ? 'true' : undefined}
+								className={`${linkClass} ${current ? 'text-ink' : 'text-muted'}`}
+							>
+								{l.label}
+							</Link>
+						);
+					})}
+					<Link href="/static/pdf/Banking_Details.pdf" target="_blank" className={donateClass}>
+						Donate
+					</Link>
+				</div>
+
+				<button
+					type="button"
+					onClick={() => setOpen(true)}
+					aria-label="Open menu"
+					aria-expanded={open}
+					className="text-ink rounded-base -mr-2 p-2 lg:hidden"
+				>
+					<Menu strokeWidth={1.5} className="size-6" />
+				</button>
+			</nav>
+
+			<AnimatePresence>
+				{open && (
+					<motion.div
+						className="fixed inset-0 z-50 lg:hidden"
+						initial={reduce ? false : { opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={reduce ? undefined : { opacity: 0 }}
+						transition={{ duration: 0.2 }}
+					>
+						<button
+							type="button"
+							aria-label="Close menu"
+							onClick={() => setOpen(false)}
+							className="absolute inset-0 bg-[rgb(var(--scrim)/0.5)]"
+						/>
+						<motion.div
+							className="bg-paper border-line absolute inset-y-0 right-0 flex w-full max-w-sm flex-col border-l px-6 py-5"
+							initial={reduce ? false : { x: '100%' }}
+							animate={{ x: 0 }}
+							exit={reduce ? undefined : { x: '100%' }}
+							transition={{ type: 'spring', stiffness: 320, damping: 34 }}
+						>
+							<div className="flex items-center justify-between">
+								<Wordmark width={140} className="text-ink" />
+								<button
+									type="button"
+									onClick={() => setOpen(false)}
+									aria-label="Close menu"
+									className="text-ink rounded-base -mr-2 p-2"
+								>
+									<X strokeWidth={1.5} className="size-6" />
+								</button>
+							</div>
+
+							<div className="mt-10 flex flex-col">
+								{LINKS.map((l) => (
+									<Link
+										key={l.href}
+										href={l.href}
+										onClick={() => setOpen(false)}
+										className="font-display border-line text-ink border-b py-4 text-2xl"
+									>
+										{l.label}
+									</Link>
+								))}
+								<Link
+									href="/static/pdf/Banking_Details.pdf"
+									target="_blank"
+									onClick={() => setOpen(false)}
+									className="font-display text-accent py-4 text-2xl"
+								>
+									Donate
+								</Link>
+							</div>
+						</motion.div>
+					</motion.div>
+				)}
+			</AnimatePresence>
+		</header>
 	);
 };
 

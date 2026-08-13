@@ -1,13 +1,14 @@
 import { MetadataRoute } from 'next';
+import { PARISH } from '@/shared/core/parish';
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	const sitemap = [
+export const dynamic = 'force-static';
+
+export default function sitemap(): MetadataRoute.Sitemap {
+	return [
 		{
-			url: 'https://www.corpus-christi-garsfontein.org/',
+			url: `${PARISH.url}/`,
 			lastModified: new Date(),
 			priority: 1,
 		},
 	];
-
-	return sitemap;
 }

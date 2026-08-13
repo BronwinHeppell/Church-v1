@@ -1,8 +1,6 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import type { Metadata, Viewport } from 'next';
+import { ebGaramond, outfit } from '@/shared/core/fonts';
 import './globals.css';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
 	applicationName: 'Corpus Christi Anglican Church',
@@ -10,7 +8,7 @@ export const metadata: Metadata = {
 	description:
 		'Welcome to Corpus Christi Anglican Church, offering worship services, community outreach, and more in Garsfontein. We are a community of believers who are passionate about serving God and our neighbours.',
 	keywords: ['Anglican Church', 'Garsfontein', 'Worship', 'Community Outreach'],
-	metadataBase: new URL("https://www.corpus-christi-garsfontein.org"),
+	metadataBase: new URL('https://www.corpus-christi-garsfontein.org'),
 	openGraph: {
 		title: 'Corpus Christi Anglican Church',
 		type: 'website',
@@ -34,18 +32,14 @@ export const metadata: Metadata = {
 	robots: {
 		index: true,
 		follow: true,
-		"max-image-preview": "large",
-		"max-snippet": -1,
-		"max-video-preview": -1,
-	},
-	viewport: {
-		width: 'device-width',
-		initialScale: 1,
+		'max-image-preview': 'large',
+		'max-snippet': -1,
+		'max-video-preview': -1,
 	},
 	authors: [
 		{
 			name: 'Corpus Christi Anglican Church',
-			url: 'https://www.corpus-christi-garsfontein.org'
+			url: 'https://www.corpus-christi-garsfontein.org',
 		},
 	],
 	icons: {
@@ -64,15 +58,42 @@ export const metadata: Metadata = {
 	},
 };
 
+/* Next 15+ requires viewport to be its own export, not a metadata key. */
+export const viewport: Viewport = {
+	width: 'device-width',
+	initialScale: 1,
+	/* Light only, by request: the page does not follow the device setting. */
+	colorScheme: 'light',
+	themeColor: '#f2f3ef',
+};
+
 export default function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
-			<link rel="icon" href="/icon.ico" sizes="any" />
-			<body className={inter.className}>{children}</body>
+		<html lang="en" className={`${ebGaramond.variable} ${outfit.variable}`}>
+			<head>
+				<link rel="icon" href="/icon.ico" sizes="any" />
+			</head>
+			<body>
+				{/*
+					Keyboard users would otherwise have to tab through all six nav
+					items and the donate link on every visit before reaching content.
+					Visually hidden until it receives focus.
+
+					z-index scale for the whole site: 50 sticky nav and mobile
+					drawer, 60 the paper-grain overlay, 70 this skip link.
+				*/}
+				<a
+					href="#main"
+					className="focus:rounded-base focus:bg-accent focus:text-accent-ink sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[70] focus:px-4 focus:py-2"
+				>
+					Skip to content
+				</a>
+				{children}
+			</body>
 		</html>
 	);
 }

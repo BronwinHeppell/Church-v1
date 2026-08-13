@@ -1,105 +1,76 @@
-'use client';
-import Image from 'next/image';
-import Map from '@/shared/components/map';
-import { merriweather } from '@/shared/core/fonts';
 import Link from 'next/link';
-import { prefix } from '@/shared/core/prefix';
-
-const ContactDetails = () => {
-	const showInMapClicked = () => {
-		window.open(
-			'https://www.google.com/maps/place/Corpus+Christi+Anglican+Church/@-25.7961862,28.2931054,17z/data=!3m1!4b1!4m6!3m5!1s0x1e955ffb3657c89b:0x84e228c1cd662421!8m2!3d-25.7961862!4d28.2956857!16s%2Fg%2F11cs18f00p?entry=ttu',
-		);
-	};
-
-	return (
-		<div className="flex w-full flex-col space-y-2 p-4">
-			<div>
-				<p className={`${merriweather.className}`}>Address:</p>
-				<p
-					onClick={() => showInMapClicked()}
-					className="transform cursor-pointer rounded-lg transition duration-200 ease-out hover:scale-[110%]"
-				>
-					482 De Bron Rd, Garsfontein, Pretoria, 0042
-				</p>
-			</div>
-			<div>
-				<p className={`${merriweather.className}`}>Phone: </p>
-				<p
-					onClick={() => window.open('tel:0129935161')}
-					className="transform cursor-pointer rounded-lg transition duration-200 ease-out hover:scale-[110%]"
-				>
-					(012) 993 5161
-				</p>
-			</div>
-			<div>
-				<p className={`${merriweather.className}`}>Email:</p>
-				<a href="mailto:garsfontein.acsa@gmail.com" target="_blank">
-					<button className="transform cursor-pointer rounded-lg transition duration-200 ease-out hover:scale-[110%]">
-						garsfontein.acsa@gmail.com
-					</button>
-				</a>
-			</div>
-		</div>
-	);
-};
-
-const Socials = () => {
-	return (
-		<div className="flex w-full flex-col items-center justify-center text-center">
-			<div className="flex flex-col items-center">
-				<Image
-					src={`${prefix}/static/logo/logo_small.svg`}
-					alt="Small Logo"
-					className=""
-					width={150}
-					height={150}
-				/>
-				<p>Join us for worship every Sunday at Corpus Christi</p>
-				{/* <div className="flex justify-center">
-					<Link href="">
-						<Image
-							src={`${prefix}/static/icons/instagram.svg`}
-							alt="Instagram Image"
-							width={20}
-							height={0}
-							className="m-3 transform cursor-pointer object-contain transition duration-200 ease-out hover:scale-110"
-						/>
-					</Link>
-					<Link href="">
-						<Image
-							src={`${prefix}/static/icons/facebook.svg`}
-							alt="Facebook Image"
-							width={20}
-							height={0}
-							className="m-3 transform cursor-pointer object-contain transition duration-200 ease-out hover:scale-110"
-						/>
-					</Link>
-					<Link href="">
-						<Image
-							src={`${prefix}/static/icons/whatsapp.svg`}
-							alt="Whatsapp Image"
-							width={20}
-							height={0}
-							className="m-3 transform cursor-pointer object-contain transition duration-200 ease-out hover:scale-110"
-						/>
-					</Link>
-				</div> */}
-			</div>
-		</div>
-	);
-};
+import MapLazy from '@/shared/components/map-lazy';
+import { Wordmark } from '@/shared/components/wordmark';
+import { MAPS_URL, PARISH } from '@/shared/core/parish';
 
 const Footer = () => {
+	const year = new Date().getFullYear();
+
 	return (
-		<footer id="Footer" className="bg-[#2B2B2B] p-4 text-center text-white">
-			<div className="container flex flex-col items-center justify-center gap-4 sm:flex-row sm:justify-evenly">
-				<ContactDetails />
-				<Socials />
-				<Map />
+		<footer id="Footer" className="bg-surface">
+			<div className="shell px-5 py-16">
+				<div className="grid gap-10 sm:grid-cols-2">
+					<div>
+						<Wordmark width={168} className="text-ink" />
+						<p className="prose-body text-muted mt-5 text-base">
+							An Anglican parish serving Garsfontein and the surrounding suburbs of Pretoria.
+						</p>
+						<Link
+							href="/static/pdf/Banking_Details.pdf"
+							target="_blank"
+							className="font-ui text-accent mt-5 inline-block text-[0.9375rem] hover:underline"
+						>
+							Donate
+						</Link>
+					</div>
+
+					<div className="font-ui flex flex-col gap-6 text-[0.9375rem]">
+						<div>
+							<h2 className="text-muted text-[0.8125rem] font-medium">Sunday services</h2>
+							<p className="numerals text-ink mt-2">07:00 and 09:00</p>
+							<p className="text-muted mt-1">Kids Sunday School every Sunday</p>
+						</div>
+						<div>
+							<h2 className="text-muted text-[0.8125rem] font-medium">Contact</h2>
+							<a
+								href={PARISH.phoneHref}
+								className="text-ink hover:text-accent mt-2 block transition-colors"
+							>
+								{PARISH.phone}
+							</a>
+							<a
+								href={`mailto:${PARISH.email}`}
+								className="text-ink hover:text-accent block break-words transition-colors"
+							>
+								{PARISH.email}
+							</a>
+						</div>
+						<div>
+							<h2 className="text-muted text-[0.8125rem] font-medium">Address</h2>
+							<a
+								href={MAPS_URL}
+								target="_blank"
+								rel="noreferrer"
+								className="text-ink hover:text-accent mt-2 block transition-colors"
+							>
+								{PARISH.street}, {PARISH.suburb},
+								<br />
+								{PARISH.city}, {PARISH.postalCode}
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div className="mt-10">
+					<MapLazy />
+				</div>
 			</div>
-			<hr className="my-4" />
-			<p className="text-center sm:text-end">&copy; 2024 Corpus Christi Anglican Church </p>
+
+			<div className="border-line shell border-t px-5 py-6">
+				<p className="font-ui text-muted text-sm">
+					&copy; {year} {PARISH.name}
+				</p>
+			</div>
 		</footer>
 	);
 };

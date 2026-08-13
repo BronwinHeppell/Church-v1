@@ -1,38 +1,72 @@
-import React, { useEffect, useRef } from 'react';
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { MAPS_URL, PARISH } from '@/shared/core/parish';
+import { prefix } from '../core/prefix';
+
+const TOKEN = process.env.NEXT_PUBLIC_MAPBOX_KEY;
 
 const Map = () => {
-	const lat = -25.7961862;
-	const long = 28.2931054;
-	const mapContainerRef = useRef<HTMLDivElement>(null);
+	const container = useRef<HTMLDivElement>(null);
+	const [failed, setFailed] = useState(!TOKEN);
 
 	useEffect(() => {
-		mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY!;
+		if (!TOKEN || !container.current) return;
 
-		const map = new mapboxgl.Map({
-			container: mapContainerRef.current!,
-			style: 'mapbox://styles/mapbox/streets-v11', // or any other Mapbox style
-			center: [long, lat], // starting position [lng, lat]
-			zoom: 15, // starting zoom
-		});
+		let map: mapboxgl.Map;
 
-		// Disable interactions
+		try {
+			mapboxgl.accessToken = TOKEN;
+			map = new mapboxgl.Map({
+				container: container.current,
+				style: 'mapbox://styles/mapbox/light-v11',
+				center: [PARISH.lng, PARISH.lat],
+				zoom: 15,
+				attributionControl: false,
+			});
+		} catch {
+			Promise.resolve().then(() => setFailed(true));
+			return;
+		}
 
-		const marker = new mapboxgl.Marker()
-			.setLngLat([long, lat]) // Longitude, Latitude
-			.addTo(map);
+		map.scrollZoom.disable();
+		map.on('error', () => setFailed(true));
 
-		marker.getElement().addEventListener('click', () => {
-			const googleMapsUrl = `https://www.google.com/maps/place/Corpus+Christi+Anglican+Church/@-25.7961862,28.2931054,17z/data=!3m1!4b1!4m6!3m5!1s0x1e955ffb3657c89b:0x84e228c1cd662421!8m2!3d-25.7961862!4d28.2956857!16s%2Fg%2F11cs18f00p?entry=ttu`;
-			window.open(googleMapsUrl, '_blank'); // Open Google Maps in a new tab
-		});
+		new mapboxgl.Marker({ color: '#1e4d3b' }).setLngLat([PARISH.lng, PARISH.lat]).addTo(map);
 
-		// Clean up on unmount
 		return () => map.remove();
-	}, [lat]);
+	}, []);
 
-	return <div ref={mapContainerRef} style={{ width: '100%', height: '200px' }} />;
+	if (failed) {
+		return (
+			<a
+				href={MAPS_URL}
+				target="_blank"
+				rel="noreferrer"
+				className="rounded-base border-line relative block h-[200px] w-full overflow-hidden border"
+			>
+				<Image
+					src={`${prefix}/static/map_placeholder.png`}
+					alt={`Map showing Corpus Christi Anglican Church at ${PARISH.street}, ${PARISH.suburb}`}
+					fill
+					sizes="(max-width: 768px) 100vw, 33vw"
+					className="object-cover"
+				/>
+			</a>
+		);
+	}
+
+	return (
+		<div
+			ref={container}
+			role="img"
+			aria-label={`Map showing Corpus Christi Anglican Church at ${PARISH.street}, ${PARISH.suburb}`}
+			className="rounded-base border-line h-[200px] w-full overflow-hidden border"
+		/>
+	);
 };
 
 export default Map;
