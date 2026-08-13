@@ -9,7 +9,7 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from '@/shared/components/accordion';
-import { SectionTitle, Lede } from '@/shared/components/heading';
+import { SectionHeader } from '@/shared/components/heading';
 import { Reveal } from '@/shared/components/reveal';
 import { PARISH } from '@/shared/core/parish';
 
@@ -202,16 +202,17 @@ const Events = () => {
 	}, []);
 
 	return (
-		<section id="Events" className="border-line border-b">
+		<section id="Events">
 			<div className="shell px-5 py-20 md:px-10 md:py-24">
-				<Reveal className="max-w-2xl">
-					<SectionTitle>Upcoming events</SectionTitle>
-					<Lede className="mt-5">
-						What is coming up in the life of the parish. Everyone is welcome to join us.
-					</Lede>
+				<Reveal>
+					<SectionHeader
+						eyebrow="Discover"
+						title="Upcoming Events"
+						sub="Stay updated with our upcoming church events and join us"
+					/>
 				</Reveal>
 
-				<ul className="border-line mt-14 border-b">
+				<ul className="measure border-line mt-12 border-b">
 					{state === 'loading' && (
 						<>
 							<EventSkeleton />
@@ -232,9 +233,9 @@ const Events = () => {
 
 				{state === 'ready' && events.length === 0 && (
 					<Reveal>
-						<div className="border-line rounded-base -mt-px border p-8 md:p-12">
+						<div className="measure border-line rounded-base -mt-px border p-8 text-center md:p-12">
 							<h3 className="font-display text-2xl">Nothing on the calendar just yet</h3>
-							<p className="prose-body text-muted mt-3 text-base">
+							<p className="prose-body text-muted mx-auto mt-3 text-base">
 								There are no events listed at the moment. Sunday services carry on as usual, and
 								anything new will appear here first.
 							</p>
@@ -249,13 +250,16 @@ const Events = () => {
 				)}
 
 				{state === 'error' && (
-					<div role="alert" className="border-line rounded-base -mt-px border p-8 md:p-12">
+					<div
+						role="alert"
+						className="measure border-line rounded-base -mt-px border p-8 text-center md:p-12"
+					>
 						<h3 className="font-display text-2xl">We could not load the events list</h3>
-						<p className="prose-body text-muted mt-3 text-base">
+						<p className="prose-body text-muted mx-auto mt-3 text-base">
 							Something went wrong fetching the calendar. Please try again shortly, or contact the
 							parish office and we will gladly tell you what is coming up.
 						</p>
-						<div className="font-ui mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[0.9375rem]">
+						<div className="font-ui mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[0.9375rem]">
 							<a href={PARISH.phoneHref} className="text-accent hover:underline">
 								{PARISH.phone}
 							</a>

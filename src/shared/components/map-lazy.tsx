@@ -5,9 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const Map = dynamic(() => import('./map'), { ssr: false });
 
-const Placeholder = () => (
-	<div className="rounded-base border-line bg-paper h-[200px] w-full border" aria-hidden />
-);
+const Placeholder = () => <div className="rounded-base h-[200px] w-full bg-white/10" aria-hidden />;
 
 const MapLazy = () => {
 	const ref = useRef<HTMLDivElement>(null);

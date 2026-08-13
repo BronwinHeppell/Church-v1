@@ -5,7 +5,7 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from '@/shared/components/accordion';
-import { SectionTitle, Lede } from '@/shared/components/heading';
+import { SectionHeader } from '@/shared/components/heading';
 import { Reveal } from '@/shared/components/reveal';
 import { PARISH } from '@/shared/core/parish';
 
@@ -30,30 +30,32 @@ const FAQItem = ({ title, content, keyValue }: ItemProps) => {
 
 export const FAQ = () => {
 	return (
-		<section className="border-line border-b" id="faq">
+		<section id="faq">
 			<div className="shell px-5 py-20 md:px-10 md:py-24">
-				<div>
-					<Reveal>
-						<SectionTitle>Frequently asked questions</SectionTitle>
-						<Lede className="mt-5 text-base">
-							Baptisms, confirmation, membership, marriage and funerals. If your question is not
-							answered here, the parish office is glad to help.
-						</Lede>
-						<div className="font-ui mt-6 flex flex-col gap-1.5 text-[0.9375rem]">
-							<a href={PARISH.phoneHref} className="text-accent hover:underline">
+				<Reveal>
+					<SectionHeader
+						eyebrow="Frequently Asked Questions"
+						title="FAQ"
+						sub="Find answers to common questions and information about church activities"
+					/>
+				</Reveal>
+
+				<div className="measure mt-12">
+					<Reveal delay={0.1}>
+						<p className="text-muted text-center text-[0.9375rem]">
+							If your question is not answered here, the parish office is glad to help:{' '}
+							<a href={PARISH.phoneHref} className="text-ink hover:underline">
 								{PARISH.phone}
-							</a>
-							<a
-								href={`mailto:${PARISH.email}`}
-								className="text-accent break-words hover:underline"
-							>
+							</a>{' '}
+							<span aria-hidden>·</span>{' '}
+							<a href={`mailto:${PARISH.email}`} className="text-ink break-words hover:underline">
 								{PARISH.email}
 							</a>
-						</div>
+						</p>
 					</Reveal>
 				</div>
 
-				<div className="mt-10">
+				<div className="measure mt-8">
 					<Accordion type="single" collapsible>
 						<FAQItem
 							title="Holy Baptism"

@@ -15,7 +15,7 @@ const LINKS = [
 ] as const;
 
 const linkClass =
-	'font-ui ease-fluid text-[0.9375rem] transition-colors duration-300 hover:text-ink';
+	'font-ui ease-fluid text-xs tracking-[0.06em] uppercase transition-colors duration-300 hover:text-ink';
 
 function useActiveSection(ids: readonly string[]) {
 	const [active, setActive] = useState<string | null>(null);
@@ -50,7 +50,7 @@ function useActiveSection(ids: readonly string[]) {
 const SECTION_IDS = ['home', 'services', 'MissionStatement', 'AboutUs', 'Events', 'faq', 'Footer'];
 
 const donateClass =
-	'font-ui rounded-base border border-line px-3.5 py-2 text-[0.9375rem] text-ink transition-colors duration-300 ease-fluid hover:border-accent hover:text-accent active:translate-y-[1px]';
+	'font-ui ease-fluid text-xs tracking-[0.06em] uppercase text-ink transition-opacity duration-300 hover:opacity-60';
 
 const Navbar = () => {
 	const [open, setOpen] = useState(false);
