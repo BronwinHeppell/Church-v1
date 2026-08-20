@@ -18,9 +18,27 @@ From the repository root:
 
 ## Deploying
 
-Publish `admin/out` to the admin subdomain, e.g. `admin.corpus-christi-garsfontein.org`.
-The routes are the root of that host — `/`, `/events`, `/leaflets`, `/users` —
-not `/admin/...`.
+`.github/workflows/admin.yml` does this on a push to `master` that touches
+`admin/**`, and can also be run by hand from the Actions tab. It builds only this
+workspace and FTPs `admin/out` to the subdomain.
+
+The portal is served at **admin.corpus-christi-garsfontein.org**; the website is
+at corpus-christi-garsfontein.org and is deployed by the other two workflows.
+Routes are the root of the admin host — `/`, `/events`, `/leaflets`, `/users` —
+not `/admin/...`, and the build is given no `NEXT_PUBLIC_BASE_PATH` for that
+reason.
+
+The upload target defaults to `public_html/admin/`. If the host maps the
+subdomain somewhere else, set an `FTP_ADMIN_DIR` secret in the `Xneelo`
+environment; it must end in a slash, and the workflow refuses to run if it is
+the website's own document root, because the FTP step mirrors a directory and
+deletes anything not in the upload.
+
+**Firebase must be told about the subdomain.** Sign-in fails with
+`auth/unauthorized-domain` until `admin.corpus-christi-garsfontein.org` is added
+under Authentication → Settings → Authorized domains in the Firebase console.
+Adding the domain is separate from deploying, and nothing in the build can check
+it for you.
 
 It needs its own `.env.local` with the same `NEXT_PUBLIC_FIREBASE_*` values as
 the website. They point at the same Firebase project, which is how the two apps

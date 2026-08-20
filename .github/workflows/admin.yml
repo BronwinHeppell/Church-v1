@@ -1,7 +1,9 @@
 name: Deploy admin portal to Xneelo
 
-# The admin portal is a separate app with its own build output, deployed to its
-# own subdomain. It is never part of the website's deployment.
+# The admin portal is a separate app with its own build output, deployed to
+# admin.corpus-christi-garsfontein.org. The website, at
+# corpus-christi-garsfontein.org, is deployed by xneelo.yml and nextjs.yml.
+# The two never share a build.
 
 on:
   push:
@@ -42,26 +44,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # The FTP step mirrors a directory and removes what is not in the upload.
-      # If the target were empty or wrong it could overwrite the public website,
-      # so refuse to run rather than find out afterwards.
-      - name: Check the deploy target is set
+      # Resolve the document root for admin.corpus-christi-garsfontein.org.
+      # Defaults to the usual convention of a directory named after the
+      # subdomain; set the FTP_ADMIN_DIR secret if the host maps it elsewhere.
+      #
+      # The FTP step mirrors a directory and deletes whatever is not in the
+      # upload, so the target is checked rather than trusted — a wrong value
+      # here could wipe the public website.
+      - name: Resolve the deploy target
+        id: target
         env:
           FTP_ADMIN_DIR: ${{ secrets.FTP_ADMIN_DIR }}
         run: |
-          if [ -z "$FTP_ADMIN_DIR" ]; then
-            echo "::error::FTP_ADMIN_DIR is not set. Add it as a repository secret in the Xneelo environment, pointing at the subdomain's document root, e.g. public_html/admin/ — it must end in a slash."
-            exit 1
-          fi
-          case "$FTP_ADMIN_DIR" in
+          DIR="${FTP_ADMIN_DIR:-public_html/admin/}"
+          case "$DIR" in
             */) ;;
-            *) echo "::error::FTP_ADMIN_DIR must end in a slash. Got: $FTP_ADMIN_DIR"; exit 1 ;;
+            *) echo "::error::FTP_ADMIN_DIR must end in a slash. Got: $DIR"; exit 1 ;;
           esac
-          if [ "$FTP_ADMIN_DIR" = "public_html/" ]; then
-            echo "::error::FTP_ADMIN_DIR is the website's own document root. That would overwrite the public site. Point it at the subdomain's directory instead."
+          if [ "$DIR" = "public_html/" ] || [ "$DIR" = "/" ] || [ "$DIR" = "./" ]; then
+            echo "::error::FTP_ADMIN_DIR points at the website's document root. That would overwrite corpus-christi-garsfontein.org. Point it at the subdomain's directory instead."
             exit 1
           fi
-          echo "Deploying to $FTP_ADMIN_DIR"
+          echo "dir=$DIR" >> "$GITHUB_OUTPUT"
+          echo "Deploying the portal to $DIR"
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -104,5 +109,5 @@ jobs:
           server: 197.221.14.50
           username: ${{ secrets.FTP_USER_NAME }}
           password: ${{ secrets.FTP_USER_PASSWORD }}
-          server-dir: ${{ secrets.FTP_ADMIN_DIR }}
+          server-dir: ${{ steps.target.outputs.dir }}
           local-dir: ./admin/out/
