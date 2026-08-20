@@ -1,0 +1,75 @@
+name: Test FTP login
+
+# Manual only. Logs in, reports what it would change, and uploads nothing —
+# dry-run is set, so this is safe to run against a live directory.
+#
+# Use it to check credentials or a directory without spending a build, and
+# without a failed deploy being the way you find out.
+
+on:
+  workflow_dispatch:
+    inputs:
+      server-dir:
+        description: 'Remote directory to test. Must end in a slash.'
+        required: true
+        default: 'public_html/'
+      protocol:
+        description: 'ftp (plain), ftps (explicit TLS), or ftps-legacy (implicit)'
+        required: true
+        default: 'ftp'
+        type: choice
+        options:
+          - ftp
+          - ftps
+          - ftps-legacy
+
+permissions:
+  contents: read
+
+concurrency:
+  group: 'xneelo-ftp'
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    environment: Xneelo
+    steps:
+      - name: Check the FTP credentials are present
+        env:
+          FTP_USER_NAME: ${{ secrets.FTP_USER_NAME }}
+          FTP_USER_PASSWORD: ${{ secrets.FTP_USER_PASSWORD }}
+        run: |
+          missing=""
+          [ -z "$FTP_USER_NAME" ] && missing="$missing FTP_USER_NAME"
+          [ -z "$FTP_USER_PASSWORD" ] && missing="$missing FTP_USER_PASSWORD"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing secret(s):$missing"
+            exit 1
+          fi
+          echo "Username is ${#FTP_USER_NAME} characters, password is ${#FTP_USER_PASSWORD} characters."
+
+      - name: Reject a target that is not a directory
+        run: |
+          case "${{ inputs.server-dir }}" in
+            */) ;;
+            *) echo "::error::server-dir must end in a slash."; exit 1 ;;
+          esac
+
+      # The action needs something to compare against; it uploads nothing.
+      - name: Make a placeholder to compare from
+        run: |
+          mkdir -p ftp-check
+          echo "connection test" > ftp-check/.ftp-check
+
+      - name: Attempt the login
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: 197.221.14.50
+          username: ${{ secrets.FTP_USER_NAME }}
+          password: ${{ secrets.FTP_USER_PASSWORD }}
+          protocol: ${{ inputs.protocol }}
+          server-dir: ${{ inputs.server-dir }}
+          local-dir: ./ftp-check/
+          dry-run: true
+          log-level: verbose
