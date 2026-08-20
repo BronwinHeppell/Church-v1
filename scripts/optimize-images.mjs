@@ -125,50 +125,63 @@ async function optimizeSvgAssets() {
 /*
  * Icons and the social card.
  *
- * The crest is 1417x1464, so it is padded to a square on paper rather than
- * stretched or centre-cropped. Google wants a search favicon that is 48px or a
- * multiple of it, which the 48px ICO only just satisfies, so 192 and 512 PNGs
- * are provided alongside it.
+ * The crest is a round mark on transparency — 83% of its pixels are clear — so
+ * the web icons keep their alpha and stay round. Only the Apple touch icon gets
+ * a paper background, because iOS composites a transparent icon onto black and
+ * applies its own rounded mask, so it needs an opaque square with breathing
+ * room inside that mask.
+ *
+ * Google wants a search favicon that is 48px or a multiple of it, which the
+ * 48px ICO only just satisfies, so 192 and 512 PNGs sit alongside it.
  */
-const ICON_SIZES = [180, 192, 512];
 const CREST = 'logo/logo_small.svg';
 const PAPER = { r: 251, g: 250, b: 247, alpha: 1 };
+const CLEAR = { r: 0, g: 0, b: 0, alpha: 0 };
+
+async function crestAt(size, inset) {
+	const inner = Math.round(size * inset);
+	return sharp(join(STATIC, CREST), { density: 600 })
+		.resize(inner, inner, { fit: 'contain', background: CLEAR })
+		.toBuffer();
+}
+
+async function plate(size, background, inset) {
+	return sharp({ create: { width: size, height: size, channels: 4, background } })
+		.composite([{ input: await crestAt(size, inset), gravity: 'centre' }])
+		.png({ compressionLevel: 9 })
+		.toBuffer();
+}
 
 async function buildIcons() {
-	const src = join(STATIC, CREST);
-	if (!existsSync(src)) {
+	if (!existsSync(join(STATIC, CREST))) {
 		console.warn(`  SKIP icons (missing): ${CREST}`);
 		return;
 	}
 
 	console.log('');
 	console.log('  Icons');
-	for (const size of ICON_SIZES) {
-		// 12% padding so the crest is not jammed against a rounded mask.
-		const inner = Math.round(size * 0.76);
-		const crest = await sharp(src, { density: 600 })
-			.resize(inner, inner, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
-			.toBuffer();
 
-		const buf = await sharp({
-			create: { width: size, height: size, channels: 4, background: PAPER },
-		})
-			.composite([{ input: crest, gravity: 'centre' }])
-			.png({ compressionLevel: 9 })
-			.toBuffer();
-
-		const name = size === 180 ? 'apple-touch-icon.png' : `icon-${size}.png`;
-		writeFileSync(join(PUBLIC, name), buf);
-		console.log(`    ${String(size + 'px').padEnd(7)} -> ${name}  ${kb(buf.length)} KB`);
+	// Tab and search icons: transparent, and near full-bleed since there is no
+	// background for the mark to breathe against.
+	for (const size of [192, 512]) {
+		const buf = await plate(size, CLEAR, 0.94);
+		writeFileSync(join(PUBLIC, `icon-${size}.png`), buf);
+		console.log(
+			`    ${String(size + 'px').padEnd(7)} -> icon-${size}.png  ${kb(buf.length)} KB  transparent`,
+		);
 	}
+
+	const apple = await plate(180, PAPER, 0.76);
+	writeFileSync(join(PUBLIC, 'apple-touch-icon.png'), apple);
+	console.log(`    180px   -> apple-touch-icon.png  ${kb(apple.length)} KB  on paper`);
 
 	// Crawlers still probe /favicon.ico directly, and the declared shortcut was
 	// pointing at a path that did not exist. sharp has no ICO encoder, so the
-	// existing multi-size ICO (16/32/48) is reused for that path.
-	const ico = join(ROOT, 'src', 'app', 'icon.ico');
+	// original multi-size ICO (16/32/48, with its alpha intact) is reused there.
+	const ico = join(ROOT, 'icon.ico');
 	if (existsSync(ico)) {
 		writeFileSync(join(PUBLIC, 'favicon.ico'), readFileSync(ico));
-		console.log(`    16/32/48 -> favicon.ico  ${kb(statSync(ico).size)} KB`);
+		console.log(`    16/32/48 -> favicon.ico  ${kb(statSync(ico).size)} KB  original, unmodified`);
 	}
 }
 
