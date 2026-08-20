@@ -1,9 +1,10 @@
-import { existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import sharp from 'sharp';
 
 const ROOT = resolve(import.meta.dirname, '..');
-const STATIC = join(ROOT, 'public', 'static');
+const PUBLIC = join(ROOT, 'public');
+const STATIC = join(PUBLIC, 'static');
 const OUT = join(STATIC, 'opt');
 
 const MANIFEST = [
@@ -121,6 +122,102 @@ async function optimizeSvgAssets() {
 	}
 }
 
+/*
+ * Icons and the social card.
+ *
+ * The crest is 1417x1464, so it is padded to a square on paper rather than
+ * stretched or centre-cropped. Google wants a search favicon that is 48px or a
+ * multiple of it, which the 48px ICO only just satisfies, so 192 and 512 PNGs
+ * are provided alongside it.
+ */
+const ICON_SIZES = [180, 192, 512];
+const CREST = 'logo/logo_small.svg';
+const PAPER = { r: 251, g: 250, b: 247, alpha: 1 };
+
+async function buildIcons() {
+	const src = join(STATIC, CREST);
+	if (!existsSync(src)) {
+		console.warn(`  SKIP icons (missing): ${CREST}`);
+		return;
+	}
+
+	console.log('');
+	console.log('  Icons');
+	for (const size of ICON_SIZES) {
+		// 12% padding so the crest is not jammed against a rounded mask.
+		const inner = Math.round(size * 0.76);
+		const crest = await sharp(src, { density: 600 })
+			.resize(inner, inner, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+			.toBuffer();
+
+		const buf = await sharp({
+			create: { width: size, height: size, channels: 4, background: PAPER },
+		})
+			.composite([{ input: crest, gravity: 'centre' }])
+			.png({ compressionLevel: 9 })
+			.toBuffer();
+
+		const name = size === 180 ? 'apple-touch-icon.png' : `icon-${size}.png`;
+		writeFileSync(join(PUBLIC, name), buf);
+		console.log(`    ${String(size + 'px').padEnd(7)} -> ${name}  ${kb(buf.length)} KB`);
+	}
+
+	// Crawlers still probe /favicon.ico directly, and the declared shortcut was
+	// pointing at a path that did not exist. sharp has no ICO encoder, so the
+	// existing multi-size ICO (16/32/48) is reused for that path.
+	const ico = join(ROOT, 'src', 'app', 'icon.ico');
+	if (existsSync(ico)) {
+		writeFileSync(join(PUBLIC, 'favicon.ico'), readFileSync(ico));
+		console.log(`    16/32/48 -> favicon.ico  ${kb(statSync(ico).size)} KB`);
+	}
+}
+
+async function buildSocialCard() {
+	const src = join(STATIC, 'hero.jpg');
+	if (!existsSync(src)) {
+		console.warn('  SKIP social card (missing): hero.jpg');
+		return;
+	}
+
+	const W = 1200;
+	const H = 630;
+
+	const base = await sharp(src)
+		.resize(W, H, { fit: 'cover', position: sharp.strategy.attention })
+		.toBuffer();
+
+	// Same scrim the hero uses, so the card and the page look related.
+	const scrim = Buffer.from(
+		`<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
+			<defs>
+				<linearGradient id="s" x1="0" y1="0" x2="0" y2="1">
+					<stop offset="0%" stop-color="#14211c" stop-opacity="0.32"/>
+					<stop offset="55%" stop-color="#14211c" stop-opacity="0.42"/>
+					<stop offset="100%" stop-color="#14211c" stop-opacity="0.82"/>
+				</linearGradient>
+			</defs>
+			<rect width="${W}" height="${H}" fill="url(#s)"/>
+		</svg>`,
+	);
+
+	const crest = await sharp(join(STATIC, CREST), { density: 600 })
+		.resize({ height: 150 })
+		.toBuffer();
+
+	const buf = await sharp(base)
+		.composite([
+			{ input: scrim, top: 0, left: 0 },
+			{ input: crest, top: H - 150 - 56, left: 72 },
+		])
+		.jpeg({ quality: 82, progressive: true, mozjpeg: true })
+		.toBuffer();
+
+	writeFileSync(join(PUBLIC, 'og.jpg'), buf);
+	console.log('');
+	console.log('  Social card');
+	console.log(`    ${W}x${H} -> og.jpg  ${kb(buf.length)} KB`);
+}
+
 async function optimize() {
 	mkdirSync(OUT, { recursive: true });
 	let before = 0;
@@ -175,6 +272,8 @@ async function optimize() {
 	}
 
 	await optimizeSvgAssets();
+	await buildIcons();
+	await buildSocialCard();
 
 	console.log(
 		`\n  Originals kept in place. Derivatives total ${kb(after)} KB (largest set) vs ${kb(before)} KB of originals.\n`,
