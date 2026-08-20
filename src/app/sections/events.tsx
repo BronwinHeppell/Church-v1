@@ -53,7 +53,7 @@ const EventRow = ({ event, index }: { event: EventInterface; index: number }) =>
 				 * used to disagree (grid at sm, order at md), which squeezed the title
 				 * and description into the 8rem image column on tablet portrait.
 				 */}
-				<article className="grid gap-6 py-12 lg:grid-cols-[5rem_minmax(0,1fr)_14rem] lg:gap-8 lg:py-14">
+				<article className="grid gap-6 py-10 lg:grid-cols-[5rem_minmax(0,1fr)_14rem] lg:gap-8 lg:py-12">
 					<div className="order-1 flex items-baseline gap-2 lg:flex-col lg:items-start lg:gap-0">
 						<time
 							dateTime={event.iso}
@@ -132,7 +132,7 @@ const EventRow = ({ event, index }: { event: EventInterface; index: number }) =>
 
 const EventSkeleton = () => (
 	<li className="border-line border-t" aria-hidden>
-		<div className="grid gap-6 py-12 lg:grid-cols-[5rem_minmax(0,1fr)_14rem] lg:gap-8 lg:py-14">
+		<div className="grid gap-6 py-10 lg:grid-cols-[5rem_minmax(0,1fr)_14rem] lg:gap-8 lg:py-12">
 			<div className="bg-line/70 rounded-frame h-12 w-20" />
 			<div className="space-y-3">
 				<div className="bg-line/70 rounded-frame h-8 w-3/5" />
@@ -232,7 +232,7 @@ const Events = () => {
 
 	return (
 		<section id="diary">
-			<div className="shell px-5 py-28 md:px-10 md:py-40">
+			<div className="shell px-5 py-20 md:px-10 md:py-32">
 				<div className="grid gap-6 lg:grid-cols-[9rem_minmax(0,1fr)] lg:gap-16">
 					<Rail number="04" label="Diary" />
 
@@ -247,7 +247,7 @@ const Events = () => {
 							]}
 						/>
 
-						<ul className="border-line mt-16 border-b">
+						<ul className="border-line mt-10 border-b">
 							{state === 'loading' && (
 								<>
 									<EventSkeleton />

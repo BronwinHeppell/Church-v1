@@ -17,7 +17,7 @@ const Footer = () => {
 		<footer id="contact" className="bg-footer text-footer-ink">
 			<h2 className="sr-only">Contact and visiting information</h2>
 
-			<div className="shell px-5 py-24 md:px-10 md:py-28">
+			<div className="shell px-5 py-16 md:px-10 md:py-20">
 				<Reveal kind="fade">
 					<div className="grid gap-14 md:grid-cols-[1fr_1fr_1.1fr] md:gap-12">
 						<div>

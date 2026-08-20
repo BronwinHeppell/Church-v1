@@ -14,12 +14,12 @@ const AboutUs = () => {
 	return (
 		<section id="belonging" className="border-line border-b">
 			<div className="grid lg:grid-cols-2">
-				<div className="flex items-center px-5 py-28 md:px-10 md:py-40 lg:pr-16 lg:pl-[calc(max(0px,100%_-_37.5rem)_+_2.5rem)]">
+				<div className="flex items-center px-5 py-20 md:px-10 md:py-32 lg:pr-16 lg:pl-[calc(max(0px,100%_-_37.5rem)_+_2.5rem)]">
 					<div>
 						<Rail number="03" label="Belonging" className="md:static" />
 
 						<Lines
-							className="font-display mt-8 max-w-[20ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
+							className="font-display mt-6 max-w-[20ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
 							lines={[
 								'Join us for a',
 								<React.Fragment key="aboutDesc">
@@ -29,7 +29,7 @@ const AboutUs = () => {
 						/>
 
 						<Reveal kind="fade" delay={0.2}>
-							<p className="text-ink mt-8 max-w-[46ch] text-[1.0625rem] leading-relaxed">
+							<p className="text-ink mt-6 max-w-[46ch] text-[1.0625rem] leading-relaxed">
 								Joining Corpus Christi Church brings a multitude of benefits, both in terms of
 								community and spirituality.
 							</p>
