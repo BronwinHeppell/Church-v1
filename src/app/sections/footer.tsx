@@ -1,105 +1,123 @@
-'use client';
-import Image from 'next/image';
-import Map from '@/shared/components/map';
-import { merriweather } from '@/shared/core/fonts';
 import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
+import { Copyable } from '@/shared/components/copyable';
+import MapLazy from '@/shared/components/map-lazy';
+import { PewLeafletFooterLink } from '@/shared/components/pew-leaflet';
+import { Reveal } from '@/shared/components/reveal';
+import { MAPS_URL, PARISH, SERVICE_TIMES } from '@/shared/core/parish';
 import { prefix } from '@/shared/core/prefix';
 
-const ContactDetails = () => {
-	const showInMapClicked = () => {
-		window.open(
-			'https://www.google.com/maps/place/Corpus+Christi+Anglican+Church/@-25.7961862,28.2931054,17z/data=!3m1!4b1!4m6!3m5!1s0x1e955ffb3657c89b:0x84e228c1cd662421!8m2!3d-25.7961862!4d28.2956857!16s%2Fg%2F11cs18f00p?entry=ttu',
-		);
-	};
-
-	return (
-		<div className="flex w-full flex-col space-y-2 p-4">
-			<div>
-				<p className={`${merriweather.className}`}>Address:</p>
-				<p
-					onClick={() => showInMapClicked()}
-					className="transform cursor-pointer rounded-lg transition duration-200 ease-out hover:scale-[110%]"
-				>
-					482 De Bron Rd, Garsfontein, Pretoria, 0042
-				</p>
-			</div>
-			<div>
-				<p className={`${merriweather.className}`}>Phone: </p>
-				<p
-					onClick={() => window.open('tel:0129935161')}
-					className="transform cursor-pointer rounded-lg transition duration-200 ease-out hover:scale-[110%]"
-				>
-					(012) 993 5161
-				</p>
-			</div>
-			<div>
-				<p className={`${merriweather.className}`}>Email:</p>
-				<a href="mailto:garsfontein.acsa@gmail.com" target="_blank">
-					<button className="transform cursor-pointer rounded-lg transition duration-200 ease-out hover:scale-[110%]">
-						garsfontein.acsa@gmail.com
-					</button>
-				</a>
-			</div>
-		</div>
-	);
-};
-
-const Socials = () => {
-	return (
-		<div className="flex w-full flex-col items-center justify-center text-center">
-			<div className="flex flex-col items-center">
-				<Image
-					src={`${prefix}/static/logo/logo_small.svg`}
-					alt="Small Logo"
-					className=""
-					width={150}
-					height={150}
-				/>
-				<p>Join us for worship every Sunday at Corpus Christi</p>
-				{/* <div className="flex justify-center">
-					<Link href="">
-						<Image
-							src={`${prefix}/static/icons/instagram.svg`}
-							alt="Instagram Image"
-							width={20}
-							height={0}
-							className="m-3 transform cursor-pointer object-contain transition duration-200 ease-out hover:scale-110"
-						/>
-					</Link>
-					<Link href="">
-						<Image
-							src={`${prefix}/static/icons/facebook.svg`}
-							alt="Facebook Image"
-							width={20}
-							height={0}
-							className="m-3 transform cursor-pointer object-contain transition duration-200 ease-out hover:scale-110"
-						/>
-					</Link>
-					<Link href="">
-						<Image
-							src={`${prefix}/static/icons/whatsapp.svg`}
-							alt="Whatsapp Image"
-							width={20}
-							height={0}
-							className="m-3 transform cursor-pointer object-contain transition duration-200 ease-out hover:scale-110"
-						/>
-					</Link>
-				</div> */}
-			</div>
-		</div>
-	);
-};
+const labelClass = 'font-ui text-footer-ink text-xs tracking-[0.14em] uppercase';
+const valueClass =
+	'text-footer-muted ease-fluid transition-colors duration-500 hover:text-footer-ink';
 
 const Footer = () => {
+	const year = new Date().getFullYear();
+
 	return (
-		<footer id="Footer" className="bg-[#2B2B2B] p-4 text-center text-white">
-			<div className="container flex flex-col items-center justify-center gap-4 sm:flex-row sm:justify-evenly">
-				<ContactDetails />
-				<Socials />
-				<Map />
+		<footer id="contact" className="bg-footer text-footer-ink">
+			<h2 className="sr-only">Contact and visiting information</h2>
+
+			<div className="shell px-5 py-16 md:px-10 md:py-20">
+				<Reveal kind="fade">
+					<div className="grid gap-14 md:grid-cols-[1fr_1fr_1.1fr] md:gap-12">
+						<div>
+							{/* eslint-disable-next-line @next/next/no-img-element */}
+							<img
+								src={`${prefix}/static/opt/crest-320.webp`}
+								alt="Corpus Christi Anglican Church"
+								width={150}
+								height={155}
+								loading="lazy"
+								decoding="async"
+								className="w-[104px]"
+							/>
+							<p className="font-display mt-6 max-w-[20ch] text-[clamp(1.75rem,3vw,2.5rem)] leading-[1.08] tracking-[-0.02em]">
+								Join us for worship every <em className="font-display italic">Sunday</em>.
+							</p>
+							<Link
+								href="/static/pdf/Banking_Details.pdf"
+								target="_blank"
+								className="font-ui ease-fluid mt-7 inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-2.5 text-xs tracking-[0.1em] uppercase transition-colors duration-500 hover:border-white/60 hover:bg-white/10"
+							>
+								Banking details
+								<ArrowUpRight strokeWidth={1.5} className="size-3.5" aria-hidden />
+							</Link>
+
+							{/* A second, plainer route to the leaflet, so a visitor who only wants
+							    this week's PDF does not have to find the Worship section first. */}
+							<PewLeafletFooterLink
+								className={`rule-link mt-5 block text-[0.9375rem] ${valueClass}`}
+							/>
+						</div>
+
+						<div className="space-y-8 text-[0.9375rem]">
+							<div>
+								<h3 className={labelClass}>Services</h3>
+								<p className={`numerals mt-3 ${valueClass}`}>
+									Sundays {SERVICE_TIMES[0]} and {SERVICE_TIMES[1]}
+								</p>
+							</div>
+
+							<div>
+								<h3 className={labelClass}>Address</h3>
+								<a
+									href={MAPS_URL}
+									target="_blank"
+									rel="noreferrer"
+									className={`rule-link mt-3 inline-block ${valueClass}`}
+								>
+									{PARISH.street}, {PARISH.suburb}, {PARISH.city}, {PARISH.postalCode}
+								</a>
+							</div>
+
+							<div>
+								<h3 className={labelClass}>Phone</h3>
+								<div className="mt-3 flex items-center gap-1">
+									<a href={PARISH.phoneHref} className={`rule-link numerals ${valueClass}`}>
+										{PARISH.phone}
+									</a>
+									<Copyable
+										value={PARISH.phone}
+										label="phone number"
+										className="text-footer-muted"
+									/>
+								</div>
+							</div>
+
+							<div>
+								<h3 className={labelClass}>Email</h3>
+								<div className="mt-3 flex items-center gap-1">
+									<a
+										href={`mailto:${PARISH.email}`}
+										className={`rule-link break-words ${valueClass}`}
+									>
+										{PARISH.email}
+									</a>
+									<Copyable
+										value={PARISH.email}
+										label="email address"
+										className="text-footer-muted"
+									/>
+								</div>
+							</div>
+						</div>
+
+						<div>
+							<h3 className={`${labelClass} mb-4`}>Find us</h3>
+							<MapLazy />
+						</div>
+					</div>
+				</Reveal>
 			</div>
-			<hr className="my-4" />
-			<p className="text-center sm:text-end">&copy; 2024 Corpus Christi Anglican Church </p>
+
+			<div className="border-t border-white/10">
+				<div className="shell px-5 py-6 md:px-10">
+					<p className="text-footer-muted numerals text-center text-sm md:text-end">
+						&copy; {year} {PARISH.name}
+					</p>
+				</div>
+			</div>
 		</footer>
 	);
 };

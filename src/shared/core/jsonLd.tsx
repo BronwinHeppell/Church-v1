@@ -1,24 +1,75 @@
+import { PARISH, MAPS_URL, SERVICE_TIMES } from './parish';
+
+const CHURCH_ID = `${PARISH.url}/#church`;
+const SITE_ID = `${PARISH.url}/#website`;
+
+/**
+ * One @graph rather than a lone Church node, so the site and the organisation
+ * are separate entities that reference each other. That is what lets a search
+ * engine attribute the site to the parish instead of guessing.
+ */
 export const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "https://www.corpus-christi-garsfontein.org"
-    },
-    "headline": "Corpus Christi Anglican Church | Worship in Garsfontein, Pretoria",
-    "image": "https://www.corpus-christi-garsfontein.org/static/hero.jpg",
-    "author": {
-        "@type": "Organization",
-        "name": "Corpus Christi Angilican Church"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "Creative Code Co.",
-        "logo": {
-            "@type": "ImageObject",
-            "url": ""
-        }
-    },
-    "datePublished": "2024-10-15T12:05:11+0200",
-    "dateModified": "2024-10-15T12:05:11+0200"
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'WebSite',
+			'@id': SITE_ID,
+			url: `${PARISH.url}/`,
+			name: PARISH.name,
+			inLanguage: 'en-ZA',
+			publisher: { '@id': CHURCH_ID },
+		},
+		{
+			'@type': 'Church',
+			'@id': CHURCH_ID,
+			name: PARISH.name,
+			alternateName: 'Corpus Christi Garsfontein',
+			url: `${PARISH.url}/`,
+			mainEntityOfPage: { '@id': SITE_ID },
+			image: `${PARISH.url}/og.jpg`,
+			logo: `${PARISH.url}/icon-512.png`,
+			telephone: PARISH.phone,
+			email: PARISH.email,
+			hasMap: MAPS_URL,
+			address: {
+				'@type': 'PostalAddress',
+				streetAddress: PARISH.street,
+				addressLocality: PARISH.suburb,
+				addressRegion: PARISH.city,
+				postalCode: PARISH.postalCode,
+				addressCountry: PARISH.country,
+			},
+			geo: {
+				'@type': 'GeoCoordinates',
+				latitude: PARISH.lat,
+				longitude: PARISH.lng,
+			},
+			areaServed: {
+				'@type': 'AdministrativeArea',
+				name: `${PARISH.suburb}, ${PARISH.city}`,
+			},
+			// Each service is a recurring Sunday event in its own right, which
+			// describes the parish far better than opening hours alone.
+			event: SERVICE_TIMES.map((time) => ({
+				'@type': 'Event',
+				name: `Sunday Service, ${time}`,
+				eventSchedule: {
+					'@type': 'Schedule',
+					repeatFrequency: 'P1W',
+					byDay: 'https://schema.org/Sunday',
+					startTime: time,
+					scheduleTimezone: 'Africa/Johannesburg',
+				},
+				location: { '@id': CHURCH_ID },
+				organizer: { '@id': CHURCH_ID },
+				eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+				isAccessibleForFree: true,
+			})),
+			openingHoursSpecification: SERVICE_TIMES.map((opens) => ({
+				'@type': 'OpeningHoursSpecification',
+				dayOfWeek: 'https://schema.org/Sunday',
+				opens,
+			})),
+		},
+	],
 };
