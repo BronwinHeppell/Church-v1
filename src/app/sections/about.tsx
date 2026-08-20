@@ -1,32 +1,35 @@
-import { SectionTitle } from '@/shared/components/heading';
+import { Em, Eyebrow, SectionTitle } from '@/shared/components/heading';
 import { Reveal } from '@/shared/components/reveal';
 import { prefix } from '@/shared/core/prefix';
 
 const AboutUs = () => {
 	return (
-		<section id="AboutUs">
-			<div className="shell px-5 py-20 md:px-10 md:py-24">
-				<div className="measure grid items-center gap-10 md:grid-cols-2 md:gap-14">
-					<Reveal>
-						<div className="rounded-base card-lift overflow-hidden">
+		<section id="about" className="bg-raised border-line border-y">
+			<div className="shell px-5 py-24 md:px-10 md:py-32">
+				{/* Mirrors the mission split and inverts its weighting, so the two
+				    two-column sections do not read as the same block twice. */}
+				<div className="grid items-center gap-12 md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] md:gap-16">
+					<Reveal kind="veil" className="rounded-frame overflow-hidden">
+						<div className="photo aspect-4/3 w-full">
 							{/* eslint-disable-next-line @next/next/no-img-element */}
 							<img
-								src={`${prefix}/static/opt/community-640.webp`}
-								srcSet={`${prefix}/static/opt/community-640.webp 640w, ${prefix}/static/opt/community-1024.webp 1024w`}
-								sizes="(max-width: 768px) 100vw, 430px"
+								src={`${prefix}/static/opt/community-1024.webp`}
+								srcSet={`${prefix}/static/opt/community-640.webp 640w, ${prefix}/static/opt/community-1024.webp 1024w, ${prefix}/static/opt/community-1400.webp 1400w`}
+								sizes="(max-width: 768px) 100vw, 640px"
 								alt="Members of the parish together at a Corpus Christi gathering"
 								loading="lazy"
 								decoding="async"
-								className="aspect-4/3 w-full object-cover"
+								className="h-full w-full object-cover"
 							/>
 						</div>
 					</Reveal>
 
 					<Reveal delay={0.1}>
-						<SectionTitle className="max-w-[20ch]">
-							Join Us for a Life-Changing Experience
+						<Eyebrow>Belonging</Eyebrow>
+						<SectionTitle className="mt-4 max-w-[20ch]">
+							Join us for a <Em>life-changing</Em> experience
 						</SectionTitle>
-						<p className="text-ink mt-5 text-[1.0625rem] leading-relaxed font-semibold">
+						<p className="text-ink mt-6 text-[1.0625rem] leading-relaxed">
 							Joining Corpus Christi Church brings a multitude of benefits, both in terms of
 							community and spirituality.
 						</p>

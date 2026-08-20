@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { inter, merriweather } from '@/shared/core/fonts';
+import { inter, newsreader } from '@/shared/core/fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -63,7 +63,7 @@ export const viewport: Viewport = {
 	initialScale: 1,
 
 	colorScheme: 'light',
-	themeColor: '#ffffff',
+	themeColor: '#fbfaf7',
 };
 
 export default function RootLayout({
@@ -72,7 +72,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" className={`${merriweather.variable} ${inter.variable}`}>
+		<html lang="en" className={`${newsreader.variable} ${inter.variable}`}>
 			<head>
 				<link rel="icon" href="/icon.ico" sizes="any" />
 			</head>

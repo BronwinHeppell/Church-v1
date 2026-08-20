@@ -1,21 +1,29 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 import { Wordmark } from './wordmark';
+import { ScrollProgress } from './scroll-progress';
 
 const LINKS = [
 	{ label: 'Services', href: '#services' },
-	{ label: 'About us', href: '#AboutUs' },
-	{ label: 'Events', href: '#Events' },
+	{ label: 'About', href: '#about' },
+	{ label: 'Events', href: '#events' },
 	{ label: 'FAQ', href: '#faq' },
-	{ label: 'Contact us', href: '#Footer' },
+	{ label: 'Contact', href: '#contact' },
 ] as const;
 
+const SECTION_IDS = ['home', 'services', 'mission', 'about', 'events', 'faq', 'contact'];
+
 const linkClass =
-	'font-ui ease-fluid text-xs tracking-[0.06em] uppercase transition-colors duration-300 hover:text-ink';
+	'font-ui ease-fluid relative py-2 text-xs tracking-[0.1em] uppercase transition-colors duration-500';
+
+const drawerItem = {
+	hidden: { opacity: 0, x: 18 },
+	shown: { opacity: 1, x: 0 },
+};
 
 function useActiveSection(ids: readonly string[]) {
 	const [active, setActive] = useState<string | null>(null);
@@ -47,40 +55,89 @@ function useActiveSection(ids: readonly string[]) {
 	return active;
 }
 
-const SECTION_IDS = ['home', 'services', 'MissionStatement', 'AboutUs', 'Events', 'faq', 'Footer'];
+/** Header condenses as soon as you leave the top of the page. */
+function useCondensed() {
+	const [condensed, setCondensed] = useState(false);
 
-const donateClass =
-	'font-ui ease-fluid text-xs tracking-[0.06em] uppercase text-ink transition-opacity duration-300 hover:opacity-60';
+	useEffect(() => {
+		const onScroll = () => setCondensed(window.scrollY > 24);
+		onScroll();
+		window.addEventListener('scroll', onScroll, { passive: true });
+		return () => window.removeEventListener('scroll', onScroll);
+	}, []);
+
+	return condensed;
+}
 
 const Navbar = () => {
 	const [open, setOpen] = useState(false);
 	const reduce = useReducedMotion();
 	const active = useActiveSection(SECTION_IDS);
+	const condensed = useCondensed();
 
+	const triggerRef = useRef<HTMLButtonElement>(null);
+	const panelRef = useRef<HTMLDivElement>(null);
+
+	const close = useCallback(() => {
+		setOpen(false);
+		triggerRef.current?.focus();
+	}, []);
+
+	// The drawer behaves like a dialog: scroll locked, Escape closes, Tab is
+	// trapped inside the panel, and focus returns to the button that opened it.
 	useEffect(() => {
 		if (!open) return;
+
+		const panel = panelRef.current;
+		panel?.querySelector<HTMLElement>('a, button')?.focus();
+
 		const onKey = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') setOpen(false);
+			if (e.key === 'Escape') {
+				close();
+				return;
+			}
+			if (e.key !== 'Tab' || !panel) return;
+
+			const focusables = panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])');
+			if (!focusables.length) return;
+
+			const first = focusables[0];
+			const last = focusables[focusables.length - 1];
+
+			if (e.shiftKey && document.activeElement === first) {
+				e.preventDefault();
+				last.focus();
+			} else if (!e.shiftKey && document.activeElement === last) {
+				e.preventDefault();
+				first.focus();
+			}
 		};
+
 		document.addEventListener('keydown', onKey);
 		document.body.style.overflow = 'hidden';
 		return () => {
 			document.removeEventListener('keydown', onKey);
 			document.body.style.overflow = '';
 		};
-	}, [open]);
+	}, [open, close]);
 
 	return (
-		<header className="bg-paper/90 border-line sticky top-0 z-50 border-b backdrop-blur-sm">
+		<header className="bg-paper/85 border-line sticky top-0 z-50 border-b backdrop-blur-md">
 			<nav
 				aria-label="Main"
-				className="mx-auto flex h-[72px] w-full max-w-7xl items-center justify-between px-5 md:px-10"
+				data-condensed={condensed || undefined}
+				className="shell ease-fluid flex h-[88px] items-center justify-between px-5 transition-[height] duration-700 data-condensed:h-[64px] md:px-10"
 			>
-				<Link href="#home" aria-label="Corpus Christi Anglican Church, back to top">
-					<Wordmark width={158} className="text-ink" />
+				<Link
+					href="#home"
+					aria-label="Corpus Christi Anglican Church, back to top"
+					className="ease-fluid origin-left transition-transform duration-700"
+					style={{ transform: condensed ? 'scale(0.84)' : 'scale(1)' }}
+				>
+					<Wordmark width={168} className="text-ink" />
 				</Link>
 
-				<div className="hidden items-center gap-7 lg:flex">
+				<div className="hidden items-center gap-8 lg:flex">
 					{LINKS.map((l) => {
 						const current = active === l.href.slice(1);
 						return (
@@ -88,18 +145,31 @@ const Navbar = () => {
 								key={l.href}
 								href={l.href}
 								aria-current={current ? 'true' : undefined}
-								className={`${linkClass} ${current ? 'text-ink' : 'text-muted'}`}
+								className={`${linkClass} ${current ? 'text-ink' : 'text-muted hover:text-ink'}`}
 							>
 								{l.label}
+								{current && (
+									<motion.span
+										layoutId="nav-active"
+										aria-hidden
+										className="bg-accent absolute inset-x-0 -bottom-px h-px"
+										transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+									/>
+								)}
 							</Link>
 						);
 					})}
-					<Link href="/static/pdf/Banking_Details.pdf" target="_blank" className={donateClass}>
-						Donate
+					<Link
+						href="/static/pdf/Banking_Details.pdf"
+						target="_blank"
+						className="font-ui bg-accent text-accent-ink ease-fluid rounded-base px-4 py-2.5 text-xs tracking-[0.1em] uppercase transition-transform duration-500 hover:-translate-y-px active:scale-[0.98]"
+					>
+						Give
 					</Link>
 				</div>
 
 				<button
+					ref={triggerRef}
 					type="button"
 					onClick={() => setOpen(true)}
 					aria-label="Open menu"
@@ -110,6 +180,8 @@ const Navbar = () => {
 				</button>
 			</nav>
 
+			<ScrollProgress />
+
 			<AnimatePresence>
 				{open && (
 					<motion.div
@@ -117,26 +189,29 @@ const Navbar = () => {
 						initial={reduce ? false : { opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={reduce ? undefined : { opacity: 0 }}
-						transition={{ duration: 0.2 }}
+						transition={{ duration: 0.25 }}
 					>
-						<button
-							type="button"
-							aria-label="Close menu"
-							onClick={() => setOpen(false)}
-							className="absolute inset-0 bg-[rgb(var(--scrim)/0.5)]"
+						<div
+							aria-hidden
+							onClick={close}
+							className="absolute inset-0 bg-[rgb(var(--scrim)/0.55)] backdrop-blur-[2px]"
 						/>
 						<motion.div
+							ref={panelRef}
+							role="dialog"
+							aria-modal="true"
+							aria-label="Site menu"
 							className="bg-paper border-line absolute inset-y-0 right-0 flex w-full max-w-sm flex-col border-l px-6 py-5"
 							initial={reduce ? false : { x: '100%' }}
 							animate={{ x: 0 }}
 							exit={reduce ? undefined : { x: '100%' }}
-							transition={{ type: 'spring', stiffness: 320, damping: 34 }}
+							transition={{ type: 'spring', stiffness: 300, damping: 32 }}
 						>
 							<div className="flex items-center justify-between">
-								<Wordmark width={140} className="text-ink" />
+								<Wordmark width={148} className="text-ink" />
 								<button
 									type="button"
-									onClick={() => setOpen(false)}
+									onClick={close}
 									aria-label="Close menu"
 									className="text-ink rounded-base -mr-2 p-2"
 								>
@@ -144,26 +219,44 @@ const Navbar = () => {
 								</button>
 							</div>
 
-							<div className="mt-10 flex flex-col">
+							<motion.div
+								className="mt-12 flex flex-col"
+								initial="hidden"
+								animate="shown"
+								variants={{
+									hidden: {},
+									shown: { transition: { staggerChildren: 0.05, delayChildren: 0.12 } },
+								}}
+							>
 								{LINKS.map((l) => (
-									<Link
+									<motion.div
 										key={l.href}
-										href={l.href}
-										onClick={() => setOpen(false)}
-										className="font-display border-line text-ink border-b py-4 text-2xl"
+										variants={reduce ? undefined : drawerItem}
+										transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
 									>
-										{l.label}
-									</Link>
+										<Link
+											href={l.href}
+											onClick={close}
+											className="font-display border-line text-ink text-subtitle block border-b py-4"
+										>
+											{l.label}
+										</Link>
+									</motion.div>
 								))}
-								<Link
-									href="/static/pdf/Banking_Details.pdf"
-									target="_blank"
-									onClick={() => setOpen(false)}
-									className="font-display text-accent py-4 text-2xl"
+								<motion.div
+									variants={reduce ? undefined : drawerItem}
+									transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
 								>
-									Donate
-								</Link>
-							</div>
+									<Link
+										href="/static/pdf/Banking_Details.pdf"
+										target="_blank"
+										onClick={close}
+										className="font-display text-accent text-subtitle block py-4 italic"
+									>
+										Give
+									</Link>
+								</motion.div>
+							</motion.div>
 						</motion.div>
 					</motion.div>
 				)}

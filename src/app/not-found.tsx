@@ -17,10 +17,8 @@ export default function NotFound() {
 			</Link>
 
 			<div className="flex flex-1 flex-col justify-center py-16">
-				<p className="font-ui text-muted numerals text-sm">Error 404</p>
-				<h1 className="font-display mt-3 max-w-[22ch] text-4xl leading-[1.1] md:text-6xl">
-					We could not find that page
-				</h1>
+				<p className="eyebrow numerals">Error 404</p>
+				<h1 className="font-display text-display mt-4 max-w-[22ch]">We could not find that page</h1>
 				<p className="prose-body text-muted mt-6">
 					The page may have moved, or the link you followed may be out of date. Everything on the
 					site is reachable from the home page.
@@ -37,31 +35,33 @@ export default function NotFound() {
 
 				<div className="border-line mt-14 grid gap-6 border-t pt-8 sm:grid-cols-3">
 					<div>
-						<h2 className="font-ui text-muted text-[0.8125rem] font-medium">Sunday services</h2>
-						<p className="numerals text-ink font-ui mt-2 text-[0.9375rem]">07:00 and 09:00</p>
+						<h2 className="font-ui text-muted text-xs tracking-[0.14em] uppercase">
+							Sunday services
+						</h2>
+						<p className="numerals text-ink font-ui mt-3 text-[0.9375rem]">07:00 and 09:00</p>
 					</div>
 					<div>
-						<h2 className="font-ui text-muted text-[0.8125rem] font-medium">Contact</h2>
+						<h2 className="font-ui text-muted text-xs tracking-[0.14em] uppercase">Contact</h2>
 						<a
 							href={PARISH.phoneHref}
-							className="font-ui text-ink hover:text-accent ease-fluid mt-2 block text-[0.9375rem] transition-colors duration-300"
+							className="font-ui text-ink hover:text-accent ease-fluid mt-3 block text-[0.9375rem] transition-colors duration-500"
 						>
 							{PARISH.phone}
 						</a>
 						<a
 							href={`mailto:${PARISH.email}`}
-							className="font-ui text-ink hover:text-accent ease-fluid block text-[0.9375rem] break-words transition-colors duration-300"
+							className="font-ui text-ink hover:text-accent ease-fluid block text-[0.9375rem] break-words transition-colors duration-500"
 						>
 							{PARISH.email}
 						</a>
 					</div>
 					<div>
-						<h2 className="font-ui text-muted text-[0.8125rem] font-medium">Address</h2>
+						<h2 className="font-ui text-muted text-xs tracking-[0.14em] uppercase">Address</h2>
 						<a
 							href={MAPS_URL}
 							target="_blank"
 							rel="noreferrer"
-							className="font-ui text-ink hover:text-accent ease-fluid mt-2 block text-[0.9375rem] transition-colors duration-300"
+							className="font-ui text-ink hover:text-accent ease-fluid mt-3 block text-[0.9375rem] transition-colors duration-500"
 						>
 							{PARISH.street}, {PARISH.suburb}
 						</a>
