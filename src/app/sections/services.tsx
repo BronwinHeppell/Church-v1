@@ -11,7 +11,8 @@ type ServiceRow = {
 	stamp: string;
 	title: string;
 	detail: string;
-	img: string;
+	/** Square, attention-cropped, tone-matched index plate. */
+	plate: string;
 	alt: string;
 };
 
@@ -20,21 +21,21 @@ const ROWS: ServiceRow[] = [
 		stamp: '07:00',
 		title: 'Sunday Service',
 		detail: 'Our earlier Sunday morning service.',
-		img: 'service-early',
+		plate: 'plate-early',
 		alt: 'The congregation at the early Sunday morning service',
 	},
 	{
 		stamp: '09:00',
 		title: 'Sunday Service',
 		detail: 'Our later Sunday morning service.',
-		img: 'sunday-service',
+		plate: 'plate-service',
 		alt: 'A Sunday morning service in progress',
 	},
 	{
 		stamp: 'Sundays',
 		title: 'Kids Sunday School',
 		detail: 'For the children of the parish, every Sunday.',
-		img: 'sunday-school',
+		plate: 'plate-school',
 		alt: 'Children at Corpus Christi Sunday School',
 	},
 ];
@@ -67,26 +68,34 @@ const Services = () => {
 							<ul>
 								{ROWS.map((row) => (
 									<RevealItem key={row.stamp + row.title} as="li" className="border-line border-b">
-										<div className="grid items-center gap-6 py-6 lg:grid-cols-[8rem_minmax(0,1fr)_9rem] lg:gap-10 lg:py-8">
-											<p className="font-display numerals text-[clamp(2rem,3.4vw,2.75rem)] leading-none">
-												{row.stamp}
-											</p>
-
-											<div>
-												<h3 className="font-ui text-ink text-xs tracking-[0.14em] uppercase">
-													{row.title}
-												</h3>
-												<p className="text-muted mt-2.5 text-[0.9375rem] leading-relaxed">
-													{row.detail}
+										{/*
+										 * `lg:contents` collapses the type wrapper into the parent grid
+										 * on wide screens, so one structure serves both arrangements: a
+										 * stacked block beside a small plate on a phone, and three
+										 * aligned columns on a desktop.
+										 */}
+										<div className="grid grid-cols-[minmax(0,1fr)_5.5rem] items-center gap-5 py-6 sm:grid-cols-[minmax(0,1fr)_7rem] lg:grid-cols-[8rem_minmax(0,1fr)_11rem] lg:gap-10 lg:py-8">
+											<div className="lg:contents">
+												<p className="font-display numerals text-[clamp(2rem,3.4vw,2.75rem)] leading-none">
+													{row.stamp}
 												</p>
+
+												<div className="mt-3 lg:mt-0">
+													<h3 className="font-ui text-ink text-xs tracking-[0.14em] uppercase">
+														{row.title}
+													</h3>
+													<p className="text-muted mt-2.5 text-[0.9375rem] leading-relaxed">
+														{row.detail}
+													</p>
+												</div>
 											</div>
 
-											<div className="photo rounded-frame aspect-3/2 w-full lg:justify-self-end">
+											<div className="photo-plate rounded-frame aspect-square w-full lg:justify-self-end">
 												{/* eslint-disable-next-line @next/next/no-img-element */}
 												<img
-													src={`${opt}/${row.img}-640.webp`}
-													srcSet={`${opt}/${row.img}-640.webp 640w, ${opt}/${row.img}-960.webp 960w`}
-													sizes="(max-width: 1024px) 100vw, 144px"
+													src={`${opt}/${row.plate}-256.webp`}
+													srcSet={`${opt}/${row.plate}-256.webp 256w, ${opt}/${row.plate}-384.webp 384w`}
+													sizes="(max-width: 1024px) 7rem, 11rem"
 													alt={row.alt}
 													loading="lazy"
 													decoding="async"
