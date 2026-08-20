@@ -10,7 +10,7 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from '@/shared/components/accordion';
-import { SectionHeader } from '@/shared/components/heading';
+import { Lines, Rail } from '@/shared/components/editorial';
 import { Reveal } from '@/shared/components/reveal';
 import { downloadIcs } from '@/shared/core/ics';
 import { PARISH } from '@/shared/core/parish';
@@ -53,32 +53,32 @@ const EventRow = ({ event, index }: { event: EventInterface; index: number }) =>
 				 * used to disagree (grid at sm, order at md), which squeezed the title
 				 * and description into the 8rem image column on tablet portrait.
 				 */}
-				<article className="grid gap-6 py-12 md:grid-cols-[5rem_minmax(0,1fr)_14rem] md:gap-8 md:py-14">
-					<div className="order-1 flex items-baseline gap-2 md:flex-col md:items-start md:gap-0">
+				<article className="grid gap-6 py-12 lg:grid-cols-[5rem_minmax(0,1fr)_14rem] lg:gap-8 lg:py-14">
+					<div className="order-1 flex items-baseline gap-2 lg:flex-col lg:items-start lg:gap-0">
 						<time
 							dateTime={event.iso}
-							className="font-display numerals text-ink text-[2.75rem] leading-none md:text-[3.25rem]"
+							className="font-display numerals text-ink text-[2.75rem] leading-none lg:text-[3.25rem]"
 						>
 							{event.day}
 						</time>
-						<span className="font-ui text-muted text-xs tracking-[0.14em] uppercase md:mt-3">
+						<span className="font-ui text-muted text-xs tracking-[0.14em] uppercase lg:mt-3">
 							{event.month}
 						</span>
 					</div>
 
 					{event.imagePreview && (
-						<div className="photo rounded-frame order-2 aspect-3/2 w-full md:order-3 md:aspect-4/3">
+						<div className="photo rounded-frame order-2 aspect-3/2 w-full lg:order-3 lg:aspect-4/3">
 							<Image
 								src={event.imagePreview}
 								alt={event.title}
 								fill
-								sizes="(max-width: 768px) 100vw, 14rem"
+								sizes="(max-width: 1024px) 100vw, 14rem"
 								className="object-cover"
 							/>
 						</div>
 					)}
 
-					<div className="order-3 md:order-2">
+					<div className="order-3 lg:order-2">
 						<h3 className="font-display text-subtitle">{event.title}</h3>
 						<p className="font-ui text-muted numerals mt-3 text-[0.9375rem]">
 							{event.date}
@@ -132,7 +132,7 @@ const EventRow = ({ event, index }: { event: EventInterface; index: number }) =>
 
 const EventSkeleton = () => (
 	<li className="border-line border-t" aria-hidden>
-		<div className="grid gap-6 py-12 md:grid-cols-[5rem_minmax(0,1fr)_14rem] md:gap-8 md:py-14">
+		<div className="grid gap-6 py-12 lg:grid-cols-[5rem_minmax(0,1fr)_14rem] lg:gap-8 lg:py-14">
 			<div className="bg-line/70 rounded-frame h-12 w-20" />
 			<div className="space-y-3">
 				<div className="bg-line/70 rounded-frame h-8 w-3/5" />
@@ -140,7 +140,7 @@ const EventSkeleton = () => (
 				<div className="bg-line/70 rounded-frame h-4 w-full" />
 				<div className="bg-line/70 rounded-frame h-4 w-4/5" />
 			</div>
-			<div className="bg-line/70 rounded-frame relative aspect-3/2 w-full overflow-hidden md:aspect-4/3">
+			<div className="bg-line/70 rounded-frame relative aspect-3/2 w-full overflow-hidden lg:aspect-4/3">
 				<div
 					className="absolute inset-0 bg-gradient-to-r from-transparent via-[rgb(var(--scrim)/0.06)] to-transparent"
 					style={{ animation: 'cc-shimmer 1.6s cubic-bezier(0.32, 0.72, 0, 1) infinite' }}
@@ -231,73 +231,81 @@ const Events = () => {
 	}, []);
 
 	return (
-		<section id="events">
-			<div className="shell px-5 py-24 md:px-10 md:py-32">
-				<Reveal>
-					<SectionHeader
-						eyebrow="Diary"
-						title="Upcoming events"
-						sub="What is coming up in the life of the parish."
-					/>
-				</Reveal>
+		<section id="diary">
+			<div className="shell px-5 py-28 md:px-10 md:py-40">
+				<div className="grid gap-12 lg:grid-cols-[9rem_minmax(0,1fr)] lg:gap-16">
+					<Rail number="04" label="Diary" />
 
-				<ul className="border-line mt-16 border-b">
-					{state === 'loading' && (
-						<>
-							<EventSkeleton />
-							<EventSkeleton />
-							<EventSkeleton />
-						</>
-					)}
+					<div>
+						<Lines
+							className="font-display max-w-[24ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
+							lines={[
+								'What is coming up',
+								<>
+									in the life of the <em className="font-display italic">parish</em>
+								</>,
+							]}
+						/>
 
-					{state === 'ready' &&
-						events.map((event, i) => <EventRow key={event.id} event={event} index={i} />)}
-				</ul>
+						<ul className="border-line mt-16 border-b">
+							{state === 'loading' && (
+								<>
+									<EventSkeleton />
+									<EventSkeleton />
+									<EventSkeleton />
+								</>
+							)}
 
-				{state === 'loading' && (
-					<p className="sr-only" role="status">
-						Loading events
-					</p>
-				)}
+							{state === 'ready' &&
+								events.map((event, i) => <EventRow key={event.id} event={event} index={i} />)}
+						</ul>
 
-				{state === 'ready' && events.length === 0 && (
-					<Reveal>
-						<div className="border-line rounded-frame -mt-px border p-10 text-center md:p-14">
-							<h3 className="font-display text-subtitle">Nothing on the calendar just yet</h3>
-							<p className="prose-body text-muted mx-auto mt-4 text-base">
-								There are no events listed at the moment. Sunday services carry on as usual, and
-								anything new will appear here first.
+						{state === 'loading' && (
+							<p className="sr-only" role="status">
+								Loading events
 							</p>
-							<Link
-								href="#services"
-								className="font-ui text-accent rule-link mt-7 inline-block text-[0.9375rem]"
-							>
-								See Sunday service times
-							</Link>
-						</div>
-					</Reveal>
-				)}
+						)}
 
-				{state === 'error' && (
-					<div
-						role="alert"
-						className="border-line rounded-frame -mt-px border p-10 text-center md:p-14"
-					>
-						<h3 className="font-display text-subtitle">We could not load the events list</h3>
-						<p className="prose-body text-muted mx-auto mt-4 text-base">
-							Something went wrong fetching the calendar. Please try again shortly, or contact the
-							parish office and we will gladly tell you what is coming up.
-						</p>
-						<div className="font-ui mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[0.9375rem]">
-							<a href={PARISH.phoneHref} className="text-accent rule-link numerals">
-								{PARISH.phone}
-							</a>
-							<a href={`mailto:${PARISH.email}`} className="text-accent rule-link">
-								{PARISH.email}
-							</a>
-						</div>
+						{state === 'ready' && events.length === 0 && (
+							<Reveal>
+								<div className="border-line rounded-frame -mt-px border p-10 text-center md:p-14">
+									<h3 className="font-display text-subtitle">Nothing on the calendar just yet</h3>
+									<p className="prose-body text-muted mx-auto mt-4 text-base">
+										There are no events listed at the moment. Sunday services carry on as usual, and
+										anything new will appear here first.
+									</p>
+									<Link
+										href="#worship"
+										className="font-ui text-accent rule-link mt-7 inline-block text-[0.9375rem]"
+									>
+										See Sunday service times
+									</Link>
+								</div>
+							</Reveal>
+						)}
+
+						{state === 'error' && (
+							<div
+								role="alert"
+								className="border-line rounded-frame -mt-px border p-10 text-center md:p-14"
+							>
+								<h3 className="font-display text-subtitle">We could not load the events list</h3>
+								<p className="prose-body text-muted mx-auto mt-4 text-base">
+									Something went wrong fetching the calendar. Please try again shortly, or contact
+									the parish office and we will gladly tell you what is coming up.
+								</p>
+								<div className="font-ui mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[0.9375rem]">
+									<a href={PARISH.phoneHref} className="text-accent rule-link numerals">
+										{PARISH.phone}
+									</a>
+									<a href={`mailto:${PARISH.email}`} className="text-accent rule-link">
+										{PARISH.email}
+									</a>
+								</div>
+							</div>
+						)}
 					</div>
-				)}
+				</div>
 			</div>
 		</section>
 	);

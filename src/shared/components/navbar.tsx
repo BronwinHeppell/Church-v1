@@ -8,17 +8,14 @@ import { Wordmark } from './wordmark';
 import { ScrollProgress } from './scroll-progress';
 
 const LINKS = [
-	{ label: 'Services', href: '#services' },
-	{ label: 'About', href: '#about' },
-	{ label: 'Events', href: '#events' },
-	{ label: 'FAQ', href: '#faq' },
+	{ label: 'Worship', href: '#worship' },
+	{ label: 'About', href: '#belonging' },
+	{ label: 'Events', href: '#diary' },
+	{ label: 'FAQ', href: '#questions' },
 	{ label: 'Contact', href: '#contact' },
 ] as const;
 
-const SECTION_IDS = ['home', 'services', 'mission', 'about', 'events', 'faq', 'contact'];
-
-const linkClass =
-	'font-ui ease-fluid relative py-2 text-xs tracking-[0.1em] uppercase transition-colors duration-500';
+const SECTION_IDS = ['home', 'worship', 'mission', 'belonging', 'diary', 'questions', 'contact'];
 
 const drawerItem = {
 	hidden: { opacity: 0, x: 18 },
@@ -55,25 +52,32 @@ function useActiveSection(ids: readonly string[]) {
 	return active;
 }
 
-/** Header condenses as soon as you leave the top of the page. */
-function useCondensed() {
-	const [condensed, setCondensed] = useState(false);
+/**
+ * The header rides over the hero photograph in white, then lands on paper as
+ * soon as the hero is behind you.
+ */
+function useLanded() {
+	const [landed, setLanded] = useState(false);
 
 	useEffect(() => {
-		const onScroll = () => setCondensed(window.scrollY > 24);
+		const onScroll = () => setLanded(window.scrollY > window.innerHeight - 120);
 		onScroll();
 		window.addEventListener('scroll', onScroll, { passive: true });
-		return () => window.removeEventListener('scroll', onScroll);
+		window.addEventListener('resize', onScroll);
+		return () => {
+			window.removeEventListener('scroll', onScroll);
+			window.removeEventListener('resize', onScroll);
+		};
 	}, []);
 
-	return condensed;
+	return landed;
 }
 
 const Navbar = () => {
 	const [open, setOpen] = useState(false);
 	const reduce = useReducedMotion();
 	const active = useActiveSection(SECTION_IDS);
-	const condensed = useCondensed();
+	const landed = useLanded();
 
 	const triggerRef = useRef<HTMLButtonElement>(null);
 	const panelRef = useRef<HTMLDivElement>(null);
@@ -83,8 +87,6 @@ const Navbar = () => {
 		triggerRef.current?.focus();
 	}, []);
 
-	// The drawer behaves like a dialog: scroll locked, Escape closes, Tab is
-	// trapped inside the panel, and focus returns to the button that opened it.
 	useEffect(() => {
 		if (!open) return;
 
@@ -122,37 +124,47 @@ const Navbar = () => {
 	}, [open, close]);
 
 	return (
-		<header className="bg-paper/85 border-line sticky top-0 z-50 border-b backdrop-blur-md">
+		<header
+			data-landed={landed || undefined}
+			className="ease-fluid data-landed:border-line data-landed:bg-paper/85 fixed top-0 right-0 left-0 z-50 border-b border-transparent transition-[background-color,border-color,backdrop-filter] duration-700 data-landed:backdrop-blur-md"
+		>
 			<nav
 				aria-label="Main"
-				data-condensed={condensed || undefined}
-				className="shell ease-fluid flex h-[88px] items-center justify-between px-5 transition-[height] duration-700 data-condensed:h-[64px] md:px-10"
+				className="shell ease-fluid flex h-[88px] items-center justify-between px-5 transition-[height] duration-700 data-landed:h-[64px] md:px-10"
+				data-landed={landed || undefined}
 			>
 				<Link
 					href="#home"
 					aria-label="Corpus Christi Anglican Church, back to top"
 					className="ease-fluid origin-left transition-transform duration-700"
-					style={{ transform: condensed ? 'scale(0.84)' : 'scale(1)' }}
+					style={{ transform: landed ? 'scale(0.84)' : 'scale(1)' }}
 				>
-					<Wordmark width={168} className="text-ink" />
+					<Wordmark width={168} className={landed ? 'text-ink' : 'text-on-image'} />
 				</Link>
 
 				<div className="hidden items-center gap-8 lg:flex">
 					{LINKS.map((l) => {
 						const current = active === l.href.slice(1);
+						const tone = landed
+							? current
+								? 'text-ink'
+								: 'text-muted hover:text-ink'
+							: current
+								? 'text-white'
+								: 'text-white/70 hover:text-white';
 						return (
 							<Link
 								key={l.href}
 								href={l.href}
 								aria-current={current ? 'true' : undefined}
-								className={`${linkClass} ${current ? 'text-ink' : 'text-muted hover:text-ink'}`}
+								className={`font-ui ease-fluid relative py-2 text-xs tracking-[0.1em] uppercase transition-colors duration-500 ${tone}`}
 							>
 								{l.label}
 								{current && (
 									<motion.span
 										layoutId="nav-active"
 										aria-hidden
-										className="bg-accent absolute inset-x-0 -bottom-px h-px"
+										className={`absolute inset-x-0 -bottom-px h-px ${landed ? 'bg-accent' : 'bg-white'}`}
 										transition={{ type: 'spring', stiffness: 380, damping: 32 }}
 									/>
 								)}
@@ -162,7 +174,11 @@ const Navbar = () => {
 					<Link
 						href="/static/pdf/Banking_Details.pdf"
 						target="_blank"
-						className="font-ui bg-accent text-accent-ink ease-fluid rounded-base px-4 py-2.5 text-xs tracking-[0.1em] uppercase transition-transform duration-500 hover:-translate-y-px active:scale-[0.98]"
+						className={`font-ui ease-fluid rounded-base border px-4 py-2.5 text-xs tracking-[0.1em] uppercase transition-colors duration-500 ${
+							landed
+								? 'bg-accent text-accent-ink hover:bg-accent-deep border-transparent'
+								: 'text-on-image border-white/45 hover:border-white/85 hover:bg-white/10'
+						}`}
 					>
 						Give
 					</Link>
@@ -174,13 +190,13 @@ const Navbar = () => {
 					onClick={() => setOpen(true)}
 					aria-label="Open menu"
 					aria-expanded={open}
-					className="text-ink rounded-base -mr-2 p-2 lg:hidden"
+					className={`rounded-base -mr-2 p-2 lg:hidden ${landed ? 'text-ink' : 'text-on-image'}`}
 				>
 					<Menu strokeWidth={1.5} className="size-6" />
 				</button>
 			</nav>
 
-			<ScrollProgress />
+			{landed && <ScrollProgress />}
 
 			<AnimatePresence>
 				{open && (
@@ -228,7 +244,7 @@ const Navbar = () => {
 									shown: { transition: { staggerChildren: 0.05, delayChildren: 0.12 } },
 								}}
 							>
-								{LINKS.map((l) => (
+								{LINKS.map((l, i) => (
 									<motion.div
 										key={l.href}
 										variants={reduce ? undefined : drawerItem}
@@ -237,8 +253,11 @@ const Navbar = () => {
 										<Link
 											href={l.href}
 											onClick={close}
-											className="font-display border-line text-ink text-subtitle block border-b py-4"
+											className="font-display border-line text-ink flex items-baseline gap-4 border-b py-4 text-[1.75rem] leading-none"
 										>
+											<span className="font-ui numerals text-muted text-[0.6875rem] tracking-[0.18em]">
+												{String(i + 1).padStart(2, '0')}
+											</span>
 											{l.label}
 										</Link>
 									</motion.div>
@@ -251,7 +270,7 @@ const Navbar = () => {
 										href="/static/pdf/Banking_Details.pdf"
 										target="_blank"
 										onClick={close}
-										className="font-display text-accent text-subtitle block py-4 italic"
+										className="font-display text-accent block py-4 text-[1.75rem] leading-none italic"
 									>
 										Give
 									</Link>

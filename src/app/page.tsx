@@ -3,6 +3,7 @@ import Navbar from '@/shared/components/navbar';
 import BackToTop from '@/shared/components/back-to-top';
 import Hero from './sections/hero';
 import Services from './sections/services';
+import Band from './sections/band';
 import MissionStatement from './sections/mission-statement';
 import AboutUs from './sections/about';
 import Events from './sections/events';
@@ -22,6 +23,7 @@ const Home: React.FC = () => {
 			<main id="main">
 				<Hero />
 				<Services />
+				<Band />
 				<MissionStatement />
 				<AboutUs />
 				<Events />

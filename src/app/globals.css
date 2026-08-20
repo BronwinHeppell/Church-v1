@@ -48,6 +48,7 @@
 	--animate-fade: fade 1.2s var(--ease-out-expo) both;
 	--animate-veil: veil 1.4s var(--ease-out-expo) both;
 	--animate-trickle: trickle 2.8s var(--ease-fluid) infinite;
+	--animate-line: line-up 1.1s var(--ease-out-expo) both;
 }
 
 :root {
@@ -261,6 +262,15 @@
 	}
 	to {
 		clip-path: inset(0 0 0 0);
+		transform: none;
+	}
+}
+
+@keyframes line-up {
+	from {
+		transform: translateY(105%);
+	}
+	to {
 		transform: none;
 	}
 }
