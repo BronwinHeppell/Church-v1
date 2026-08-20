@@ -71,6 +71,23 @@ jobs:
           echo "dir=$DIR" >> "$GITHUB_OUTPUT"
           echo "Deploying the portal to $DIR"
 
+      # A 530 from the server is indistinguishable from a missing secret, because
+      # GitHub substitutes an empty string for one that does not exist. Check the
+      # credentials are present before spending a build on them.
+      - name: Check the FTP credentials are present
+        env:
+          FTP_USER_NAME: ${{ secrets.FTP_USER_NAME }}
+          FTP_USER_PASSWORD: ${{ secrets.FTP_USER_PASSWORD }}
+        run: |
+          missing=""
+          [ -z "$FTP_USER_NAME" ] && missing="$missing FTP_USER_NAME"
+          [ -z "$FTP_USER_PASSWORD" ] && missing="$missing FTP_USER_PASSWORD"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing secret(s):$missing. Add them to the Xneelo environment in Settings -> Environments. An absent secret arrives as an empty string, which the server answers with 530 Login incorrect."
+            exit 1
+          fi
+          echo "Both FTP credentials are present (username is ${#FTP_USER_NAME} characters)."
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
