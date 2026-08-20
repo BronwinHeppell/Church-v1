@@ -2,10 +2,16 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "church-dev",
+      "name": "church-site",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 3000
+    },
+    {
+      "name": "church-admin",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:admin"],
+      "port": 3100
     }
   ]
 }

@@ -1,0 +1,71 @@
+@import 'tailwindcss';
+
+/*
+ * The admin borrows the website's palette and type so the two feel related,
+ * but only the tokens the portal actually uses. It is a tool, not a showcase.
+ */
+@theme {
+	--color-paper: #fbfaf7;
+	--color-surface: #ffffff;
+	--color-raised: #f4f1ea;
+	--color-ink: #1a1a17;
+	--color-muted: #6b6560;
+	--color-line: #e6e1d8;
+
+	--color-accent: #1e4d3b;
+	--color-accent-deep: #143528;
+	--color-accent-ink: #fbfaf7;
+
+	--font-display: var(--font-newsreader), ui-serif, Georgia, serif;
+	--font-ui: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+	--radius-base: 4px;
+	--radius-frame: 2px;
+
+	--ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+:root {
+	--scrim: 26 26 23;
+}
+
+@layer base {
+	body {
+		background-color: var(--color-paper);
+		color: var(--color-ink);
+		font-family: var(--font-ui);
+		-webkit-font-smoothing: antialiased;
+	}
+
+	h1,
+	h2,
+	h3 {
+		font-family: var(--font-display);
+		font-weight: 400;
+		text-wrap: balance;
+	}
+
+	::selection {
+		background-color: var(--color-accent);
+		color: var(--color-accent-ink);
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 3px;
+		border-radius: 1px;
+	}
+}
+
+@utility numerals {
+	font-variant-numeric: lining-nums tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+	}
+}

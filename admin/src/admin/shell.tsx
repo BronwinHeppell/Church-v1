@@ -8,9 +8,9 @@ import { Wordmark } from '@/shared/components/wordmark';
 import { useAuth } from './auth-context';
 
 const NAV = [
-	{ label: 'Events', href: '/admin/events', Icon: CalendarDays },
-	{ label: 'Pew leaflet', href: '/admin/leaflets', Icon: FileText },
-	{ label: 'Users', href: '/admin/users', Icon: Users },
+	{ label: 'Events', href: '/events', Icon: CalendarDays },
+	{ label: 'Pew leaflet', href: '/leaflets', Icon: FileText },
+	{ label: 'Users', href: '/users', Icon: Users },
 ] as const;
 
 /**
@@ -27,7 +27,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
 
 	useEffect(() => {
-		if (!loading && !user) router.replace('/admin');
+		if (!loading && !user) router.replace('/');
 	}, [loading, user, router]);
 
 	if (loading || !user) {
@@ -44,7 +44,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 		<div className="grid min-h-[100dvh] md:grid-cols-[15rem_minmax(0,1fr)]">
 			<aside className="border-line bg-raised flex flex-col border-b md:border-r md:border-b-0">
 				<div className="border-line flex items-center border-b px-6 py-5">
-					<Link href="/admin/events" aria-label="Corpus Christi admin">
+					<Link href="/events" aria-label="Corpus Christi admin">
 						<Wordmark width={140} className="text-ink" />
 					</Link>
 				</div>
