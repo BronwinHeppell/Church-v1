@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CalendarPlus } from 'lucide-react';
@@ -241,9 +241,9 @@ const Events = () => {
 							className="font-display max-w-[24ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
 							lines={[
 								'What is coming up',
-								<>
+								<Fragment key="parish">
 									in the life of the <em className="font-display italic">parish</em>
-								</>,
+								</Fragment>,
 							]}
 						/>
 

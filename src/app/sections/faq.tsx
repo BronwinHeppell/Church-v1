@@ -40,9 +40,9 @@ export const FAQ = () => {
 								className="font-display text-[clamp(2.25rem,4.4vw,3.25rem)] leading-[1.04] tracking-[-0.025em]"
 								lines={[
 									'Frequently',
-									<>
+									<React.Fragment key="faqDesc">
 										asked <em className="font-display italic">questions</em>
-									</>,
+									</React.Fragment>,
 								]}
 							/>
 							<Reveal kind="fade" delay={0.2}>

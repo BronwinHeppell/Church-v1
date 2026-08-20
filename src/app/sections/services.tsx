@@ -3,6 +3,7 @@ import { Lines, Rail } from '@/shared/components/editorial';
 import { Reveal, RevealGroup, RevealItem } from '@/shared/components/reveal';
 import { MAPS_URL, PARISH } from '@/shared/core/parish';
 import { prefix } from '@/shared/core/prefix';
+import React, { Fragment } from 'react';
 
 const opt = `${prefix}/static/opt`;
 
@@ -38,10 +39,6 @@ const ROWS: ServiceRow[] = [
 	},
 ];
 
-/**
- * Services as an editorial index rather than a row of cards: hairline rules,
- * the time set as the display element, and a small plate on the right.
- */
 const Services = () => {
 	return (
 		<section id="worship">
@@ -54,9 +51,9 @@ const Services = () => {
 							className="font-display max-w-[24ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
 							lines={[
 								'Sunday services,',
-								<>
+								<React.Fragment key="servicesDesc">
 									every week of the <em className="font-display italic">year</em>
-								</>,
+								</React.Fragment>,
 							]}
 						/>
 						<Reveal kind="fade" delay={0.2}>

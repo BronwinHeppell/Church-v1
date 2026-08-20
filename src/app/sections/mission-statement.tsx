@@ -2,6 +2,7 @@ import { BookOpen, Cross, HandHeart } from 'lucide-react';
 import { Lines, Parallax, Rail } from '@/shared/components/editorial';
 import { Reveal, RevealGroup, RevealItem } from '@/shared/components/reveal';
 import { prefix } from '@/shared/core/prefix';
+import React from 'react';
 
 const VALUES = [
 	{
@@ -35,9 +36,9 @@ const MissionStatement = () => {
 									className="font-display max-w-[22ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
 									lines={[
 										'Sharing God’s love',
-										<>
+										<React.Fragment key="message">
 											and <em className="font-display italic">spreading the message</em>
-										</>,
+										</React.Fragment>,
 									]}
 								/>
 								<Reveal kind="fade" delay={0.2}>
@@ -64,7 +65,6 @@ const MissionStatement = () => {
 							</Reveal>
 						</div>
 
-						{/* Values as an indexed list, not a grid of tiles. */}
 						<RevealGroup className="border-line mt-20 border-t" stagger={0.12}>
 							{VALUES.map(({ Icon, title, body }, i) => (
 								<RevealItem key={title} className="border-line border-b">
