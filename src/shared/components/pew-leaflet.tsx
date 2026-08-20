@@ -102,10 +102,8 @@ export function PewLeafletFooterLink({ className }: { className?: string }) {
 /**
  * Cell for the hero's information bar.
  *
- * Hidden below `sm` on purpose. There the bar is stacked, so a fourth row would
- * add roughly 60px to a hero that is currently tuned to fit the viewport
- * exactly — and on a phone the leaflet is still offered twice further down. From
- * `sm` up the bar is horizontal, where a fourth column costs no height at all.
+ * Shown at every width. The bar reflows to a 2x2 grid on a phone so this cell
+ * costs no extra height there — see the CELL comment in the hero.
  */
 export function PewLeafletHeroCell({ className }: { className?: string }) {
 	const latest = useLatestLeaflet();

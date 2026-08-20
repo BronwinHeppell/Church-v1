@@ -12,8 +12,16 @@ import { prefix } from '@/shared/core/prefix';
  * The line reveal is CSS so the largest element on the page never waits for
  * hydration to become visible.
  */
+/*
+ * Below md the bar is a 2x2 grid rather than a stack, which is how a fourth cell
+ * fits on a phone without making the hero taller than the viewport — four cells
+ * in two rows is shorter than three cells in three. The rules therefore have to
+ * work in both directions there: a top rule on the second row only, and a left
+ * rule on the right-hand column. If the cell count is odd the last one spans the
+ * full width instead of leaving a hole.
+ */
 const CELL =
-	'flex-col gap-1 border-t border-white/15 py-4 sm:flex sm:border-t-0 sm:px-8 sm:py-5 sm:first:pl-0 sm:last:pr-0';
+	'flex flex-col gap-1 border-white/15 py-4 max-md:border-t max-md:odd:pr-4 max-md:even:border-l max-md:even:pl-4 max-md:[&:nth-child(-n+2)]:border-t-0 max-md:[&:last-child:nth-child(odd)]:col-span-2 md:px-5 md:py-5 md:first:pl-0 md:last:pr-0 lg:px-8';
 
 const Hero = () => {
 	const opt = `${prefix}/static/opt`;
@@ -107,14 +115,14 @@ const Hero = () => {
 				className="text-on-image animate-fade relative border-t border-white/20"
 				style={{ animationDelay: '640ms' }}
 			>
-				<dl className="shell font-ui grid grid-cols-1 divide-white/15 px-5 text-[0.8125rem] sm:auto-cols-fr sm:grid-flow-col sm:grid-cols-none sm:divide-x md:px-10">
-					<div className={`flex ${CELL}`}>
+				<dl className="shell font-ui grid grid-cols-2 divide-white/15 px-5 text-[0.8125rem] md:auto-cols-fr md:grid-flow-col md:grid-cols-none md:divide-x md:px-10">
+					<div className={CELL}>
 						<dt className="text-[0.6875rem] tracking-[0.18em] text-white/55 uppercase">Services</dt>
 						<dd className="numerals text-white/90">
 							Sundays {SERVICE_TIMES[0]} and {SERVICE_TIMES[1]}
 						</dd>
 					</div>
-					<div className={`flex ${CELL}`}>
+					<div className={CELL}>
 						<dt className="text-[0.6875rem] tracking-[0.18em] text-white/55 uppercase">Find us</dt>
 						<dd>
 							<a
@@ -127,7 +135,7 @@ const Hero = () => {
 							</a>
 						</dd>
 					</div>
-					<div className={`flex ${CELL}`}>
+					<div className={CELL}>
 						<dt className="text-[0.6875rem] tracking-[0.18em] text-white/55 uppercase">Office</dt>
 						<dd>
 							<a href={PARISH.phoneHref} className="rule-link numerals text-white/90">
@@ -136,7 +144,7 @@ const Hero = () => {
 						</dd>
 					</div>
 
-					<PewLeafletHeroCell className={`hidden ${CELL}`} />
+					<PewLeafletHeroCell className={CELL} />
 				</dl>
 			</div>
 		</section>
