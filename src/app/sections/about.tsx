@@ -1,6 +1,7 @@
 import { Lines, Parallax, Rail } from '@/shared/components/editorial';
 import { Reveal } from '@/shared/components/reveal';
 import { prefix } from '@/shared/core/prefix';
+import React from 'react';
 
 /**
  * The image runs flush to the edge of the viewport rather than sitting in a
@@ -21,9 +22,9 @@ const AboutUs = () => {
 							className="font-display mt-8 max-w-[20ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
 							lines={[
 								'Join us for a',
-								<>
+								<React.Fragment key="aboutDesc">
 									<em className="font-display italic">life-changing</em> experience
-								</>,
+								</React.Fragment>,
 							]}
 						/>
 

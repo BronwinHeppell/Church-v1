@@ -52,10 +52,6 @@ function useActiveSection(ids: readonly string[]) {
 	return active;
 }
 
-/**
- * The header rides over the hero photograph in white, then lands on paper as
- * soon as the hero is behind you.
- */
 function useLanded() {
 	const [landed, setLanded] = useState(false);
 
@@ -126,7 +122,7 @@ const Navbar = () => {
 	return (
 		<header
 			data-landed={landed || undefined}
-			className="ease-fluid data-landed:border-line data-landed:bg-paper/85 fixed top-0 right-0 left-0 z-50 border-b border-transparent transition-[background-color,border-color,backdrop-filter] duration-700 data-landed:backdrop-blur-md"
+			className="ease-fluid data-landed:border-line data-landed:bg-paper/85 fixed top-0 right-0 left-0 z-50 border-b border-transparent transition-[background-color,border-color,backdrop-filter] duration-700"
 		>
 			<nav
 				aria-label="Main"
@@ -180,7 +176,7 @@ const Navbar = () => {
 								: 'text-on-image border-white/45 hover:border-white/85 hover:bg-white/10'
 						}`}
 					>
-						Give
+						Donate
 					</Link>
 				</div>
 
@@ -253,7 +249,9 @@ const Navbar = () => {
 										<Link
 											href={l.href}
 											onClick={close}
-											className="font-display border-line text-ink flex items-baseline gap-4 border-b py-4 text-[1.75rem] leading-none"
+											className={`font-display border-line text-ink flex items-baseline gap-4 py-4 text-[1.75rem] leading-none ${
+												i === LINKS.length - 1 ? '' : 'border-b'
+											}`}
 										>
 											<span className="font-ui numerals text-muted text-[0.6875rem] tracking-[0.18em]">
 												{String(i + 1).padStart(2, '0')}
@@ -266,13 +264,28 @@ const Navbar = () => {
 									variants={reduce ? undefined : drawerItem}
 									transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
 								>
+									{/*
+									 * Centred and flanked by rules, so it closes the list rather than
+									 * reading as a sixth item. The rules take the place of the last
+									 * link's bottom border, which is why that border is dropped above.
+									 */}
 									<Link
 										href="/static/pdf/Banking_Details.pdf"
 										target="_blank"
 										onClick={close}
-										className="font-display text-accent block py-4 text-[1.75rem] leading-none italic"
+										className="group flex items-center gap-5 py-5"
 									>
-										Give
+										<span
+											aria-hidden
+											className="bg-line ease-fluid h-px flex-1 transition-colors duration-500 group-hover:bg-[color-mix(in_oklab,var(--color-accent)_45%,var(--color-line))]"
+										/>
+										<span className="font-display text-accent text-[1.75rem] leading-none italic">
+											Donate
+										</span>
+										<span
+											aria-hidden
+											className="bg-line ease-fluid h-px flex-1 transition-colors duration-500 group-hover:bg-[color-mix(in_oklab,var(--color-accent)_45%,var(--color-line))]"
+										/>
 									</Link>
 								</motion.div>
 							</motion.div>
