@@ -37,7 +37,15 @@ const Hero = () => {
 				className="absolute inset-0 bg-[linear-gradient(180deg,rgb(20_33_28/0.55)_0%,rgb(20_33_28/0.18)_38%,rgb(20_33_28/0.5)_72%,rgb(20_33_28/0.82)_100%)]"
 			/>
 
-			<div className="text-on-image shell relative px-5 pt-40 pb-10 md:px-10 md:pb-12">
+			<div className="text-on-image shell relative px-5 pt-32 pb-10 md:px-10 md:pt-40 md:pb-12">
+				{/*
+				 * Marks the top of the hero's own text. The header watches this to know
+				 * when to stop being transparent — see useLanded in the navbar. Without
+				 * it the white headline scrolls behind a transparent header and tangles
+				 * with the white wordmark.
+				 */}
+				<div id="hero-sentinel" aria-hidden className="h-px w-full" />
+
 				<p
 					className="font-ui animate-fade text-xs tracking-[0.2em] text-white/70 uppercase"
 					style={{ animationDelay: '120ms' }}
@@ -96,13 +104,13 @@ const Hero = () => {
 				style={{ animationDelay: '640ms' }}
 			>
 				<dl className="shell font-ui grid grid-cols-1 divide-white/15 px-5 text-[0.8125rem] sm:grid-cols-3 sm:divide-x md:px-10">
-					<div className="flex flex-col gap-1 py-5 sm:pr-8">
+					<div className="flex flex-col gap-1 py-4 sm:py-5 sm:pr-8">
 						<dt className="text-[0.6875rem] tracking-[0.18em] text-white/55 uppercase">Services</dt>
 						<dd className="numerals text-white/90">
 							Sundays {SERVICE_TIMES[0]} and {SERVICE_TIMES[1]}
 						</dd>
 					</div>
-					<div className="flex flex-col gap-1 border-t border-white/15 py-5 sm:border-t-0 sm:px-8">
+					<div className="flex flex-col gap-1 border-t border-white/15 py-4 sm:border-t-0 sm:px-8 sm:py-5">
 						<dt className="text-[0.6875rem] tracking-[0.18em] text-white/55 uppercase">Find us</dt>
 						<dd>
 							<a
@@ -115,7 +123,7 @@ const Hero = () => {
 							</a>
 						</dd>
 					</div>
-					<div className="flex flex-col gap-1 border-t border-white/15 py-5 sm:border-t-0 sm:pl-8">
+					<div className="flex flex-col gap-1 border-t border-white/15 py-4 sm:border-t-0 sm:py-5 sm:pl-8">
 						<dt className="text-[0.6875rem] tracking-[0.18em] text-white/55 uppercase">Office</dt>
 						<dd>
 							<a href={PARISH.phoneHref} className="rule-link numerals text-white/90">

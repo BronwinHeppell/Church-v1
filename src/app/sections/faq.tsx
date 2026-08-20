@@ -30,7 +30,7 @@ export const FAQ = () => {
 	return (
 		<section id="questions" className="bg-raised border-line border-y">
 			<div className="shell px-5 py-28 md:px-10 md:py-40">
-				<div className="grid gap-12 lg:grid-cols-[9rem_minmax(0,1fr)] lg:gap-16">
+				<div className="grid gap-6 lg:grid-cols-[9rem_minmax(0,1fr)] lg:gap-16">
 					<Rail number="05" label="Questions" />
 
 					<div className="grid gap-12 xl:grid-cols-[21rem_minmax(0,1fr)] xl:gap-16">

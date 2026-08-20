@@ -52,18 +52,40 @@ function useActiveSection(ids: readonly string[]) {
 	return active;
 }
 
+/** Tallest the header ever is, so the sentinel knows when text has reached it. */
+const HEADER_HEIGHT = 88;
+
+/**
+ * The header rides over the hero photograph in white, then lands on paper the
+ * moment the hero's own text reaches it.
+ *
+ * This used to trigger at `scrollY > innerHeight - 120`, i.e. near the end of
+ * the hero. But the headline reaches the header long before the hero ends, so
+ * there was a wide window — 420px on a 720px-tall desktop viewport, and almost
+ * immediately on a phone — where the white headline scrolled behind a
+ * transparent header and collided with the white wordmark. Watching the text
+ * itself is correct at every viewport height.
+ */
 function useLanded() {
 	const [landed, setLanded] = useState(false);
 
 	useEffect(() => {
-		const onScroll = () => setLanded(window.scrollY > window.innerHeight - 120);
-		onScroll();
-		window.addEventListener('scroll', onScroll, { passive: true });
-		window.addEventListener('resize', onScroll);
-		return () => {
-			window.removeEventListener('scroll', onScroll);
-			window.removeEventListener('resize', onScroll);
-		};
+		const sentinel = document.getElementById('hero-sentinel');
+
+		// No hero on this page: land as soon as the page moves at all.
+		if (!sentinel) {
+			const onScroll = () => setLanded(window.scrollY > 24);
+			onScroll();
+			window.addEventListener('scroll', onScroll, { passive: true });
+			return () => window.removeEventListener('scroll', onScroll);
+		}
+
+		const io = new IntersectionObserver(([entry]) => setLanded(!entry.isIntersecting), {
+			rootMargin: `-${HEADER_HEIGHT}px 0px 0px 0px`,
+			threshold: 0,
+		});
+		io.observe(sentinel);
+		return () => io.disconnect();
 	}, []);
 
 	return landed;
