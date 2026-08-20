@@ -45,8 +45,11 @@ jobs:
         uses: actions/checkout@v4
 
       # Resolve the document root for admin.corpus-christi-garsfontein.org.
-      # Defaults to the usual convention of a directory named after the
-      # subdomain; set the FTP_ADMIN_DIR secret if the host maps it elsewhere.
+      #
+      # On this host the subdomain maps to a directory named after the full
+      # hostname, alongside public_html rather than inside it — which is why the
+      # site workflow's target is `public_html/` and this one is not under it.
+      # Set the FTP_ADMIN_DIR secret to override.
       #
       # The FTP step mirrors a directory and deletes whatever is not in the
       # upload, so the target is checked rather than trusted — a wrong value
@@ -56,7 +59,7 @@ jobs:
         env:
           FTP_ADMIN_DIR: ${{ secrets.FTP_ADMIN_DIR }}
         run: |
-          DIR="${FTP_ADMIN_DIR:-public_html/admin/}"
+          DIR="${FTP_ADMIN_DIR:-admin.corpus-christi-garsfontein.org/}"
           case "$DIR" in
             */) ;;
             *) echo "::error::FTP_ADMIN_DIR must end in a slash. Got: $DIR"; exit 1 ;;
