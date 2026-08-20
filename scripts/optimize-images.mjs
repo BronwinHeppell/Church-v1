@@ -13,6 +13,7 @@ const MANIFEST = [
 	{ src: 'SundayS2.jpg', name: 'sunday-service', widths: [640, 960], quality: 78 },
 	{ src: 'SundayS1.jpg', name: 'service-early', widths: [640, 960], quality: 78 },
 	{ src: 'SundaySchool.jpg', name: 'sunday-school', widths: [640, 960], quality: 78 },
+	{ src: 'biblestudy.jpg', name: 'fellowship', widths: [1280, 1920], quality: 78 },
 ];
 
 const kb = (bytes) => Math.round(bytes / 1024);

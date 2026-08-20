@@ -1,13 +1,12 @@
 import { ArrowUpRight } from 'lucide-react';
-import { SectionHeader } from '@/shared/components/heading';
+import { Lines, Rail } from '@/shared/components/editorial';
 import { Reveal, RevealGroup, RevealItem } from '@/shared/components/reveal';
 import { MAPS_URL, PARISH } from '@/shared/core/parish';
 import { prefix } from '@/shared/core/prefix';
 
 const opt = `${prefix}/static/opt`;
 
-type ServiceCard = {
-	/** The fact visitors came for, set as the display element. */
+type ServiceRow = {
 	stamp: string;
 	title: string;
 	detail: string;
@@ -15,7 +14,7 @@ type ServiceCard = {
 	alt: string;
 };
 
-const CARDS: ServiceCard[] = [
+const ROWS: ServiceRow[] = [
 	{
 		stamp: '07:00',
 		title: 'Sunday Service',
@@ -39,73 +38,83 @@ const CARDS: ServiceCard[] = [
 	},
 ];
 
+/**
+ * Services as an editorial index rather than a row of cards: hairline rules,
+ * the time set as the display element, and a small plate on the right.
+ */
 const Services = () => {
 	return (
-		<section id="services" className="bg-raised border-line border-y">
-			<div className="shell px-5 py-24 md:px-10 md:py-32">
-				<Reveal>
-					<SectionHeader
-						eyebrow="Worship"
-						title="Sunday services"
-						sub="Connecting people to God and to one another, every week of the year."
-					/>
-				</Reveal>
+		<section id="worship">
+			<div className="shell px-5 py-28 md:px-10 md:py-40">
+				<div className="grid gap-12 lg:grid-cols-[9rem_minmax(0,1fr)] lg:gap-16">
+					<Rail number="01" label="Worship" />
 
-				<RevealGroup className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" stagger={0.12}>
-					{CARDS.map((card) => (
-						<RevealItem key={card.stamp + card.title} as="article" className="card flex flex-col">
-							<div className="photo aspect-4/3 w-full">
-								{/* eslint-disable-next-line @next/next/no-img-element */}
-								<img
-									src={`${opt}/${card.img}-960.webp`}
-									srcSet={`${opt}/${card.img}-640.webp 640w, ${opt}/${card.img}-960.webp 960w`}
-									sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
-									alt={card.alt}
-									loading="lazy"
-									decoding="async"
-									className="h-full w-full object-cover"
-								/>
-							</div>
+					<div>
+						<Lines
+							className="font-display max-w-[24ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
+							lines={[
+								'Sunday services,',
+								<>
+									every week of the <em className="font-display italic">year</em>
+								</>,
+							]}
+						/>
+						<Reveal kind="fade" delay={0.2}>
+							<p className="prose-body text-muted mt-8 max-w-[52ch] text-base">
+								Two morning services and a Sunday School for the children of the parish. Everyone is
+								welcome.
+							</p>
+						</Reveal>
 
-							<div className="flex flex-1 flex-col p-7 md:p-8">
-								<h3>
-									<span className="font-display text-title numerals block leading-none">
-										{card.stamp}
-									</span>
-									<span className="font-ui text-muted mt-3 block text-xs tracking-[0.14em] uppercase">
-										{card.title}
-									</span>
-								</h3>
-								<p className="text-muted mt-4 text-[0.9375rem] leading-relaxed">{card.detail}</p>
+						<RevealGroup className="border-line mt-16 border-t" as="div" stagger={0.1}>
+							<ul>
+								{ROWS.map((row) => (
+									<RevealItem key={row.stamp + row.title} as="li" className="border-line border-b">
+										<div className="grid items-center gap-6 py-8 lg:grid-cols-[8rem_minmax(0,1fr)_9rem] lg:gap-10 lg:py-10">
+											<p className="font-display numerals text-[clamp(2rem,3.4vw,2.75rem)] leading-none">
+												{row.stamp}
+											</p>
 
-								<a
-									href={MAPS_URL}
-									target="_blank"
-									rel="noreferrer"
-									className="font-ui text-accent rule-link mt-6 inline-flex items-center gap-1.5 self-start text-[0.8125rem] tracking-[0.04em]"
-								>
-									Get directions
-									<ArrowUpRight strokeWidth={1.5} className="size-3.5" aria-hidden />
-								</a>
-							</div>
-						</RevealItem>
-					))}
-				</RevealGroup>
+											<div>
+												<h3 className="font-ui text-ink text-xs tracking-[0.14em] uppercase">
+													{row.title}
+												</h3>
+												<p className="text-muted mt-2.5 text-[0.9375rem] leading-relaxed">
+													{row.detail}
+												</p>
+											</div>
 
-				<Reveal kind="fade" delay={0.15}>
-					<p className="text-muted mt-14 text-center text-[0.9375rem]">
-						You will find us at{' '}
-						<a
-							href={MAPS_URL}
-							target="_blank"
-							rel="noreferrer"
-							className="text-ink rule-link font-medium"
-						>
-							{PARISH.street}, {PARISH.suburb}
-						</a>
-						. Everyone is welcome.
-					</p>
-				</Reveal>
+											<div className="photo rounded-frame aspect-3/2 w-full lg:justify-self-end">
+												{/* eslint-disable-next-line @next/next/no-img-element */}
+												<img
+													src={`${opt}/${row.img}-640.webp`}
+													srcSet={`${opt}/${row.img}-640.webp 640w, ${opt}/${row.img}-960.webp 960w`}
+													sizes="(max-width: 1024px) 100vw, 144px"
+													alt={row.alt}
+													loading="lazy"
+													decoding="async"
+													className="h-full w-full object-cover"
+												/>
+											</div>
+										</div>
+									</RevealItem>
+								))}
+							</ul>
+						</RevealGroup>
+
+						<Reveal kind="fade" delay={0.15}>
+							<a
+								href={MAPS_URL}
+								target="_blank"
+								rel="noreferrer"
+								className="font-ui text-accent rule-link mt-10 inline-flex items-center gap-2 text-[0.9375rem]"
+							>
+								{PARISH.street}, {PARISH.suburb}
+								<ArrowUpRight strokeWidth={1.5} className="size-4" aria-hidden />
+							</a>
+						</Reveal>
+					</div>
+				</div>
 			</div>
 		</section>
 	);

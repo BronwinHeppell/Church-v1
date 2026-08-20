@@ -17,7 +17,7 @@ const Footer = () => {
 		<footer id="contact" className="bg-footer text-footer-ink">
 			<h2 className="sr-only">Contact and visiting information</h2>
 
-			<div className="shell px-5 py-20 md:px-10 md:py-24">
+			<div className="shell px-5 py-24 md:px-10 md:py-28">
 				<Reveal kind="fade">
 					<div className="grid gap-14 md:grid-cols-[1fr_1fr_1.1fr] md:gap-12">
 						<div>
@@ -31,8 +31,8 @@ const Footer = () => {
 								decoding="async"
 								className="w-[104px]"
 							/>
-							<p className="font-display mt-6 max-w-[24ch] text-[1.375rem] leading-snug">
-								Join us for worship every Sunday at Corpus Christi.
+							<p className="font-display mt-6 max-w-[20ch] text-[clamp(1.75rem,3vw,2.5rem)] leading-[1.08] tracking-[-0.02em]">
+								Join us for worship every <em className="font-display italic">Sunday</em>.
 							</p>
 							<Link
 								href="/static/pdf/Banking_Details.pdf"
