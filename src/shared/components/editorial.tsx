@@ -60,22 +60,41 @@ export function Lines({
 		);
 	}
 
+	const Heading = Tag === 'h1' ? motion.h1 : motion.h2;
+
+	/*
+	 * The viewport trigger lives on the heading, not on the lines inside it.
+	 *
+	 * IntersectionObserver clips a target against its ancestors' overflow, and
+	 * each line starts translated fully outside its own overflow-hidden mask. So
+	 * observing a line meant its visible ratio never passed the threshold, the
+	 * animation never fired, and the heading stayed hidden for good — leaving a
+	 * heading-shaped hole in the page. The heading itself is never clipped, so it
+	 * is the safe thing to watch; the stagger then hands each line its turn.
+	 */
 	return (
-		<Tag className={className}>
+		<Heading
+			className={className}
+			initial="hidden"
+			whileInView="shown"
+			viewport={{ once: true, amount: 0.3 }}
+			variants={{
+				hidden: {},
+				shown: { transition: { staggerChildren: 0.09, delayChildren: delay } },
+			}}
+		>
 			{lines.map((line, i) => (
 				<span key={i} className="block overflow-hidden pb-[0.06em]">
 					<motion.span
 						className="block"
-						initial={{ y: '105%' }}
-						whileInView={{ y: '0%' }}
-						viewport={{ once: true, amount: 0.4 }}
-						transition={{ duration: 1, delay: delay + i * 0.09, ease: EASE }}
+						variants={{ hidden: { y: '105%' }, shown: { y: '0%' } }}
+						transition={{ duration: 1, ease: EASE }}
 					>
 						{line}
 					</motion.span>
 				</span>
 			))}
-		</Tag>
+		</Heading>
 	);
 }
 

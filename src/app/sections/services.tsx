@@ -43,7 +43,7 @@ const Services = () => {
 	return (
 		<section id="worship">
 			<div className="shell px-5 py-28 md:px-10 md:py-40">
-				<div className="grid gap-12 lg:grid-cols-[9rem_minmax(0,1fr)] lg:gap-16">
+				<div className="grid gap-6 lg:grid-cols-[9rem_minmax(0,1fr)] lg:gap-16">
 					<Rail number="01" label="Worship" />
 
 					<div>
