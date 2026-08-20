@@ -14,9 +14,55 @@ const MANIFEST = [
 	{ src: 'SundayS1.jpg', name: 'service-early', widths: [640, 960], quality: 78 },
 	{ src: 'SundaySchool.jpg', name: 'sunday-school', widths: [640, 960], quality: 78 },
 	{ src: 'biblestudy.jpg', name: 'fellowship', widths: [1280, 1920], quality: 78 },
+
+	/*
+	 * Square index plates for the Worship list. These three sources fight each
+	 * other: two are 3:2 landscape and one is 2:3 portrait, and their mean
+	 * luminance runs 46 / 69 / 157 out of 255. Centre-cropping them into one
+	 * landscape box lost the portrait subject entirely and no CSS could make a
+	 * 46 and a 157 read as one set, so the crop and the tone are both corrected
+	 * here: `square` crops to 1:1 on the most detailed region rather than the
+	 * middle, and `tone` pulls each toward a shared target luminance.
+	 */
+	{
+		src: 'SundayS1.jpg',
+		name: 'plate-early',
+		widths: [256, 384],
+		quality: 82,
+		square: true,
+		tone: 105,
+	},
+	{
+		src: 'SundayS2.jpg',
+		name: 'plate-service',
+		widths: [256, 384],
+		quality: 82,
+		square: true,
+		tone: 105,
+	},
+	{
+		src: 'SundaySchool.jpg',
+		name: 'plate-school',
+		widths: [256, 384],
+		quality: 82,
+		square: true,
+		tone: 105,
+	},
 ];
 
 const kb = (bytes) => Math.round(bytes / 1024);
+
+const luminance = (stats) =>
+	0.2126 * stats.channels[0].mean +
+	0.7152 * stats.channels[1].mean +
+	0.0722 * stats.channels[2].mean;
+
+/*
+ * Brightness needed to move an image toward the target. Clamped, because
+ * dragging a very dark frame all the way up washes the blacks out and lifts
+ * sensor noise — better to close most of the gap than to overcook it.
+ */
+const toneFactor = (measured, target) => Math.min(1.55, Math.max(0.75, target / measured));
 
 function report() {
 	const rows = [];
@@ -100,10 +146,25 @@ async function optimize() {
 			}
 			const target = join(OUT, `${item.name}-${width}.webp`);
 			mkdirSync(dirname(target), { recursive: true });
-			const buf = await sharp(input)
-				.resize({ width, withoutEnlargement: true })
-				.webp({ quality: item.quality, effort: 5 })
-				.toBuffer();
+			let pipeline = sharp(input);
+
+			if (item.square) {
+				pipeline = pipeline.resize(width, width, {
+					fit: 'cover',
+					position: sharp.strategy.attention,
+				});
+			} else {
+				pipeline = pipeline.resize({ width, withoutEnlargement: true });
+			}
+
+			if (item.tone) {
+				// Measure the cropped frame, not the original: the crop changes the tone.
+				const cropped = await pipeline.clone().png().toBuffer();
+				const brightness = toneFactor(luminance(await sharp(cropped).stats()), item.tone);
+				pipeline = pipeline.modulate({ brightness });
+			}
+
+			const buf = await pipeline.webp({ quality: item.quality, effort: 5 }).toBuffer();
 			const { writeFileSync } = await import('node:fs');
 			writeFileSync(target, buf);
 			after += buf.length;

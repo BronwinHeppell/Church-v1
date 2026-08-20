@@ -157,6 +157,29 @@
 
 /* Hover warms the border but does not lift: these cards are not links, and a
    lift would promise a click that is not there. */
+/* Small index plates. The full `photo` grade darkens the foot of the frame by
+   20%, which reads as a vignette at thumbnail size and buries the darker
+   service photographs. This keeps the warm cast and drops the shadow. */
+@utility photo-plate {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+
+	& img {
+		filter: saturate(0.92) contrast(1.02);
+	}
+
+	&::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		pointer-events: none;
+		background: rgb(252 243 226 / 0.07);
+		mix-blend-mode: multiply;
+	}
+}
+
 @utility card {
 	background-color: var(--color-surface);
 	border: 1px solid var(--color-line);
