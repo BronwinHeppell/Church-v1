@@ -28,11 +28,15 @@ Routes are the root of the admin host — `/`, `/events`, `/leaflets`, `/users` 
 not `/admin/...`, and the build is given no `NEXT_PUBLIC_BASE_PATH` for that
 reason.
 
-The upload target defaults to `public_html/admin/`. If the host maps the
-subdomain somewhere else, set an `FTP_ADMIN_DIR` secret in the `Xneelo`
-environment; it must end in a slash, and the workflow refuses to run if it is
-the website's own document root, because the FTP step mirrors a directory and
-deletes anything not in the upload.
+The upload target is `admin.corpus-christi-garsfontein.org/` — on this host a
+subdomain maps to a directory named after the full hostname, alongside
+`public_html` rather than inside it. That is why the website's workflow uploads
+to `public_html/` and this one does not sit under it.
+
+Override with an `FTP_ADMIN_DIR` secret in the `Xneelo` environment if that ever
+changes. It must end in a slash, and the workflow refuses to run if it is the
+website's own document root, because the FTP step mirrors a directory and deletes
+anything not in the upload.
 
 **Firebase must be told about the subdomain.** Sign-in fails with
 `auth/unauthorized-domain` until `admin.corpus-christi-garsfontein.org` is added
