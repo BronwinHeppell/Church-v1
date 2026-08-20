@@ -42,7 +42,7 @@ const ROWS: ServiceRow[] = [
 const Services = () => {
 	return (
 		<section id="worship">
-			<div className="shell px-5 py-28 md:px-10 md:py-40">
+			<div className="shell px-5 py-20 md:px-10 md:py-32">
 				<div className="grid gap-6 lg:grid-cols-[9rem_minmax(0,1fr)] lg:gap-16">
 					<Rail number="01" label="Worship" />
 
@@ -57,17 +57,17 @@ const Services = () => {
 							]}
 						/>
 						<Reveal kind="fade" delay={0.2}>
-							<p className="prose-body text-muted mt-8 max-w-[52ch] text-base">
+							<p className="prose-body text-muted mt-6 max-w-[52ch] text-base">
 								Two morning services and a Sunday School for the children of the parish. Everyone is
 								welcome.
 							</p>
 						</Reveal>
 
-						<RevealGroup className="border-line mt-16 border-t" as="div" stagger={0.1}>
+						<RevealGroup className="border-line mt-10 border-t" as="div" stagger={0.1}>
 							<ul>
 								{ROWS.map((row) => (
 									<RevealItem key={row.stamp + row.title} as="li" className="border-line border-b">
-										<div className="grid items-center gap-6 py-8 lg:grid-cols-[8rem_minmax(0,1fr)_9rem] lg:gap-10 lg:py-10">
+										<div className="grid items-center gap-6 py-6 lg:grid-cols-[8rem_minmax(0,1fr)_9rem] lg:gap-10 lg:py-8">
 											<p className="font-display numerals text-[clamp(2rem,3.4vw,2.75rem)] leading-none">
 												{row.stamp}
 											</p>
@@ -104,7 +104,7 @@ const Services = () => {
 								href={MAPS_URL}
 								target="_blank"
 								rel="noreferrer"
-								className="font-ui text-accent rule-link mt-10 inline-flex items-center gap-2 text-[0.9375rem]"
+								className="font-ui text-accent rule-link mt-8 inline-flex items-center gap-2 text-[0.9375rem]"
 							>
 								{PARISH.street}, {PARISH.suburb}
 								<ArrowUpRight strokeWidth={1.5} className="size-4" aria-hidden />

@@ -25,12 +25,12 @@ const VALUES = [
 const MissionStatement = () => {
 	return (
 		<section id="mission" className="bg-raised border-line border-y">
-			<div className="shell px-5 py-28 md:px-10 md:py-40">
+			<div className="shell px-5 py-20 md:px-10 md:py-32">
 				<div className="grid gap-6 lg:grid-cols-[9rem_minmax(0,1fr)] lg:gap-16">
 					<Rail number="02" label="Mission" />
 
 					<div>
-						<div className="grid gap-14 xl:grid-cols-[minmax(0,1fr)_22rem] xl:gap-16">
+						<div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_22rem] xl:gap-16">
 							<div>
 								<Lines
 									className="font-display max-w-[22ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
@@ -42,15 +42,22 @@ const MissionStatement = () => {
 									]}
 								/>
 								<Reveal kind="fade" delay={0.2}>
-									<p className="prose-body text-muted mt-8 max-w-[52ch] text-base">
+									<p className="prose-body text-muted mt-6 max-w-[52ch] text-base">
 										At Corpus Christi, we are dedicated to serving our community and nurturing a
 										strong relationship with God. Join us in worship and fellowship.
 									</p>
 								</Reveal>
 							</div>
 
-							<Reveal kind="veil" className="rounded-frame hidden xl:block">
-								<Parallax className="photo aspect-3/4 w-full" distance={60}>
+							{/*
+							 * The plate fills the row rather than setting it. With a fixed
+							 * aspect it was taller than the copy beside it, so the grid row
+							 * grew to fit the image and left ~170px of dead space under the
+							 * intro before the values list. Absolute positioning lets the
+							 * copy decide the height and the image crop to it.
+							 */}
+							<Reveal kind="veil" className="rounded-frame relative hidden xl:block">
+								<Parallax className="photo absolute inset-0" distance={60}>
 									{/* eslint-disable-next-line @next/next/no-img-element */}
 									<img
 										src={`${prefix}/static/opt/mission-1280.webp`}
@@ -65,10 +72,10 @@ const MissionStatement = () => {
 							</Reveal>
 						</div>
 
-						<RevealGroup className="border-line mt-20 border-t" stagger={0.12}>
+						<RevealGroup className="border-line mt-12 border-t" stagger={0.12}>
 							{VALUES.map(({ Icon, title, body }, i) => (
 								<RevealItem key={title} className="border-line border-b">
-									<div className="grid items-start gap-4 py-8 lg:grid-cols-[3rem_14rem_minmax(0,1fr)] lg:gap-10 lg:py-10">
+									<div className="grid items-start gap-4 py-6 lg:grid-cols-[3rem_14rem_minmax(0,1fr)] lg:gap-10 lg:py-8">
 										<p className="font-ui numerals text-muted text-[0.6875rem] tracking-[0.18em]">
 											{String(i + 1).padStart(2, '0')}
 										</p>
