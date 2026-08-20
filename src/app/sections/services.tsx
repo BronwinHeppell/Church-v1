@@ -1,5 +1,6 @@
 import { ArrowUpRight } from 'lucide-react';
 import { Lines, Rail } from '@/shared/components/editorial';
+import { PewLeaflet } from '@/shared/components/pew-leaflet';
 import { Reveal, RevealGroup, RevealItem } from '@/shared/components/reveal';
 import { MAPS_URL, PARISH } from '@/shared/core/parish';
 import { prefix } from '@/shared/core/prefix';
@@ -107,6 +108,8 @@ const Services = () => {
 								))}
 							</ul>
 						</RevealGroup>
+
+						<PewLeaflet />
 
 						<Reveal kind="fade" delay={0.15}>
 							<a

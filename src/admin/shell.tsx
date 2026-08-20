@@ -3,12 +3,13 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { CalendarDays, LogOut, Users } from 'lucide-react';
+import { CalendarDays, FileText, LogOut, Users } from 'lucide-react';
 import { Wordmark } from '@/shared/components/wordmark';
 import { useAuth } from './auth-context';
 
 const NAV = [
 	{ label: 'Events', href: '/admin/events', Icon: CalendarDays },
+	{ label: 'Pew leaflet', href: '/admin/leaflets', Icon: FileText },
 	{ label: 'Users', href: '/admin/users', Icon: Users },
 ] as const;
 
