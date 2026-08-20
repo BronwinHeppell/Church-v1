@@ -98,3 +98,28 @@ export function PewLeafletFooterLink({ className }: { className?: string }) {
 		</a>
 	);
 }
+
+/**
+ * Cell for the hero's information bar.
+ *
+ * Hidden below `sm` on purpose. There the bar is stacked, so a fourth row would
+ * add roughly 60px to a hero that is currently tuned to fit the viewport
+ * exactly — and on a phone the leaflet is still offered twice further down. From
+ * `sm` up the bar is horizontal, where a fourth column costs no height at all.
+ */
+export function PewLeafletHeroCell({ className }: { className?: string }) {
+	const latest = useLatestLeaflet();
+	if (!latest) return null;
+
+	return (
+		<div className={className}>
+			<dt className="text-[0.6875rem] tracking-[0.18em] text-white/55 uppercase">This week</dt>
+			<dd>
+				<a href={latest.url} className="rule-link inline-flex items-center gap-1.5 text-white/90">
+					Pew leaflet
+					<ArrowDownToLine strokeWidth={1.5} className="size-3.5" aria-hidden />
+				</a>
+			</dd>
+		</div>
+	);
+}
