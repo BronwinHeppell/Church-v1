@@ -1,67 +1,88 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import type { Metadata, Viewport } from 'next';
+import { inter, newsreader } from '@/shared/core/fonts';
+import { PARISH } from '@/shared/core/parish';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const DESCRIPTION =
+	'Corpus Christi Anglican Church in Garsfontein, Pretoria. Sunday services at 07:00 and 09:00, with Sunday School for children. Everyone is welcome.';
 
 export const metadata: Metadata = {
-	applicationName: 'Corpus Christi Anglican Church',
-	title: 'Corpus Christi Anglican Church | Worship in Garsfontein, Pretoria',
-	description:
-		'Welcome to Corpus Christi Anglican Church, offering worship services, community outreach, and more in Garsfontein. We are a community of believers who are passionate about serving God and our neighbours.',
-	keywords: ['Anglican Church', 'Garsfontein', 'Worship', 'Community Outreach'],
-	metadataBase: new URL("https://www.corpus-christi-garsfontein.org"),
+	applicationName: PARISH.name,
+	title: `${PARISH.name} | Worship in ${PARISH.suburb}, ${PARISH.city}`,
+	description: DESCRIPTION,
+	metadataBase: new URL(PARISH.url),
+
+	// Without a canonical, the trailing-slash and www variants of this page can
+	// be treated as separate URLs.
+	alternates: {
+		canonical: '/',
+	},
+
 	openGraph: {
-		title: 'Corpus Christi Anglican Church',
+		title: PARISH.name,
 		type: 'website',
 		locale: 'en_ZA',
-		siteName: 'Corpus Christi Anglican Church',
-		description:
-			'Welcome to Corpus Christi Anglican Church, offering worship services, community outreach, and more in Garsfontein.',
+		url: '/',
+		siteName: PARISH.name,
+		description: DESCRIPTION,
 		images: [
 			{
-				url: '/static/hero.jpg',
+				url: '/og.jpg',
+				width: 1200,
+				height: 630,
+				type: 'image/jpeg',
+				alt: `${PARISH.name}, ${PARISH.street}, ${PARISH.suburb}`,
 			},
 		],
 	},
+
 	twitter: {
-		title: 'Corpus Christi Anglican Church',
-		description:
-			'Welcome to Corpus Christi Anglican Church, offering worship services, community outreach, and more in Garsfontein.',
-		images: ['/static/hero.jpg'],
 		card: 'summary_large_image',
+		title: PARISH.name,
+		description: DESCRIPTION,
+		images: ['/og.jpg'],
 	},
+
+	/*
+	 * Google looks for a search-result favicon that is 48px square or a multiple
+	 * of it, and it also probes /favicon.ico directly. The previous set declared
+	 * a shortcut at /favicon.ico that did not exist, so the only usable icon was
+	 * the 48px frame inside the ICO.
+	 */
+	icons: {
+		icon: [
+			{ url: '/favicon.ico', sizes: '16x16 32x32 48x48', type: 'image/x-icon' },
+			{ url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+			{ url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+		],
+		apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+		shortcut: ['/favicon.ico'],
+	},
+
+	manifest: '/manifest.webmanifest',
+
 	robots: {
 		index: true,
 		follow: true,
-		"max-image-preview": "large",
-		"max-snippet": -1,
-		"max-video-preview": -1,
+		'max-image-preview': 'large',
+		'max-snippet': -1,
+		'max-video-preview': -1,
 	},
-	viewport: {
-		width: 'device-width',
-		initialScale: 1,
-	},
-	authors: [
-		{
-			name: 'Corpus Christi Anglican Church',
-			url: 'https://www.corpus-christi-garsfontein.org'
-		},
-	],
-	icons: {
-		shortcut: [
-			{
-				url: '/favicon.ico',
-				type: 'image/x-icon',
-			},
-		],
-	},
+
+	authors: [{ name: PARISH.name, url: PARISH.url }],
 	category: 'Worship',
 	appleWebApp: {
-		title: 'Corpus Christi Anglican Church',
+		title: 'Corpus Christi',
 		statusBarStyle: 'default',
 		capable: true,
 	},
+};
+
+export const viewport: Viewport = {
+	width: 'device-width',
+	initialScale: 1,
+	colorScheme: 'light',
+	themeColor: '#fbfaf7',
 };
 
 export default function RootLayout({
@@ -70,9 +91,16 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
-			<link rel="icon" href="/icon.ico" sizes="any" />
-			<body className={inter.className}>{children}</body>
+		<html lang="en-ZA" className={`${newsreader.variable} ${inter.variable}`}>
+			<body>
+				<a
+					href="#main"
+					className="focus:rounded-base focus:bg-accent focus:text-accent-ink sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[70] focus:px-4 focus:py-2"
+				>
+					Skip to content
+				</a>
+				{children}
+			</body>
 		</html>
 	);
 }

@@ -1,0 +1,113 @@
+name: Deploy admin portal to Xneelo
+
+# The admin portal is a separate app with its own build output, deployed to
+# admin.corpus-christi-garsfontein.org. The website, at
+# corpus-christi-garsfontein.org, is deployed by xneelo.yml and nextjs.yml.
+# The two never share a build.
+
+on:
+  push:
+    branches: ['master']
+    # Only redeploy when something the portal is actually built from changes.
+    paths:
+      - 'admin/**'
+      - 'package-lock.json'
+      - '.github/workflows/admin.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Deliberately not the "pages" group the website deployments share, so the
+# portal and the site do not queue behind one another.
+concurrency:
+  group: 'admin-portal'
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: Xneelo
+    env:
+      # The portal talks to the same Firebase project as the website. It does
+      # not get NEXT_PUBLIC_BASE_PATH: it is served from the root of its own
+      # subdomain, and a base path would break its asset URLs.
+      NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+      NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+      NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+      NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
+      NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
+      NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+      NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Resolve the document root for admin.corpus-christi-garsfontein.org.
+      # Defaults to the usual convention of a directory named after the
+      # subdomain; set the FTP_ADMIN_DIR secret if the host maps it elsewhere.
+      #
+      # The FTP step mirrors a directory and deletes whatever is not in the
+      # upload, so the target is checked rather than trusted — a wrong value
+      # here could wipe the public website.
+      - name: Resolve the deploy target
+        id: target
+        env:
+          FTP_ADMIN_DIR: ${{ secrets.FTP_ADMIN_DIR }}
+        run: |
+          DIR="${FTP_ADMIN_DIR:-public_html/admin/}"
+          case "$DIR" in
+            */) ;;
+            *) echo "::error::FTP_ADMIN_DIR must end in a slash. Got: $DIR"; exit 1 ;;
+          esac
+          if [ "$DIR" = "public_html/" ] || [ "$DIR" = "/" ] || [ "$DIR" = "./" ]; then
+            echo "::error::FTP_ADMIN_DIR points at the website's document root. That would overwrite corpus-christi-garsfontein.org. Point it at the subdomain's directory instead."
+            exit 1
+          fi
+          echo "dir=$DIR" >> "$GITHUB_OUTPUT"
+          echo "Deploying the portal to $DIR"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Restore Next.js cache
+        uses: actions/cache@v4
+        with:
+          path: admin/.next/cache
+          key: ${{ runner.os }}-admin-nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('admin/**/*.[jt]s', 'admin/**/*.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-admin-nextjs-${{ hashFiles('package-lock.json') }}-
+
+      # Root install, because the portal is an npm workspace of this repository.
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint:admin
+
+      - name: Build the portal
+        run: npm run build:admin
+
+      - name: Check the build produced a site
+        run: |
+          test -f admin/out/index.html || { echo "::error::admin/out/index.html is missing — the export did not produce a site."; exit 1; }
+          # The portal must never carry the public website with it.
+          if [ -d admin/out/_next ] && grep -rqs "Corpus Christi Anglican Church | Worship" admin/out/*.html; then
+            echo "::error::The admin export contains the public website's pages."
+            exit 1
+          fi
+          echo "Exported pages:"
+          find admin/out -name '*.html' | sort
+
+      - name: Sync to the admin subdomain
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: 197.221.14.50
+          username: ${{ secrets.FTP_USER_NAME }}
+          password: ${{ secrets.FTP_USER_PASSWORD }}
+          server-dir: ${{ steps.target.outputs.dir }}
+          local-dir: ./admin/out/

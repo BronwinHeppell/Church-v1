@@ -1,60 +1,97 @@
-import { HeaderText, SubHeaderText } from '@/shared/components/headerText';
+import { BookOpen, Cross, HandHeart } from 'lucide-react';
+import { Lines, Parallax, Rail } from '@/shared/components/editorial';
+import { Reveal, RevealGroup, RevealItem } from '@/shared/components/reveal';
 import { prefix } from '@/shared/core/prefix';
-import Image from 'next/image';
+import React from 'react';
+
+const VALUES = [
+	{
+		Icon: Cross,
+		title: 'Our Mission',
+		body: 'To inspire and empower individuals to live a Christ-centered life and make a positive impact.',
+	},
+	{
+		Icon: BookOpen,
+		title: 'Core Values',
+		body: 'Faith, Love, Compassion, Community and Service are at the heart of everything we do.',
+	},
+	{
+		Icon: HandHeart,
+		title: 'Our Community',
+		body: 'Serving our neighbours in Garsfontein and nurturing a strong relationship with God.',
+	},
+];
 
 const MissionStatement = () => {
 	return (
-		<section
-			className="grid grid-cols-1 items-center gap-8 py-10 text-left md:grid-cols-2"
-			id="MissionStatement"
-		>
-			<div className="container mx-auto space-y-5 px-4">
-				<HeaderText text="Sharing God&rsquo;s love and spreading the message" />
+		<section id="mission" className="bg-raised border-line border-y">
+			<div className="shell px-5 py-20 md:px-10 md:py-32">
+				<div className="grid gap-6 lg:grid-cols-[9rem_minmax(0,1fr)] lg:gap-16">
+					<Rail number="02" label="Mission" />
 
-				<p className="text-md font-semibold">
-					At Corpus Christi, we are dedicated to serving our community and nurturing a strong
-					relationship with God. Join us in worship and fellowship.
-				</p>
+					<div>
+						<div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_22rem] xl:gap-16">
+							<div>
+								<Lines
+									className="font-display max-w-[22ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
+									lines={[
+										'Sharing God’s love',
+										<React.Fragment key="message">
+											and <em className="font-display italic">spreading the message</em>
+										</React.Fragment>,
+									]}
+								/>
+								<Reveal kind="fade" delay={0.2}>
+									<p className="prose-body text-muted mt-6 max-w-[52ch] text-base">
+										At Corpus Christi, we are dedicated to serving our community and nurturing a
+										strong relationship with God. Join us in worship and fellowship.
+									</p>
+								</Reveal>
+							</div>
 
-				<div className="flex flex-col space-x-0 md:flex-row md:space-x-2">
-					<div>
-						<Image
-							src={`${prefix}/static/cross.png`}
-							alt="Cross Image"
-							className="p-3"
-							width={60}
-							height={60}
-						></Image>
-						<SubHeaderText text="Our Mission" className="mb-2 font-bold" />
-						<p className="text-sm">
-							To inspire and empower individuals to live a Christ-centered life and make a positive
-							impact.
-						</p>
-					</div>
-					<div>
-						<Image
-							src={`${prefix}/static/bible.png`}
-							alt="Bible Image"
-							className="p-3"
-							width={60}
-							height={60}
-						></Image>
-						<SubHeaderText text="Core Values" className="mb-2 font-bold" />
-						<p className="text-sm">
-							Faith, Love, Compassion, Community and Service are at the heart of everything we do.
-						</p>
+							{/*
+							 * The plate fills the row rather than setting it. With a fixed
+							 * aspect it was taller than the copy beside it, so the grid row
+							 * grew to fit the image and left ~170px of dead space under the
+							 * intro before the values list. Absolute positioning lets the
+							 * copy decide the height and the image crop to it.
+							 */}
+							<Reveal kind="veil" className="rounded-frame relative hidden xl:block">
+								<Parallax className="photo absolute inset-0" distance={60}>
+									{/* eslint-disable-next-line @next/next/no-img-element */}
+									<img
+										src={`${prefix}/static/opt/mission-1280.webp`}
+										srcSet={`${prefix}/static/opt/mission-768.webp 768w, ${prefix}/static/opt/mission-1280.webp 1280w`}
+										sizes="352px"
+										alt="Bread and a chalice laid out for communion"
+										loading="lazy"
+										decoding="async"
+										className="h-full w-full object-cover"
+									/>
+								</Parallax>
+							</Reveal>
+						</div>
+
+						<RevealGroup className="border-line mt-12 border-t" stagger={0.12}>
+							{VALUES.map(({ Icon, title, body }, i) => (
+								<RevealItem key={title} className="border-line border-b">
+									<div className="grid items-start gap-4 py-6 lg:grid-cols-[3rem_14rem_minmax(0,1fr)] lg:gap-10 lg:py-8">
+										<p className="font-ui numerals text-muted text-[0.6875rem] tracking-[0.18em]">
+											{String(i + 1).padStart(2, '0')}
+										</p>
+										<h3 className="font-display flex items-center gap-3 text-[1.375rem] leading-none">
+											<Icon strokeWidth={1.25} aria-hidden className="text-accent size-5" />
+											{title}
+										</h3>
+										<p className="text-muted max-w-[56ch] text-[0.9375rem] leading-relaxed">
+											{body}
+										</p>
+									</div>
+								</RevealItem>
+							))}
+						</RevealGroup>
 					</div>
 				</div>
-			</div>
-
-			<div className="hidden h-full items-center justify-center rounded-xl md:flex">
-				<Image
-					src={`${prefix}/static/Mission.jpg`}
-					alt="Mission Statement Image"
-					className="w-full overflow-hidden rounded-lg object-cover shadow-md sm:h-80"
-					width={450}
-					height={0}
-				/>
 			</div>
 		</section>
 	);
