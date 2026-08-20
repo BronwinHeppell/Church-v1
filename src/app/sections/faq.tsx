@@ -18,9 +18,7 @@ type ItemProps = {
 const FAQItem = ({ title, content, keyValue }: ItemProps) => {
 	return (
 		<AccordionItem value={keyValue}>
-			<AccordionTrigger className="font-display text-start text-xl md:text-[1.375rem]">
-				{title}
-			</AccordionTrigger>
+			<AccordionTrigger className="font-display text-subtitle text-start">{title}</AccordionTrigger>
 			<AccordionContent className="prose-body text-muted text-start text-base whitespace-pre-line">
 				{content}
 			</AccordionContent>
@@ -31,31 +29,31 @@ const FAQItem = ({ title, content, keyValue }: ItemProps) => {
 export const FAQ = () => {
 	return (
 		<section id="faq">
-			<div className="shell px-5 py-20 md:px-10 md:py-24">
+			<div className="shell px-5 py-24 md:px-10 md:py-32">
 				<Reveal>
 					<SectionHeader
-						eyebrow="Frequently Asked Questions"
-						title="FAQ"
-						sub="Find answers to common questions and information about church activities"
+						eyebrow="Sacraments and membership"
+						title="Frequently asked questions"
+						sub="Baptism, confirmation, marriage, membership and bereavement — how each works at Corpus Christi."
 					/>
 				</Reveal>
 
-				<div className="measure mt-12">
+				<div className="measure mt-16">
 					<Reveal delay={0.1}>
 						<p className="text-muted text-center text-[0.9375rem]">
 							If your question is not answered here, the parish office is glad to help:{' '}
-							<a href={PARISH.phoneHref} className="text-ink hover:underline">
+							<a href={PARISH.phoneHref} className="text-ink rule-link numerals">
 								{PARISH.phone}
 							</a>{' '}
 							<span aria-hidden>·</span>{' '}
-							<a href={`mailto:${PARISH.email}`} className="text-ink break-words hover:underline">
+							<a href={`mailto:${PARISH.email}`} className="text-ink rule-link break-words">
 								{PARISH.email}
 							</a>
 						</p>
 					</Reveal>
 				</div>
 
-				<div className="measure mt-8">
+				<div className="measure mt-10">
 					<Accordion type="single" collapsible>
 						<FAQItem
 							title="Holy Baptism"
@@ -69,7 +67,7 @@ export const FAQ = () => {
 						/>
 						<FAQItem
 							title="Becoming a Member of Corpus Christi"
-							content={`He is like a tree planted by streams of water that yields its fruit in its season, and its leaf does not wither. In all that he does, he prospers (Ps 1 v 3).\n\nWe invite you to take your place among the many that have made this their spiritual home, discovered their spiritual gifts and are serving God with passion and purpose. Our services are open to everyone. We welcome you and encourage you to introduce yourselves to the clergy and/or the sides-persons. State your intention, whether it be as a visitor or seeking active membership. If you wish to join the parish please go to DOWNLOADS page & download the membership PDF to complete & return to the parish office. PLEASE NOTE that you cannot become a member of the parish until these forms have been completed and your name and the details of your family have been captured to the Parish Roll. \nPlease give consideration to what you are prepared to contribute to our church. We welcome willingly given Christian stewardship and recognize the provision of "talents" as a gift both in the monetary form, and in the provision of particular skills. We welcome both. Please know that a church needs sufficient of each form of talent to be able to serve its community properly, and to provide the necessary spirituality and Christian "food" upon which we all feed.`}
+							content={`He is like a tree planted by streams of water that yields its fruit in its season, and its leaf does not wither. In all that he does, he prospers (Ps 1 v 3).\n\nWe invite you to take your place among the many that have made this their spiritual home, discovered their spiritual gifts and are serving God with passion and purpose. Our services are open to everyone. We welcome you and encourage you to introduce yourselves to the clergy and/or the sides-persons. State your intention, whether it be as a visitor or seeking active membership. If you wish to join the parish, please ask the parish office for a membership form to complete and return. PLEASE NOTE that you cannot become a member of the parish until these forms have been completed and your name and the details of your family have been captured to the Parish Roll. \nPlease give consideration to what you are prepared to contribute to our church. We welcome willingly given Christian stewardship and recognize the provision of "talents" as a gift both in the monetary form, and in the provision of particular skills. We welcome both. Please know that a church needs sufficient of each form of talent to be able to serve its community properly, and to provide the necessary spirituality and Christian "food" upon which we all feed.`}
 							keyValue="item-3"
 						/>
 						<FAQItem

@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from '@/shared/components/navbar';
+import BackToTop from '@/shared/components/back-to-top';
 import Hero from './sections/hero';
 import Services from './sections/services';
 import MissionStatement from './sections/mission-statement';
@@ -28,6 +29,7 @@ const Home: React.FC = () => {
 			</main>
 
 			<Footer />
+			<BackToTop />
 		</>
 	);
 };

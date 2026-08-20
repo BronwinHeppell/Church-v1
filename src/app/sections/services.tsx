@@ -1,33 +1,37 @@
-import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { SectionHeader } from '@/shared/components/heading';
-import { Reveal } from '@/shared/components/reveal';
-import { MAPS_URL } from '@/shared/core/parish';
+import { Reveal, RevealGroup, RevealItem } from '@/shared/components/reveal';
+import { MAPS_URL, PARISH } from '@/shared/core/parish';
 import { prefix } from '@/shared/core/prefix';
 
+const opt = `${prefix}/static/opt`;
+
 type ServiceCard = {
+	/** The fact visitors came for, set as the display element. */
+	stamp: string;
 	title: string;
 	detail: string;
 	img: string;
 	alt: string;
 };
 
-const opt = `${prefix}/static/opt`;
-
 const CARDS: ServiceCard[] = [
 	{
-		title: 'Sunday Services 7am',
+		stamp: '07:00',
+		title: 'Sunday Service',
 		detail: 'Our earlier Sunday morning service.',
 		img: 'service-early',
 		alt: 'The congregation at the early Sunday morning service',
 	},
 	{
-		title: 'Sunday Services 9am',
+		stamp: '09:00',
+		title: 'Sunday Service',
 		detail: 'Our later Sunday morning service.',
 		img: 'sunday-service',
 		alt: 'A Sunday morning service in progress',
 	},
 	{
+		stamp: 'Sundays',
 		title: 'Kids Sunday School',
 		detail: 'For the children of the parish, every Sunday.',
 		img: 'sunday-school',
@@ -35,68 +39,72 @@ const CARDS: ServiceCard[] = [
 	},
 ];
 
-const SRCSET: Record<string, string> = {
-	'service-early': `${opt}/service-early-640.webp 640w, ${opt}/service-early-960.webp 960w`,
-	'sunday-service': `${opt}/sunday-service-640.webp 640w, ${opt}/sunday-service-960.webp 960w`,
-	'sunday-school': `${opt}/sunday-school-640.webp 640w, ${opt}/sunday-school-960.webp 960w`,
-};
-
-const FALLBACK: Record<string, string> = {
-	'service-early': `${opt}/service-early-960.webp`,
-	'sunday-service': `${opt}/sunday-service-960.webp`,
-	'sunday-school': `${opt}/sunday-school-960.webp`,
-};
-
 const Services = () => {
 	return (
-		<section id="services">
-			<div className="shell px-5 py-20 md:px-10 md:py-24">
+		<section id="services" className="bg-raised border-line border-y">
+			<div className="shell px-5 py-24 md:px-10 md:py-32">
 				<Reveal>
 					<SectionHeader
-						eyebrow="Connecting People to God and Community"
-						title="Sunday Services Schedule"
-						sub="Join us for worship every Sunday at Corpus Christi"
+						eyebrow="Worship"
+						title="Sunday services"
+						sub="Connecting people to God and to one another, every week of the year."
 					/>
 				</Reveal>
 
-				<Reveal delay={0.1}>
-					<div className="measure mt-12 grid gap-6 sm:grid-cols-3">
-						{CARDS.map((card) => (
-							<article
-								key={card.title}
-								className="rounded-base card-lift bg-paper flex flex-col overflow-hidden"
-							>
+				<RevealGroup className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" stagger={0.12}>
+					{CARDS.map((card) => (
+						<RevealItem key={card.stamp + card.title} as="article" className="card flex flex-col">
+							<div className="photo aspect-4/3 w-full">
 								{/* eslint-disable-next-line @next/next/no-img-element */}
 								<img
-									src={FALLBACK[card.img]}
-									srcSet={SRCSET[card.img]}
-									sizes="(max-width: 640px) 100vw, 280px"
+									src={`${opt}/${card.img}-960.webp`}
+									srcSet={`${opt}/${card.img}-640.webp 640w, ${opt}/${card.img}-960.webp 960w`}
+									sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
 									alt={card.alt}
 									loading="lazy"
 									decoding="async"
-									className="aspect-4/3 w-full object-cover"
+									className="h-full w-full object-cover"
 								/>
-								<div className="flex flex-1 flex-col p-6 text-center">
-									<h3 className="font-display text-lg leading-snug">{card.title}</h3>
-									<p className="text-muted mt-2 text-sm leading-relaxed">{card.detail}</p>
-								</div>
-							</article>
-						))}
-					</div>
-				</Reveal>
+							</div>
 
-				<Reveal delay={0.15}>
-					<div className="mt-10 text-center">
+							<div className="flex flex-1 flex-col p-7 md:p-8">
+								<h3>
+									<span className="font-display text-title numerals block leading-none">
+										{card.stamp}
+									</span>
+									<span className="font-ui text-muted mt-3 block text-xs tracking-[0.14em] uppercase">
+										{card.title}
+									</span>
+								</h3>
+								<p className="text-muted mt-4 text-[0.9375rem] leading-relaxed">{card.detail}</p>
+
+								<a
+									href={MAPS_URL}
+									target="_blank"
+									rel="noreferrer"
+									className="font-ui text-accent rule-link mt-6 inline-flex items-center gap-1.5 self-start text-[0.8125rem] tracking-[0.04em]"
+								>
+									Get directions
+									<ArrowUpRight strokeWidth={1.5} className="size-3.5" aria-hidden />
+								</a>
+							</div>
+						</RevealItem>
+					))}
+				</RevealGroup>
+
+				<Reveal kind="fade" delay={0.15}>
+					<p className="text-muted mt-14 text-center text-[0.9375rem]">
+						You will find us at{' '}
 						<a
 							href={MAPS_URL}
 							target="_blank"
 							rel="noreferrer"
-							className="text-ink ease-fluid inline-flex items-center gap-1.5 text-[0.9375rem] underline decoration-1 underline-offset-4 transition-opacity duration-300 hover:opacity-60"
+							className="text-ink rule-link font-medium"
 						>
-							482 De Bron Road, Garsfontein
-							<ArrowUpRight strokeWidth={1.5} className="size-4" />
+							{PARISH.street}, {PARISH.suburb}
 						</a>
-					</div>
+						. Everyone is welcome.
+					</p>
 				</Reveal>
 			</div>
 		</section>
