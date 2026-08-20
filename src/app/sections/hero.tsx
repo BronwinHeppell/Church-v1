@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { PewLeafletHeroCell } from '@/shared/components/pew-leaflet';
 import { MAPS_URL, PARISH, SERVICE_TIMES } from '@/shared/core/parish';
 import { prefix } from '@/shared/core/prefix';
 
@@ -11,6 +12,9 @@ import { prefix } from '@/shared/core/prefix';
  * The line reveal is CSS so the largest element on the page never waits for
  * hydration to become visible.
  */
+const CELL =
+	'flex-col gap-1 border-t border-white/15 py-4 sm:flex sm:border-t-0 sm:px-8 sm:py-5 sm:first:pl-0 sm:last:pr-0';
+
 const Hero = () => {
 	const opt = `${prefix}/static/opt`;
 
@@ -103,14 +107,14 @@ const Hero = () => {
 				className="text-on-image animate-fade relative border-t border-white/20"
 				style={{ animationDelay: '640ms' }}
 			>
-				<dl className="shell font-ui grid grid-cols-1 divide-white/15 px-5 text-[0.8125rem] sm:grid-cols-3 sm:divide-x md:px-10">
-					<div className="flex flex-col gap-1 py-4 sm:py-5 sm:pr-8">
+				<dl className="shell font-ui grid grid-cols-1 divide-white/15 px-5 text-[0.8125rem] sm:auto-cols-fr sm:grid-flow-col sm:grid-cols-none sm:divide-x md:px-10">
+					<div className={`flex ${CELL}`}>
 						<dt className="text-[0.6875rem] tracking-[0.18em] text-white/55 uppercase">Services</dt>
 						<dd className="numerals text-white/90">
 							Sundays {SERVICE_TIMES[0]} and {SERVICE_TIMES[1]}
 						</dd>
 					</div>
-					<div className="flex flex-col gap-1 border-t border-white/15 py-4 sm:border-t-0 sm:px-8 sm:py-5">
+					<div className={`flex ${CELL}`}>
 						<dt className="text-[0.6875rem] tracking-[0.18em] text-white/55 uppercase">Find us</dt>
 						<dd>
 							<a
@@ -123,7 +127,7 @@ const Hero = () => {
 							</a>
 						</dd>
 					</div>
-					<div className="flex flex-col gap-1 border-t border-white/15 py-4 sm:border-t-0 sm:py-5 sm:pl-8">
+					<div className={`flex ${CELL}`}>
 						<dt className="text-[0.6875rem] tracking-[0.18em] text-white/55 uppercase">Office</dt>
 						<dd>
 							<a href={PARISH.phoneHref} className="rule-link numerals text-white/90">
@@ -131,6 +135,8 @@ const Hero = () => {
 							</a>
 						</dd>
 					</div>
+
+					<PewLeafletHeroCell className={`hidden ${CELL}`} />
 				</dl>
 			</div>
 		</section>
