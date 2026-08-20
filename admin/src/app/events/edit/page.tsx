@@ -132,7 +132,7 @@ function EventEditor() {
 		try {
 			if (id) await saveEvent(id, draft);
 			else await createEvent(draft);
-			router.push('/admin/events');
+			router.push('/events');
 		} catch (err) {
 			console.error('Could not save event', err);
 			setError('Could not save. Check your Firestore permissions and try again.');
@@ -156,7 +156,7 @@ function EventEditor() {
 					It may have been deleted from another device.
 				</p>
 				<Button asChild variant="outline" className="mt-6">
-					<Link href="/admin/events">Back to events</Link>
+					<Link href="/events">Back to events</Link>
 				</Button>
 			</div>
 		);
@@ -165,7 +165,7 @@ function EventEditor() {
 	return (
 		<div className="max-w-2xl">
 			<Link
-				href="/admin/events"
+				href="/events"
 				className="font-ui text-muted hover:text-ink ease-fluid inline-flex items-center gap-2 text-sm transition-colors duration-300"
 			>
 				<ArrowLeft strokeWidth={1.5} className="size-4" aria-hidden />
@@ -305,7 +305,7 @@ function EventEditor() {
 						{saving ? 'Saving…' : editing ? 'Save changes' : 'Create event'}
 					</Button>
 					<Button asChild variant="ghost" size="lg">
-						<Link href="/admin/events">Cancel</Link>
+						<Link href="/events">Cancel</Link>
 					</Button>
 				</div>
 			</form>

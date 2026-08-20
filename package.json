@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "eslint",
     "optimize:images": "node scripts/optimize-images.mjs",
-    "images:report": "node scripts/optimize-images.mjs --report"
+    "images:report": "node scripts/optimize-images.mjs --report",
+    "dev:admin": "npm run dev --workspace corpus-christi-admin",
+    "build:admin": "npm run build --workspace corpus-christi-admin",
+    "lint:admin": "npm run lint --workspace corpus-christi-admin"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.20",
@@ -40,5 +43,8 @@
     "sharp": "^0.35.3",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"
-  }
+  },
+  "workspaces": [
+    "admin"
+  ]
 }

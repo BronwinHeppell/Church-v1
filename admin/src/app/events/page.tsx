@@ -96,7 +96,7 @@ export default function EventsPage() {
 					</p>
 				</div>
 				<Button asChild className="gap-2">
-					<Link href="/admin/events/edit">
+					<Link href="/events/edit">
 						<Plus strokeWidth={1.5} className="size-4" aria-hidden />
 						Add event
 					</Link>
@@ -172,7 +172,7 @@ export default function EventsPage() {
 										<td className="px-4 py-4">
 											<div className="flex items-center justify-end gap-1">
 												<Link
-													href={`/admin/events/edit?id=${encodeURIComponent(event.id)}`}
+													href={`/events/edit?id=${encodeURIComponent(event.id)}`}
 													aria-label={`Edit ${event.title || 'event'}`}
 													className="text-muted hover:text-accent rounded-base ease-fluid grid size-9 place-items-center transition-colors duration-300 hover:bg-[rgb(var(--scrim)/0.04)]"
 												>

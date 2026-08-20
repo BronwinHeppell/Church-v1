@@ -22,7 +22,7 @@ export default function AdminLoginPage() {
 
 	// Already signed in, so skip the form.
 	useEffect(() => {
-		if (!loading && user) router.replace('/admin/events');
+		if (!loading && user) router.replace('/events');
 	}, [loading, user, router]);
 
 	const submit = async (e: React.FormEvent) => {
@@ -31,7 +31,7 @@ export default function AdminLoginPage() {
 		setBusy(true);
 		try {
 			await signIn(email, password);
-			router.replace('/admin/events');
+			router.replace('/events');
 		} catch (err) {
 			setError(authMessage(err));
 		} finally {
