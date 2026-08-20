@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { Copyable } from '@/shared/components/copyable';
 import MapLazy from '@/shared/components/map-lazy';
+import { PewLeafletFooterLink } from '@/shared/components/pew-leaflet';
 import { Reveal } from '@/shared/components/reveal';
 import { MAPS_URL, PARISH, SERVICE_TIMES } from '@/shared/core/parish';
 import { prefix } from '@/shared/core/prefix';
@@ -42,6 +43,12 @@ const Footer = () => {
 								Banking details
 								<ArrowUpRight strokeWidth={1.5} className="size-3.5" aria-hidden />
 							</Link>
+
+							{/* A second, plainer route to the leaflet, so a visitor who only wants
+							    this week's PDF does not have to find the Worship section first. */}
+							<PewLeafletFooterLink
+								className={`rule-link mt-5 block text-[0.9375rem] ${valueClass}`}
+							/>
 						</div>
 
 						<div className="space-y-8 text-[0.9375rem]">

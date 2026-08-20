@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { ArrowDownToLine } from 'lucide-react';
+import { pickLatestLeaflet, toLeafletRow } from '@/shared/core/leaflet';
 
 type Latest = { url: string; date: string };
 
@@ -12,14 +13,13 @@ const dateFmt = new Intl.DateTimeFormat('en-ZA', {
 });
 
 /**
- * Download for the most recent pew leaflet.
+ * Finds the most recent pew leaflet once, and shares it with every place on the
+ * page that offers it, so a visitor is not the one who has to go looking.
  *
- * Renders nothing at all until one is found, so an empty collection or a failed
- * lookup leaves no trace on the page rather than a dead link or an error. The
- * saved filename and the download behaviour come from metadata set at upload
- * time, because the `download` attribute is ignored for cross-origin URLs.
+ * Which leaflet counts as the latest lives in shared/core/leaflet.ts, where it
+ * is a pure function and can be checked without a network.
  */
-export function PewLeaflet() {
+function useLatestLeaflet() {
 	const [latest, setLatest] = useState<Latest | null>(null);
 
 	useEffect(() => {
@@ -35,27 +35,7 @@ export function PewLeaflet() {
 					]);
 
 				const snapshot = await getDocs(collection(db, 'leaflets'));
-
-				const rows = snapshot.docs
-					.map((doc) => {
-						const data = doc.data();
-						const raw = data?.date;
-						const when =
-							raw && typeof raw === 'object' && 'toDate' in raw
-								? raw.toDate()
-								: typeof raw === 'string'
-									? new Date(raw)
-									: null;
-
-						return {
-							file: (data?.file as string) ?? '',
-							when: when && !Number.isNaN(when.getTime()) ? when : null,
-						};
-					})
-					.filter((r) => r.file && r.when)
-					.sort((a, b) => b.when!.getTime() - a.when!.getTime());
-
-				const newest = rows[0];
+				const newest = pickLatestLeaflet(snapshot.docs.map((doc) => toLeafletRow(doc.data())));
 				if (!newest) return;
 
 				const url = await getDownloadURL(ref(storage, `leaflets/${newest.file}`));
@@ -71,6 +51,18 @@ export function PewLeaflet() {
 		};
 	}, []);
 
+	return latest;
+}
+
+/**
+ * The main offer, in the Worship section. Renders nothing until a leaflet is
+ * found, so an empty collection or a failed lookup leaves no trace rather than
+ * a dead link. The saved filename and the download behaviour come from metadata
+ * set at upload time, because the `download` attribute on a link is ignored for
+ * cross-origin URLs.
+ */
+export function PewLeaflet() {
+	const latest = useLatestLeaflet();
 	if (!latest) return null;
 
 	return (
@@ -91,6 +83,18 @@ export function PewLeaflet() {
 				Download
 				<ArrowDownToLine strokeWidth={1.5} className="size-4" aria-hidden />
 			</span>
+		</a>
+	);
+}
+
+/** Compact version for the footer, beside the other parish documents. */
+export function PewLeafletFooterLink({ className }: { className?: string }) {
+	const latest = useLatestLeaflet();
+	if (!latest) return null;
+
+	return (
+		<a href={latest.url} className={className}>
+			Pew leaflet ({latest.date})
 		</a>
 	);
 }
