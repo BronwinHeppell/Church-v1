@@ -2,11 +2,6 @@ import { Parallax } from '@/shared/components/editorial';
 import { Reveal } from '@/shared/components/reveal';
 import { prefix } from '@/shared/core/prefix';
 
-/**
- * Full-bleed breather between sections. The photograph drifts against the
- * scroll and carries a single line of text — the page needs a moment where
- * nothing is being asked of the reader.
- */
 const Band = () => {
 	const opt = `${prefix}/static/opt`;
 

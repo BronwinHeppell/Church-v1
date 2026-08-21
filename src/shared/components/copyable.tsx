@@ -4,10 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Check, Copy } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-/**
- * People paste phone numbers, email addresses and banking details into other
- * apps. Giving them a one-tap copy is a small thing that removes real friction.
- */
 export function Copyable({
 	value,
 	label,
@@ -28,10 +24,7 @@ export function Copyable({
 			setCopied(true);
 			clearTimeout(timer.current);
 			timer.current = setTimeout(() => setCopied(false), 2000);
-		} catch {
-			// Clipboard unavailable (insecure context or denied) — the adjacent
-			// link still works, so there is nothing to recover from here.
-		}
+		} catch {}
 	};
 
 	return (

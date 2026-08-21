@@ -49,13 +49,6 @@ const MissionStatement = () => {
 								</Reveal>
 							</div>
 
-							{/*
-							 * The plate fills the row rather than setting it. With a fixed
-							 * aspect it was taller than the copy beside it, so the grid row
-							 * grew to fit the image and left ~170px of dead space under the
-							 * intro before the values list. Absolute positioning lets the
-							 * copy decide the height and the image crop to it.
-							 */}
 							<Reveal kind="veil" className="rounded-frame relative hidden xl:block">
 								<Parallax className="photo absolute inset-0" distance={60}>
 									{/* eslint-disable-next-line @next/next/no-img-element */}

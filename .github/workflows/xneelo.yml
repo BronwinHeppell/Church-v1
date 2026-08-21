@@ -37,9 +37,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # A 530 from the server is indistinguishable from a missing secret, because
-      # GitHub substitutes an empty string for one that does not exist. Check the
-      # credentials are present before spending a build on them.
       - name: Check the FTP credentials are present
         env:
           FTP_USER_NAME: ${{ secrets.FTP_USER_NAME }}

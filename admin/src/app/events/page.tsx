@@ -24,8 +24,6 @@ export default function EventsPage() {
 	const [pending, setPending] = useState<AdminEvent | null>(null);
 	const [deleting, setDeleting] = useState(false);
 
-	// State already starts as 'loading', so the first fetch must not set it again
-	// before awaiting — that would be a synchronous setState inside an effect.
 	useEffect(() => {
 		let cancelled = false;
 
@@ -58,7 +56,6 @@ export default function EventsPage() {
 		}
 	}, []);
 
-	// Escape closes the confirmation, same as any dialog.
 	useEffect(() => {
 		if (!pending) return;
 		const onKey = (e: KeyboardEvent) => {

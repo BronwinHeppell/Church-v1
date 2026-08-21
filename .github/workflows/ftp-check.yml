@@ -1,11 +1,5 @@
 name: Test FTP login
 
-# Manual only. Logs in, reports what it would change, and uploads nothing —
-# dry-run is set, so this is safe to run against a live directory.
-#
-# Use it to check credentials or a directory without spending a build, and
-# without a failed deploy being the way you find out.
-
 on:
   workflow_dispatch:
     inputs:
@@ -56,7 +50,6 @@ jobs:
             *) echo "::error::server-dir must end in a slash."; exit 1 ;;
           esac
 
-      # The action needs something to compare against; it uploads nothing.
       - name: Make a placeholder to compare from
         run: |
           mkdir -p ftp-check

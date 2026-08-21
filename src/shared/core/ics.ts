@@ -3,7 +3,6 @@ import { PARISH } from './parish';
 type IcsEvent = {
 	id?: string;
 	title: string;
-	/** Calendar date as YYYY-MM-DD. */
 	iso?: string;
 	location?: string;
 	description?: string;
@@ -19,7 +18,6 @@ const stampNow = () => {
 	);
 };
 
-/** Escape per RFC 5545: backslash, semicolon, comma and newline. */
 const esc = (value: string) =>
 	value.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
 
@@ -29,7 +27,6 @@ const nextDay = (iso: string) => {
 	return d.toISOString().slice(0, 10).replace(/-/g, '');
 };
 
-/** Builds an all-day VEVENT for a parish event. */
 export function buildIcs(event: IcsEvent): string | null {
 	if (!event.iso) return null;
 

@@ -12,7 +12,6 @@ type ServiceRow = {
 	stamp: string;
 	title: string;
 	detail: string;
-	/** Square, attention-cropped, tone-matched index plate. */
 	plate: string;
 	alt: string;
 };
@@ -69,12 +68,6 @@ const Services = () => {
 							<ul>
 								{ROWS.map((row) => (
 									<RevealItem key={row.stamp + row.title} as="li" className="border-line border-b">
-										{/*
-										 * `lg:contents` collapses the type wrapper into the parent grid
-										 * on wide screens, so one structure serves both arrangements: a
-										 * stacked block beside a small plate on a phone, and three
-										 * aligned columns on a desktop.
-										 */}
 										<div className="grid grid-cols-[minmax(0,1fr)_5.5rem] items-center gap-5 py-6 sm:grid-cols-[minmax(0,1fr)_7rem] lg:grid-cols-[8rem_minmax(0,1fr)_11rem] lg:gap-10 lg:py-8">
 											<div className="lg:contents">
 												<p className="font-display numerals text-[clamp(2rem,3.4vw,2.75rem)] leading-none">

@@ -2,7 +2,6 @@
 
 import { motion, useReducedMotion, useScroll, useSpring } from 'motion/react';
 
-/** Hairline reading indicator on the bottom edge of the header. */
 export function ScrollProgress() {
 	const reduce = useReducedMotion();
 	const { scrollYProgress } = useScroll();

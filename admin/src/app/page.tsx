@@ -20,7 +20,6 @@ export default function AdminLoginPage() {
 	const [busy, setBusy] = useState(false);
 	const [error, setError] = useState('');
 
-	// Already signed in, so skip the form.
 	useEffect(() => {
 		if (!loading && user) router.replace('/events');
 	}, [loading, user, router]);

@@ -13,14 +13,6 @@ const NAV = [
 	{ label: 'Users', href: '/users', Icon: Users },
 ] as const;
 
-/**
- * Gate plus chrome for every signed-in admin page.
- *
- * The site is a static export, so there is no server to check a session before
- * the page is served — the same as the Flutter build, which redirected on the
- * client too. What actually protects the data is Firestore and Storage security
- * rules, not this component.
- */
 export function AdminShell({ children }: { children: React.ReactNode }) {
 	const { user, loading, leave } = useAuth();
 	const router = useRouter();

@@ -34,7 +34,6 @@ export const FAQ = () => {
 					<Rail number="05" label="Questions" />
 
 					<div className="grid gap-12 xl:grid-cols-[21rem_minmax(0,1fr)] xl:gap-16">
-						{/* The heading stays with you while the answers scroll. */}
 						<div className="xl:sticky xl:top-32 xl:self-start">
 							<Lines
 								className="font-display text-[clamp(2.25rem,4.4vw,3.25rem)] leading-[1.04] tracking-[-0.025em]"

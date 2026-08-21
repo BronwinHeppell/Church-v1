@@ -13,7 +13,6 @@ import { db, storage } from '@/lib/firebase';
 
 export const EVENTS = 'events';
 
-/** Storage folder the public site reads event images from. */
 const IMAGES = 'images';
 
 export type AdminEvent = {
@@ -22,9 +21,7 @@ export type AdminEvent = {
 	shortDescription: string;
 	additionalInformation: string;
 	location: string;
-	/** Calendar date as YYYY-MM-DD, which is what a date input speaks. */
 	date: string;
-	/** Filename within the Storage `images/` folder — not a URL. */
 	image: string;
 };
 
@@ -39,16 +36,9 @@ export const emptyDraft = (): EventDraft => ({
 	image: '',
 });
 
-/**
- * The Flutter admin wrote this field as `longDescription`, but the public site
- * has always read `additionalInformation`, so anything entered there never
- * appeared on the website. Reads accept either name and writes use the one the
- * site reads, which repairs a document the first time it is saved.
- */
 const readExtra = (data: Record<string, unknown>) =>
 	(data.additionalInformation as string) ?? (data.longDescription as string) ?? '';
 
-/** Firestore holds a Timestamp, but older documents may hold a date string. */
 const readDate = (value: unknown): string => {
 	let d: Date | null = null;
 
@@ -81,7 +71,6 @@ const toFirestore = (draft: EventDraft) => ({
 	additionalInformation: draft.additionalInformation.trim(),
 	location: draft.location.trim(),
 	image: draft.image,
-	// Midday local time, so a timezone shift either way cannot roll the date over.
 	date: Timestamp.fromDate(new Date(`${draft.date}T12:00:00`)),
 });
 
@@ -109,13 +98,10 @@ export async function saveEvent(id: string, draft: EventDraft): Promise<void> {
 export async function removeEvent(event: AdminEvent): Promise<void> {
 	await deleteDoc(doc(db, EVENTS, event.id));
 
-	// A leftover image is invisible but keeps costing storage.
 	if (event.image) {
 		try {
 			await deleteObject(ref(storage, `${IMAGES}/${event.image}`));
-		} catch {
-			// Already gone, or shared with another event. Nothing to recover from.
-		}
+		} catch {}
 	}
 }
 
@@ -125,7 +111,6 @@ const safeName = (name: string) =>
 		.replace(/[^a-z0-9.]+/g, '-')
 		.replace(/(^-|-$)/g, '');
 
-/** Uploads to `images/` and returns the filename the site expects to be stored. */
 export async function uploadEventImage(file: File): Promise<string> {
 	const stamp = Date.now().toString(36);
 	const filename = `${stamp}-${safeName(file.name)}`;

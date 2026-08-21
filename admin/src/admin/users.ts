@@ -19,7 +19,6 @@ import { auth, db, firebaseConfig } from '@/lib/firebase';
 
 export const USERS = 'users';
 
-/** Firebase's own floor. Anything shorter is rejected by the API. */
 export const MIN_PASSWORD = 6;
 
 const SECONDARY = 'user-creation';
@@ -39,13 +38,6 @@ const readDate = (value: unknown): string => {
 	return '';
 };
 
-/**
- * Accounts created through this admin.
- *
- * This is a mirror in Firestore, not the Firebase Auth user list — there is no
- * client API to enumerate Auth users, that needs the Admin SDK on a server. So
- * an account made straight from the Firebase console will not appear here.
- */
 export async function listUsers(): Promise<AdminUser[]> {
 	const snapshot = await getDocs(collection(db, USERS));
 	return snapshot.docs
@@ -62,33 +54,18 @@ export async function listUsers(): Promise<AdminUser[]> {
 		.sort((a, b) => b.createdAt.localeCompare(a.createdAt) || a.email.localeCompare(b.email));
 }
 
-/**
- * Creates a sign-in account without disturbing the current session.
- *
- * `createUserWithEmailAndPassword` signs in as whoever it just created, which
- * on the shared app instance would silently sign the administrator out and hand
- * them the new user's session. Running it on a second, throwaway app instance
- * keeps that side effect off the primary auth, and the instance is torn down
- * afterwards either way.
- */
 export async function createUser(email: string, password: string, name: string): Promise<void> {
 	const existing = getApps().find((a) => a.name === SECONDARY);
 	const secondary = existing ?? initializeApp(firebaseConfig, SECONDARY);
 	const secondaryAuth = getAuth(secondary);
 
 	try {
-		const created = await createUserWithEmailAndPassword(
-			secondaryAuth,
-			email.trim(),
-			password,
-		);
+		const created = await createUserWithEmailAndPassword(secondaryAuth, email.trim(), password);
 
 		if (name.trim()) {
 			await updateProfile(created.user, { displayName: name.trim() });
 		}
 
-		// Mirrored so the list has something to show. Keyed by uid, so a repeat
-		// creation cannot produce two rows for one account.
 		await setDoc(doc(db, USERS, created.user.uid), {
 			email: created.user.email,
 			name: name.trim(),
@@ -100,9 +77,7 @@ export async function createUser(email: string, password: string, name: string):
 	} finally {
 		try {
 			await deleteApp(existing ?? getApp(SECONDARY));
-		} catch {
-			// Already disposed of. Nothing to recover from.
-		}
+		} catch {}
 	}
 }
 
@@ -110,11 +85,6 @@ export async function sendReset(email: string): Promise<void> {
 	await sendPasswordResetEmail(auth, email);
 }
 
-/**
- * Removes the row from the list only. The sign-in account itself survives:
- * the client SDK can delete the signed-in user and nobody else, so revoking
- * someone's access needs the Admin SDK, or the Firebase console.
- */
 export async function forgetUser(uid: string): Promise<void> {
 	await deleteDoc(doc(db, USERS, uid));
 }
@@ -141,7 +111,6 @@ export function authCreateMessage(error: unknown): string {
 
 const ALPHABET = 'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789!@#%^*-_';
 
-/** Readable but strong, so it can be passed on verbally without confusion. */
 export function generatePassword(length = 16): string {
 	const bytes = new Uint32Array(length);
 	crypto.getRandomValues(bytes);

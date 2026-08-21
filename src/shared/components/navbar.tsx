@@ -52,27 +52,14 @@ function useActiveSection(ids: readonly string[]) {
 	return active;
 }
 
-/** Tallest the header ever is, so the sentinel knows when text has reached it. */
 const HEADER_HEIGHT = 88;
 
-/**
- * The header rides over the hero photograph in white, then lands on paper the
- * moment the hero's own text reaches it.
- *
- * This used to trigger at `scrollY > innerHeight - 120`, i.e. near the end of
- * the hero. But the headline reaches the header long before the hero ends, so
- * there was a wide window — 420px on a 720px-tall desktop viewport, and almost
- * immediately on a phone — where the white headline scrolled behind a
- * transparent header and collided with the white wordmark. Watching the text
- * itself is correct at every viewport height.
- */
 function useLanded() {
 	const [landed, setLanded] = useState(false);
 
 	useEffect(() => {
 		const sentinel = document.getElementById('hero-sentinel');
 
-		// No hero on this page: land as soon as the page moves at all.
 		if (!sentinel) {
 			const onScroll = () => setLanded(window.scrollY > 24);
 			onScroll();
@@ -286,11 +273,6 @@ const Navbar = () => {
 									variants={reduce ? undefined : drawerItem}
 									transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
 								>
-									{/*
-									 * Centred and flanked by rules, so it closes the list rather than
-									 * reading as a sixth item. The rules take the place of the last
-									 * link's bottom border, which is why that border is dropped above.
-									 */}
 									<Link
 										href="/static/pdf/Banking_Details.pdf"
 										target="_blank"

@@ -5,12 +5,6 @@ import { cn } from '@/lib/utils';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-/**
- * Three motions, used deliberately:
- *   rise — text and blocks arrive from below
- *   fade — quiet supporting detail
- *   veil — images uncover instead of fading, which reads as intent not latency
- */
 export type RevealKind = 'rise' | 'fade' | 'veil';
 
 const VARIANTS: Record<RevealKind, Variants> = {
@@ -52,7 +46,6 @@ type Common = {
 	as?: Tag;
 };
 
-/** A single element that reveals itself when scrolled into view. */
 export function Reveal({
 	children,
 	className,
@@ -82,10 +75,6 @@ export function Reveal({
 	);
 }
 
-/**
- * Parent that stages its children in sequence. Use with RevealItem so a row of
- * cards arrives one after another rather than as a single slab.
- */
 export function RevealGroup({
 	children,
 	className,
@@ -117,7 +106,6 @@ export function RevealGroup({
 	);
 }
 
-/** Child of RevealGroup. Inherits the parent's timing — no viewport of its own. */
 export function RevealItem({ children, className, kind = 'rise', as = 'div' }: Common) {
 	const reduce = useReducedMotion();
 	const Tag = TAGS[as];

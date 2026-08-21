@@ -12,13 +12,6 @@ const dateFmt = new Intl.DateTimeFormat('en-ZA', {
 	year: 'numeric',
 });
 
-/**
- * Finds the most recent pew leaflet once, and shares it with every place on the
- * page that offers it, so a visitor is not the one who has to go looking.
- *
- * Which leaflet counts as the latest lives in shared/core/leaflet.ts, where it
- * is a pure function and can be checked without a network.
- */
 function useLatestLeaflet() {
 	const [latest, setLatest] = useState<Latest | null>(null);
 
@@ -41,7 +34,6 @@ function useLatestLeaflet() {
 				const url = await getDownloadURL(ref(storage, `leaflets/${newest.file}`));
 				if (!cancelled) setLatest({ url, date: dateFmt.format(newest.when!) });
 			} catch (error) {
-				// Nothing to show, and nothing the reader can do about it.
 				console.error('Could not load the pew leaflet: ', error);
 			}
 		})();
@@ -54,13 +46,6 @@ function useLatestLeaflet() {
 	return latest;
 }
 
-/**
- * The main offer, in the Worship section. Renders nothing until a leaflet is
- * found, so an empty collection or a failed lookup leaves no trace rather than
- * a dead link. The saved filename and the download behaviour come from metadata
- * set at upload time, because the `download` attribute on a link is ignored for
- * cross-origin URLs.
- */
 export function PewLeaflet() {
 	const latest = useLatestLeaflet();
 	if (!latest) return null;
@@ -87,7 +72,6 @@ export function PewLeaflet() {
 	);
 }
 
-/** Compact version for the footer, beside the other parish documents. */
 export function PewLeafletFooterLink({ className }: { className?: string }) {
 	const latest = useLatestLeaflet();
 	if (!latest) return null;
@@ -99,12 +83,6 @@ export function PewLeafletFooterLink({ className }: { className?: string }) {
 	);
 }
 
-/**
- * Cell for the hero's information bar.
- *
- * Shown at every width. The bar reflows to a 2x2 grid on a phone so this cell
- * costs no extra height there — see the CELL comment in the hero.
- */
 export function PewLeafletHeroCell({ className }: { className?: string }) {
 	const latest = useLatestLeaflet();
 	if (!latest) return null;

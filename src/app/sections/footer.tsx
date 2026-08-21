@@ -44,8 +44,6 @@ const Footer = () => {
 								<ArrowUpRight strokeWidth={1.5} className="size-3.5" aria-hidden />
 							</Link>
 
-							{/* A second, plainer route to the leaflet, so a visitor who only wants
-							    this week's PDF does not have to find the Worship section first. */}
 							<PewLeafletFooterLink
 								className={`rule-link mt-5 block text-[0.9375rem] ${valueClass}`}
 							/>
