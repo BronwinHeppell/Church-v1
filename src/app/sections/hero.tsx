@@ -4,22 +4,6 @@ import { PewLeafletHeroCell } from '@/shared/components/pew-leaflet';
 import { MAPS_URL, PARISH, SERVICE_TIMES } from '@/shared/core/parish';
 import { prefix } from '@/shared/core/prefix';
 
-/**
- * Full-bleed typographic hero. The headline sits directly on the photograph at
- * the foot of the frame, and the two facts a visitor came for run along the
- * bottom edge as a rule of information rather than a floating card.
- *
- * The line reveal is CSS so the largest element on the page never waits for
- * hydration to become visible.
- */
-/*
- * Below md the bar is a 2x2 grid rather than a stack, which is how a fourth cell
- * fits on a phone without making the hero taller than the viewport — four cells
- * in two rows is shorter than three cells in three. The rules therefore have to
- * work in both directions there: a top rule on the second row only, and a left
- * rule on the right-hand column. If the cell count is odd the last one spans the
- * full width instead of leaving a hole.
- */
 const CELL =
 	'flex flex-col gap-1 border-white/15 py-4 max-md:border-t max-md:odd:pr-4 max-md:even:border-l max-md:even:pl-4 max-md:[&:nth-child(-n+2)]:border-t-0 max-md:[&:last-child:nth-child(odd)]:col-span-2 md:px-5 md:py-5 md:first:pl-0 md:last:pr-0 lg:px-8';
 
@@ -50,12 +34,6 @@ const Hero = () => {
 			/>
 
 			<div className="text-on-image shell relative px-5 pt-32 pb-10 md:px-10 md:pt-40 md:pb-12">
-				{/*
-				 * Marks the top of the hero's own text. The header watches this to know
-				 * when to stop being transparent — see useLanded in the navbar. Without
-				 * it the white headline scrolls behind a transparent header and tangles
-				 * with the white wordmark.
-				 */}
 				<div id="hero-sentinel" aria-hidden className="h-px w-full" />
 
 				<p
@@ -110,7 +88,6 @@ const Hero = () => {
 				</div>
 			</div>
 
-			{/* A rule of information along the foot of the frame. */}
 			<div
 				className="text-on-image animate-fade relative border-t border-white/20"
 				style={{ animationDelay: '640ms' }}

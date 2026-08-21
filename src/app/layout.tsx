@@ -12,8 +12,6 @@ export const metadata: Metadata = {
 	description: DESCRIPTION,
 	metadataBase: new URL(PARISH.url),
 
-	// Without a canonical, the trailing-slash and www variants of this page can
-	// be treated as separate URLs.
 	alternates: {
 		canonical: '/',
 	},
@@ -43,12 +41,6 @@ export const metadata: Metadata = {
 		images: ['/og.jpg'],
 	},
 
-	/*
-	 * Google looks for a search-result favicon that is 48px square or a multiple
-	 * of it, and it also probes /favicon.ico directly. The previous set declared
-	 * a shortcut at /favicon.ico that did not exist, so the only usable icon was
-	 * the 48px frame inside the ICO.
-	 */
 	icons: {
 		icon: [
 			{ url: '/favicon.ico', sizes: '16x16 32x32 48x48', type: 'image/x-icon' },

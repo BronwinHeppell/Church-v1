@@ -3,8 +3,6 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
-// Same Firebase project as the public website. This app is deployed separately,
-// so it carries its own copy of the config rather than importing across.
 const firebaseConfig = {
 	apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
 	authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,

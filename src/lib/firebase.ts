@@ -2,9 +2,6 @@ import { getApp, getApps, initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
-// Read-only client for the public site: Firestore for events and the pew
-// leaflet, Storage for their files. Auth belongs to the admin portal, which
-// is a separate app deployed to its own subdomain.
 const firebaseConfig = {
 	apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
 	authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,

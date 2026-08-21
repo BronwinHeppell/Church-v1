@@ -103,7 +103,6 @@ function EventEditor() {
 
 		setError('');
 		setUploading(true);
-		// Show the local file straight away rather than waiting on the round trip.
 		setPreview(URL.createObjectURL(file));
 		try {
 			set('image', await uploadEventImage(file));
@@ -316,7 +315,6 @@ function EventEditor() {
 export default function EventEditPage() {
 	return (
 		<AdminShell>
-			{/* useSearchParams needs a boundary in a statically exported route. */}
 			<Suspense
 				fallback={
 					<p role="status" className="font-ui text-muted text-sm">

@@ -3,13 +3,6 @@ import { Reveal } from '@/shared/components/reveal';
 import { prefix } from '@/shared/core/prefix';
 import React from 'react';
 
-/**
- * The image runs flush to the edge of the viewport rather than sitting in a
- * column, and the text half keeps its left edge aligned to the shell so the
- * page grid still holds: the column is half the client width, so
- * max(0, 100% - 37.5rem) + 2.5rem reproduces the shell gutter exactly. Using
- * 100vw here would be 32px out, because vw includes the scrollbar.
- */
 const AboutUs = () => {
 	return (
 		<section id="belonging" className="border-line border-b">

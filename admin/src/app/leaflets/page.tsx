@@ -22,7 +22,6 @@ const dateFmt = new Intl.DateTimeFormat('en-ZA', {
 
 const pretty = (iso: string) => (iso ? dateFmt.format(new Date(`${iso}T12:00:00`)) : '—');
 
-/** Nearest Sunday, on or before today — the leaflet's usual date. */
 const defaultSunday = () => {
 	const d = new Date();
 	d.setDate(d.getDate() - d.getDay());
@@ -32,9 +31,6 @@ const defaultSunday = () => {
 export default function LeafletsPage() {
 	const [leaflets, setLeaflets] = useState<Leaflet[]>([]);
 	const [state, setState] = useState<'loading' | 'ready' | 'error'>('loading');
-	// Lazy initialiser rather than an effect. The shell renders its session check
-	// instead of this form until auth resolves, so the build-time value is never
-	// written into the prerendered HTML and cannot cause a hydration mismatch.
 	const [date, setDate] = useState(defaultSunday);
 	const [busy, setBusy] = useState(false);
 	const [error, setError] = useState('');

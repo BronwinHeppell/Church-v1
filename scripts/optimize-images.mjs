@@ -16,15 +16,6 @@ const MANIFEST = [
 	{ src: 'SundaySchool.jpg', name: 'sunday-school', widths: [640, 960], quality: 78 },
 	{ src: 'biblestudy.jpg', name: 'fellowship', widths: [1280, 1920], quality: 78 },
 
-	/*
-	 * Square index plates for the Worship list. These three sources fight each
-	 * other: two are 3:2 landscape and one is 2:3 portrait, and their mean
-	 * luminance runs 46 / 69 / 157 out of 255. Centre-cropping them into one
-	 * landscape box lost the portrait subject entirely and no CSS could make a
-	 * 46 and a 157 read as one set, so the crop and the tone are both corrected
-	 * here: `square` crops to 1:1 on the most detailed region rather than the
-	 * middle, and `tone` pulls each toward a shared target luminance.
-	 */
 	{
 		src: 'SundayS1.jpg',
 		name: 'plate-early',
@@ -58,11 +49,6 @@ const luminance = (stats) =>
 	0.7152 * stats.channels[1].mean +
 	0.0722 * stats.channels[2].mean;
 
-/*
- * Brightness needed to move an image toward the target. Clamped, because
- * dragging a very dark frame all the way up washes the blacks out and lifts
- * sensor noise — better to close most of the gap than to overcook it.
- */
 const toneFactor = (measured, target) => Math.min(1.55, Math.max(0.75, target / measured));
 
 function report() {
@@ -122,18 +108,6 @@ async function optimizeSvgAssets() {
 	}
 }
 
-/*
- * Icons and the social card.
- *
- * The crest is a round mark on transparency — 83% of its pixels are clear — so
- * the web icons keep their alpha and stay round. Only the Apple touch icon gets
- * a paper background, because iOS composites a transparent icon onto black and
- * applies its own rounded mask, so it needs an opaque square with breathing
- * room inside that mask.
- *
- * Google wants a search favicon that is 48px or a multiple of it, which the
- * 48px ICO only just satisfies, so 192 and 512 PNGs sit alongside it.
- */
 const CREST = 'logo/logo_small.svg';
 const PAPER = { r: 251, g: 250, b: 247, alpha: 1 };
 const CLEAR = { r: 0, g: 0, b: 0, alpha: 0 };
@@ -161,8 +135,6 @@ async function buildIcons() {
 	console.log('');
 	console.log('  Icons');
 
-	// Tab and search icons: transparent, and near full-bleed since there is no
-	// background for the mark to breathe against.
 	for (const size of [192, 512]) {
 		const buf = await plate(size, CLEAR, 0.94);
 		writeFileSync(join(PUBLIC, `icon-${size}.png`), buf);
@@ -175,9 +147,6 @@ async function buildIcons() {
 	writeFileSync(join(PUBLIC, 'apple-touch-icon.png'), apple);
 	console.log(`    180px   -> apple-touch-icon.png  ${kb(apple.length)} KB  on paper`);
 
-	// Crawlers still probe /favicon.ico directly, and the declared shortcut was
-	// pointing at a path that did not exist. sharp has no ICO encoder, so the
-	// original multi-size ICO (16/32/48, with its alpha intact) is reused there.
 	const ico = join(ROOT, 'icon.ico');
 	if (existsSync(ico)) {
 		writeFileSync(join(PUBLIC, 'favicon.ico'), readFileSync(ico));
@@ -199,7 +168,6 @@ async function buildSocialCard() {
 		.resize(W, H, { fit: 'cover', position: sharp.strategy.attention })
 		.toBuffer();
 
-	// Same scrim the hero uses, so the card and the page look related.
 	const scrim = Buffer.from(
 		`<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
 			<defs>
@@ -268,7 +236,6 @@ async function optimize() {
 			}
 
 			if (item.tone) {
-				// Measure the cropped frame, not the original: the crop changes the tone.
 				const cropped = await pipeline.clone().png().toBuffer();
 				const brightness = toneFactor(luminance(await sharp(cropped).stats()), item.tone);
 				pipeline = pipeline.modulate({ brightness });

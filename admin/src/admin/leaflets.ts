@@ -12,18 +12,14 @@ import { db, storage } from '@/lib/firebase';
 
 export const LEAFLETS = 'leaflets';
 
-/** Storage folder the public site reads the pew leaflet from. */
 const FOLDER = 'leaflets';
 
 export const MAX_LEAFLET_BYTES = 20 * 1024 * 1024;
 
 export type Leaflet = {
 	id: string;
-	/** The Sunday this leaflet is for, as YYYY-MM-DD. */
 	date: string;
-	/** Filename within the Storage `leaflets/` folder — not a URL. */
 	file: string;
-	/** Original filename, kept so the admin list is recognisable. */
 	originalName: string;
 };
 
@@ -48,7 +44,6 @@ const toLeaflet = (id: string, data: Record<string, unknown>): Leaflet => ({
 	originalName: (data.originalName as string) ?? '',
 });
 
-/** Newest first, so the head of the list is the current leaflet. */
 export async function listLeaflets(): Promise<Leaflet[]> {
 	const snapshot = await getDocs(collection(db, LEAFLETS));
 	return snapshot.docs
@@ -64,13 +59,6 @@ const safeName = (name: string) =>
 		.replace(/[^a-z0-9]+/g, '-')
 		.replace(/(^-|-$)/g, '') || 'leaflet';
 
-/**
- * Uploads the PDF and records it.
- *
- * The download disposition is set here rather than on the link, because the
- * `download` attribute is ignored for cross-origin URLs — without this, clicking
- * through on the website would open the file in a tab instead of saving it.
- */
 export async function uploadLeaflet(file: File, date: string): Promise<void> {
 	const filename = `${date}-${safeName(file.name)}.pdf`;
 
@@ -92,9 +80,7 @@ export async function removeLeaflet(leaflet: Leaflet): Promise<void> {
 	await deleteDoc(doc(db, LEAFLETS, leaflet.id));
 	try {
 		await deleteObject(ref(storage, `${FOLDER}/${leaflet.file}`));
-	} catch {
-		// Already gone. Nothing to recover from.
-	}
+	} catch {}
 }
 
 export async function leafletUrl(file: string): Promise<string | null> {

@@ -15,7 +15,6 @@ export function SectionTitle({ children, className, as: Tag = 'h2', id }: Sectio
 	);
 }
 
-/** Italic serif accent inside a display line. Cheapest way to look art-directed. */
 export function Em({ children }: { children: React.ReactNode }) {
 	return <em className="font-display italic">{children}</em>;
 }

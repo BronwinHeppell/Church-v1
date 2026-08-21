@@ -6,7 +6,6 @@ import './globals.css';
 export const metadata: Metadata = {
 	title: 'Corpus Christi Admin',
 	description: 'Parish office tools for Corpus Christi Anglican Church.',
-	// A private tool on a subdomain. It should never appear in a search result.
 	robots: { index: false, follow: false, nocache: true },
 	icons: { icon: '/favicon.ico' },
 };

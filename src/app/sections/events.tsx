@@ -48,11 +48,6 @@ const EventRow = ({ event, index }: { event: EventInterface; index: number }) =>
 	return (
 		<li className="border-line border-t">
 			<Reveal delay={Math.min(index, 4) * 0.06}>
-				{/*
-				 * The grid and the reordering now switch at the same breakpoint. They
-				 * used to disagree (grid at sm, order at md), which squeezed the title
-				 * and description into the 8rem image column on tablet portrait.
-				 */}
 				<article className="grid gap-6 py-10 lg:grid-cols-[5rem_minmax(0,1fr)_14rem] lg:gap-8 lg:py-12">
 					<div className="order-1 flex items-baseline gap-2 lg:flex-col lg:items-start lg:gap-0">
 						<time

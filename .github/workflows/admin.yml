@@ -1,14 +1,9 @@
 name: Deploy admin portal to Xneelo
 
-# The admin portal is a separate app with its own build output, deployed to
-# admin.corpus-christi-garsfontein.org. The website, at
-# corpus-christi-garsfontein.org, is deployed by xneelo.yml and nextjs.yml.
-# The two never share a build.
 
 on:
   push:
     branches: ['master']
-    # Only redeploy when something the portal is actually built from changes.
     paths:
       - 'admin/**'
       - 'package-lock.json'
@@ -18,8 +13,6 @@ on:
 permissions:
   contents: read
 
-# Deliberately not the "pages" group the website deployments share, so the
-# portal and the site do not queue behind one another.
 concurrency:
   group: 'admin-portal'
   cancel-in-progress: false
@@ -29,9 +22,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: Xneelo
     env:
-      # The portal talks to the same Firebase project as the website. It does
-      # not get NEXT_PUBLIC_BASE_PATH: it is served from the root of its own
-      # subdomain, and a base path would break its asset URLs.
       NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
       NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
       NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
@@ -44,16 +34,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Resolve the document root for admin.corpus-christi-garsfontein.org.
-      #
-      # On this host the subdomain maps to a directory named after the full
-      # hostname, alongside public_html rather than inside it — which is why the
-      # site workflow's target is `public_html/` and this one is not under it.
-      # Set the FTP_ADMIN_DIR secret to override.
-      #
-      # The FTP step mirrors a directory and deletes whatever is not in the
-      # upload, so the target is checked rather than trusted — a wrong value
-      # here could wipe the public website.
       - name: Resolve the deploy target
         id: target
         env:
@@ -71,9 +51,6 @@ jobs:
           echo "dir=$DIR" >> "$GITHUB_OUTPUT"
           echo "Deploying the portal to $DIR"
 
-      # A 530 from the server is indistinguishable from a missing secret, because
-      # GitHub substitutes an empty string for one that does not exist. Check the
-      # credentials are present before spending a build on them.
       - name: Check the FTP credentials are present
         env:
           FTP_USER_NAME: ${{ secrets.FTP_USER_NAME }}
@@ -102,7 +79,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-admin-nextjs-${{ hashFiles('package-lock.json') }}-
 
-      # Root install, because the portal is an npm workspace of this repository.
       - name: Install dependencies
         run: npm ci
 
@@ -115,7 +91,6 @@ jobs:
       - name: Check the build produced a site
         run: |
           test -f admin/out/index.html || { echo "::error::admin/out/index.html is missing — the export did not produce a site."; exit 1; }
-          # The portal must never carry the public website with it.
           if [ -d admin/out/_next ] && grep -rqs "Corpus Christi Anglican Church | Worship" admin/out/*.html; then
             echo "::error::The admin export contains the public website's pages."
             exit 1

@@ -6,7 +6,6 @@ import { auth } from '@/lib/firebase';
 
 type AuthState = {
 	user: User | null;
-	/** True until Firebase has restored any persisted session. */
 	loading: boolean;
 	signIn: (email: string, password: string) => Promise<void>;
 	leave: () => Promise<void>;
@@ -19,7 +18,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		// Fires immediately with the restored user, or null, then on every change.
 		return onAuthStateChanged(auth, (next) => {
 			setUser(next);
 			setLoading(false);
@@ -47,7 +45,6 @@ export function useAuth() {
 	return ctx;
 }
 
-/** Firebase error codes are not for reading aloud. */
 export function authMessage(error: unknown): string {
 	const code = (error as { code?: string })?.code ?? '';
 	switch (code) {

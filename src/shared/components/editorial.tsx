@@ -6,11 +6,6 @@ import { cn } from '@/lib/utils';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-/**
- * Numbered section rail. The number stays with you while the section scrolls,
- * which is what makes a long page feel like a publication rather than a stack
- * of blocks.
- */
 export function Rail({
 	number,
 	label,
@@ -31,10 +26,6 @@ export function Rail({
 	);
 }
 
-/**
- * Headline that uncovers one line at a time. Lines are authored explicitly
- * rather than measured, so the rhythm is art-directed instead of accidental.
- */
 export function Lines({
 	lines,
 	className,
@@ -62,16 +53,6 @@ export function Lines({
 
 	const Heading = Tag === 'h1' ? motion.h1 : motion.h2;
 
-	/*
-	 * The viewport trigger lives on the heading, not on the lines inside it.
-	 *
-	 * IntersectionObserver clips a target against its ancestors' overflow, and
-	 * each line starts translated fully outside its own overflow-hidden mask. So
-	 * observing a line meant its visible ratio never passed the threshold, the
-	 * animation never fired, and the heading stayed hidden for good — leaving a
-	 * heading-shaped hole in the page. The heading itself is never clipped, so it
-	 * is the safe thing to watch; the stagger then hands each line its turn.
-	 */
 	return (
 		<Heading
 			className={className}
@@ -98,10 +79,6 @@ export function Lines({
 	);
 }
 
-/**
- * Image that drifts against the scroll. `distance` is the total travel in
- * pixels across the whole time the element is on screen.
- */
 export function Parallax({
 	children,
 	className,
@@ -124,7 +101,6 @@ export function Parallax({
 			<motion.div
 				className="h-[calc(100%+var(--drift))] w-full"
 				style={{
-					// The extra height covers the drift so no edge is ever exposed.
 					['--drift' as string]: `${distance}px`,
 					y: reduce ? 0 : y,
 					marginTop: `calc(var(--drift) / -2)`,

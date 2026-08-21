@@ -102,9 +102,7 @@ export default function UsersPage() {
 			setCopied(true);
 			clearTimeout(copyTimer.current);
 			copyTimer.current = setTimeout(() => setCopied(false), 2000);
-		} catch {
-			// Clipboard unavailable; the password is on screen to read.
-		}
+		} catch {}
 	};
 
 	const reset = async (user: AdminUser) => {
@@ -131,11 +129,13 @@ export default function UsersPage() {
 		<AdminShell>
 			<div className="max-w-3xl">
 				<h1 className="font-display text-[2rem] leading-tight">Users</h1>
-				<p className="font-ui text-muted mt-2 text-sm">
-					Accounts that can sign in to this admin.
-				</p>
+				<p className="font-ui text-muted mt-2 text-sm">Accounts that can sign in to this admin.</p>
 
-				<form onSubmit={submit} className="border-line rounded-base bg-raised mt-8 border p-5 md:p-6" noValidate>
+				<form
+					onSubmit={submit}
+					className="border-line rounded-base bg-raised mt-8 border p-5 md:p-6"
+					noValidate
+				>
 					<h2 className="font-ui text-ink text-xs tracking-[0.14em] uppercase">New account</h2>
 
 					<div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -217,7 +217,13 @@ export default function UsersPage() {
 							<code className="font-ui border-line bg-surface rounded-base border px-3 py-2 text-sm">
 								{created.password}
 							</code>
-							<Button type="button" variant="outline" size="sm" className="gap-2" onClick={copyCredentials}>
+							<Button
+								type="button"
+								variant="outline"
+								size="sm"
+								className="gap-2"
+								onClick={copyCredentials}
+							>
 								{copied ? (
 									<Check strokeWidth={1.5} className="size-3.5" aria-hidden />
 								) : (
@@ -238,9 +244,7 @@ export default function UsersPage() {
 					</p>
 				)}
 
-				<h2 className="font-ui text-ink mt-12 text-xs tracking-[0.14em] uppercase">
-					Created here
-				</h2>
+				<h2 className="font-ui text-ink mt-12 text-xs tracking-[0.14em] uppercase">Created here</h2>
 				<p className="font-ui text-muted mt-2 text-xs">
 					Firebase does not let a browser list sign-in accounts, so this shows accounts made through
 					this page rather than every account on the project. Anything created in the Firebase

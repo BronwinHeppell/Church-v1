@@ -3,11 +3,6 @@ import { PARISH, MAPS_URL, SERVICE_TIMES } from './parish';
 const CHURCH_ID = `${PARISH.url}/#church`;
 const SITE_ID = `${PARISH.url}/#website`;
 
-/**
- * One @graph rather than a lone Church node, so the site and the organisation
- * are separate entities that reference each other. That is what lets a search
- * engine attribute the site to the parish instead of guessing.
- */
 export const jsonLd = {
 	'@context': 'https://schema.org',
 	'@graph': [
@@ -48,8 +43,6 @@ export const jsonLd = {
 				'@type': 'AdministrativeArea',
 				name: `${PARISH.suburb}, ${PARISH.city}`,
 			},
-			// Each service is a recurring Sunday event in its own right, which
-			// describes the parish far better than opening hours alone.
 			event: SERVICE_TIMES.map((time) => ({
 				'@type': 'Event',
 				name: `Sunday Service, ${time}`,
