@@ -32,7 +32,7 @@ const Band = () => {
 							id="band-line"
 							className="font-display max-w-[30ch] text-[clamp(1.75rem,3.6vw,3rem)] leading-[1.1] tracking-[-0.02em]"
 						>
-							A place to belong, <em className="font-display italic">before</em> a place to believe.
+							A place to belong, before a place to believe.
 						</p>
 					</Reveal>
 				</div>

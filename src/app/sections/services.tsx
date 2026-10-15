@@ -46,15 +46,12 @@ const Services = () => {
 			<div className="shell px-5 py-20 md:px-10 md:py-32">
 				<div className="grid gap-6 lg:grid-cols-[9rem_minmax(0,1fr)] lg:gap-16">
 					<Rail number="01" label="Worship" />
-
 					<div>
 						<Lines
 							className="font-display max-w-[24ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
 							lines={[
 								'Sunday services,',
-								<React.Fragment key="servicesDesc">
-									every week of the <em className="font-display italic">year</em>
-								</React.Fragment>,
+								<React.Fragment key="servicesDesc">every week of the year</React.Fragment>,
 							]}
 						/>
 						<Reveal kind="fade" delay={0.2}>

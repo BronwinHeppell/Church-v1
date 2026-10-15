@@ -65,7 +65,10 @@ export function Lines({
 			}}
 		>
 			{lines.map((line, i) => (
-				<span key={i} className="block overflow-hidden pb-[0.06em]">
+				<span
+					key={i}
+					className="-mx-[0.15em] -my-[0.2em] block overflow-hidden px-[0.15em] py-[0.2em]"
+				>
 					<motion.span
 						className="block"
 						variants={{ hidden: { y: '105%' }, shown: { y: '0%' } }}

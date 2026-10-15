@@ -39,7 +39,7 @@ jobs:
         env:
           FTP_ADMIN_DIR: ${{ secrets.FTP_ADMIN_DIR }}
         run: |
-          DIR="${FTP_ADMIN_DIR:-admin.corpus-christi-garsfontein.org/}"
+          DIR="${FTP_ADMIN_DIR:-public_html/admin.corpus-christi-garsfontein.org/}"
           case "$DIR" in
             */) ;;
             *) echo "::error::FTP_ADMIN_DIR must end in a slash. Got: $DIR"; exit 1 ;;

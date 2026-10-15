@@ -32,22 +32,18 @@ export const FAQ = () => {
 			<div className="shell px-5 py-20 md:px-10 md:py-32">
 				<div className="grid gap-6 lg:grid-cols-[9rem_minmax(0,1fr)] lg:gap-16">
 					<Rail number="05" label="Questions" />
-
 					<div className="grid gap-12 xl:grid-cols-[21rem_minmax(0,1fr)] xl:gap-16">
 						<div className="xl:sticky xl:top-32 xl:self-start">
 							<Lines
 								className="font-display text-[clamp(2.25rem,4.4vw,3.25rem)] leading-[1.04] tracking-[-0.025em]"
 								lines={[
 									'Frequently',
-									<React.Fragment key="faqDesc">
-										asked <em className="font-display italic">questions</em>
-									</React.Fragment>,
+									<React.Fragment key="faqDesc">asked questions</React.Fragment>,
 								]}
 							/>
 							<Reveal kind="fade" delay={0.2}>
 								<p className="text-muted mt-6 max-w-[36ch] text-[0.9375rem] leading-relaxed">
-									Baptism, confirmation, marriage, membership and bereavement &mdash; how each works
-									at Corpus Christi.
+									Baptism, confirmation, marriage, membership and bereavement, how each works at Corpus Christi.
 								</p>
 
 								<div className="border-line mt-8 border-t pt-6">

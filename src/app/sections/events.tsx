@@ -230,15 +230,12 @@ const Events = () => {
 			<div className="shell px-5 py-20 md:px-10 md:py-32">
 				<div className="grid gap-6 lg:grid-cols-[9rem_minmax(0,1fr)] lg:gap-16">
 					<Rail number="04" label="Diary" />
-
 					<div>
 						<Lines
 							className="font-display max-w-[24ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
 							lines={[
 								'What is coming up',
-								<Fragment key="parish">
-									in the life of the <em className="font-display italic">parish</em>
-								</Fragment>,
+								<Fragment key="parish">in the life of the parish</Fragment>,
 							]}
 						/>
 

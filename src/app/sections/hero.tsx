@@ -40,18 +40,18 @@ const Hero = () => {
 					className="font-ui animate-fade text-xs tracking-[0.2em] text-white/70 uppercase"
 					style={{ animationDelay: '120ms' }}
 				>
-					Anglican Church &middot; {PARISH.suburb}, {PARISH.city}
+					{PARISH.suburb}, {PARISH.city}
 				</p>
 
-				<h1 className="font-display mt-7 text-[clamp(3rem,10.5vw,7.5rem)] leading-[0.94] tracking-[-0.035em]">
-					<span className="block overflow-hidden pb-[0.06em]">
+				<h1 className="font-display mt-7 text-[clamp(3rem,10.5vw,7.5rem)] leading-[1.02] tracking-[-0.015em]">
+					<span className="-mx-[0.15em] -my-[0.2em] block overflow-hidden px-[0.15em] py-[0.2em]">
 						<span className="animate-line block" style={{ animationDelay: '180ms' }}>
 							Corpus Christi
 						</span>
 					</span>
-					<span className="block overflow-hidden pb-[0.06em]">
+					<span className="-mx-[0.15em] -my-[0.2em] block overflow-hidden px-[0.15em] py-[0.2em]">
 						<span className="animate-line block" style={{ animationDelay: '290ms' }}>
-							Anglican <em className="font-display italic">Church</em>
+							Anglican Church
 						</span>
 					</span>
 				</h1>

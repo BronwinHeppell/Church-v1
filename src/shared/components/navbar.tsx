@@ -5,7 +5,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 import { Wordmark } from './wordmark';
-import { ScrollProgress } from './scroll-progress';
 
 const LINKS = [
 	{ label: 'Worship', href: '#worship' },
@@ -201,8 +200,6 @@ const Navbar = () => {
 				</button>
 			</nav>
 
-			{landed && <ScrollProgress />}
-
 			<AnimatePresence>
 				{open && (
 					<motion.div
@@ -283,7 +280,7 @@ const Navbar = () => {
 											aria-hidden
 											className="bg-line ease-fluid h-px flex-1 transition-colors duration-500 group-hover:bg-[color-mix(in_oklab,var(--color-accent)_45%,var(--color-line))]"
 										/>
-										<span className="font-display text-accent text-[1.75rem] leading-none italic">
+										<span className="font-display text-accent text-[1.75rem] leading-none">
 											Donate
 										</span>
 										<span

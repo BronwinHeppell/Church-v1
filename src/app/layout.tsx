@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { inter, newsreader } from '@/shared/core/fonts';
+import { ebGaramond, montserrat } from '@/shared/core/fonts';
 import { PARISH } from '@/shared/core/parish';
 import './globals.css';
 
@@ -83,7 +83,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en-ZA" className={`${newsreader.variable} ${inter.variable}`}>
+		<html lang="en-ZA" className={`${ebGaramond.variable} ${montserrat.variable}`}>
 			<body>
 				<a
 					href="#main"

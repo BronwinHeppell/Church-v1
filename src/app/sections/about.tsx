@@ -15,9 +15,7 @@ const AboutUs = () => {
 							className="font-display mt-6 max-w-[20ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
 							lines={[
 								'Join us for a',
-								<React.Fragment key="aboutDesc">
-									<em className="font-display italic">life-changing</em> experience
-								</React.Fragment>,
+								<React.Fragment key="aboutDesc">life-changing experience</React.Fragment>,
 							]}
 						/>
 
