@@ -35,7 +35,7 @@ export const FAQ = () => {
 					<div className="grid gap-12 xl:grid-cols-[21rem_minmax(0,1fr)] xl:gap-16">
 						<div className="xl:sticky xl:top-32 xl:self-start">
 							<Lines
-								className="font-display text-[clamp(2.25rem,4.4vw,3.25rem)] leading-[1.04] tracking-[-0.025em]"
+								className="font-display text-title"
 								lines={[
 									'Frequently',
 									<React.Fragment key="faqDesc">asked questions</React.Fragment>,
@@ -43,7 +43,8 @@ export const FAQ = () => {
 							/>
 							<Reveal kind="fade" delay={0.2}>
 								<p className="text-muted mt-6 max-w-[36ch] text-[0.9375rem] leading-relaxed">
-									Baptism, confirmation, marriage, membership and bereavement, how each works at Corpus Christi.
+									Baptism, confirmation, marriage, membership and bereavement, how each works at
+									Corpus Christi.
 								</p>
 
 								<div className="border-line mt-8 border-t pt-6">

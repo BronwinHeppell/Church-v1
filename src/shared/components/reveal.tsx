@@ -1,127 +1,16 @@
-'use client';
-
-import { motion, useReducedMotion, type Variants } from 'motion/react';
-import { cn } from '@/lib/utils';
-
-const EASE = [0.16, 1, 0.3, 1] as const;
-
 export type RevealKind = 'rise' | 'fade' | 'veil';
-
-const VARIANTS: Record<RevealKind, Variants> = {
-	rise: {
-		hidden: { opacity: 0, y: 22 },
-		shown: { opacity: 1, y: 0 },
-	},
-	fade: {
-		hidden: { opacity: 0 },
-		shown: { opacity: 1 },
-	},
-	veil: {
-		hidden: { clipPath: 'inset(0% 0% 100% 0%)', scale: 1.05 },
-		shown: { clipPath: 'inset(0% 0% 0% 0%)', scale: 1 },
-	},
-};
-
-const DURATION: Record<RevealKind, number> = {
-	rise: 0.85,
-	fade: 1.1,
-	veil: 1.05,
-};
-
-const VIEWPORT = { once: true, amount: 0.2, margin: '0px 0px -8% 0px' } as const;
-
-type Tag = 'div' | 'li' | 'article' | 'section';
-
-const TAGS = {
-	div: motion.div,
-	li: motion.li,
-	article: motion.article,
-	section: motion.section,
-} as const;
-
 type Common = {
 	children: React.ReactNode;
 	className?: string;
 	kind?: RevealKind;
-	as?: Tag;
+	as?: 'div' | 'li' | 'article' | 'section';
+	delay?: number;
+	stagger?: number;
 };
 
-export function Reveal({
-	children,
-	className,
-	kind = 'rise',
-	delay = 0,
-	as = 'div',
-}: Common & { delay?: number }) {
-	const reduce = useReducedMotion();
-	const Tag = TAGS[as];
-
-	if (reduce) {
-		const Plain = as;
-		return <Plain className={className}>{children}</Plain>;
-	}
-
-	return (
-		<Tag
-			className={cn(className)}
-			variants={VARIANTS[kind]}
-			initial="hidden"
-			whileInView="shown"
-			viewport={VIEWPORT}
-			transition={{ duration: DURATION[kind], delay, ease: EASE }}
-		>
-			{children}
-		</Tag>
-	);
+// Text and lists are available immediately. Photo entrances live in the image wrapper.
+export function Reveal({ children, className, as: Tag = 'div' }: Common) {
+	return <Tag className={className}>{children}</Tag>;
 }
-
-export function RevealGroup({
-	children,
-	className,
-	stagger = 0.1,
-	delay = 0.05,
-	as = 'div',
-}: Omit<Common, 'kind'> & { stagger?: number; delay?: number }) {
-	const reduce = useReducedMotion();
-	const Tag = TAGS[as];
-
-	if (reduce) {
-		const Plain = as;
-		return <Plain className={className}>{children}</Plain>;
-	}
-
-	return (
-		<Tag
-			className={cn(className)}
-			initial="hidden"
-			whileInView="shown"
-			viewport={VIEWPORT}
-			variants={{
-				hidden: {},
-				shown: { transition: { staggerChildren: stagger, delayChildren: delay } },
-			}}
-		>
-			{children}
-		</Tag>
-	);
-}
-
-export function RevealItem({ children, className, kind = 'rise', as = 'div' }: Common) {
-	const reduce = useReducedMotion();
-	const Tag = TAGS[as];
-
-	if (reduce) {
-		const Plain = as;
-		return <Plain className={className}>{children}</Plain>;
-	}
-
-	return (
-		<Tag
-			className={cn(className)}
-			variants={VARIANTS[kind]}
-			transition={{ duration: DURATION[kind], ease: EASE }}
-		>
-			{children}
-		</Tag>
-	);
-}
+export const RevealGroup = Reveal;
+export const RevealItem = Reveal;

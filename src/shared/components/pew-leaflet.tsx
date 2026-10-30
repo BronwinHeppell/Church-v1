@@ -89,7 +89,7 @@ export function PewLeafletHeroCell({ className }: { className?: string }) {
 
 	return (
 		<div className={className}>
-			<dt className="text-[0.6875rem] tracking-[0.18em] text-white/55 uppercase">This week</dt>
+			<dt className="text-[0.6875rem] tracking-[0.18em] text-white/90 uppercase">This week</dt>
 			<dd>
 				<a href={latest.url} className="rule-link inline-flex items-center gap-1.5 text-white/90">
 					Pew leaflet

@@ -32,7 +32,7 @@ const MissionStatement = () => {
 						<div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_22rem] xl:gap-16">
 							<div>
 								<Lines
-									className="font-display max-w-[22ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
+									className="font-display text-title max-w-[22ch]"
 									lines={[
 										'Sharing God’s love',
 										<React.Fragment key="message">and spreading the message</React.Fragment>,
@@ -69,7 +69,7 @@ const MissionStatement = () => {
 										<p className="font-ui numerals text-muted text-[0.6875rem] tracking-[0.18em]">
 											{String(i + 1).padStart(2, '0')}
 										</p>
-										<h3 className="font-display flex items-center gap-3 text-[1.375rem] leading-none">
+										<h3 className="font-display text-subtitle flex items-center gap-3">
 											<Icon strokeWidth={1.25} aria-hidden className="text-accent size-5" />
 											{title}
 										</h3>

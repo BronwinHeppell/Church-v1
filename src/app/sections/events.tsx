@@ -232,7 +232,7 @@ const Events = () => {
 					<Rail number="04" label="Diary" />
 					<div>
 						<Lines
-							className="font-display max-w-[24ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
+							className="font-display text-title max-w-[24ch]"
 							lines={[
 								'What is coming up',
 								<Fragment key="parish">in the life of the parish</Fragment>,

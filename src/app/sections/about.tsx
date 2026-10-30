@@ -12,7 +12,7 @@ const AboutUs = () => {
 						<Rail number="03" label="Belonging" className="md:static" />
 
 						<Lines
-							className="font-display mt-6 max-w-[20ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
+							className="font-display text-title mt-6 max-w-[20ch]"
 							lines={[
 								'Join us for a',
 								<React.Fragment key="aboutDesc">life-changing experience</React.Fragment>,

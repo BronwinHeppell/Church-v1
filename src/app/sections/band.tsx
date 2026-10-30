@@ -22,16 +22,13 @@ const Band = () => {
 
 			<div
 				aria-hidden
-				className="absolute inset-0 bg-[linear-gradient(180deg,rgb(20_33_28/0.34)_0%,rgb(20_33_28/0.18)_50%,rgb(20_33_28/0.6)_100%)]"
+				className="absolute inset-0 bg-[linear-gradient(180deg,rgb(20_33_28/0.25)_0%,rgb(20_33_28/0.66)_50%,rgb(20_33_28/0.82)_100%)]"
 			/>
 
 			<div className="absolute inset-0 flex items-end">
 				<div className="shell text-on-image px-5 pb-12 md:px-10 md:pb-20">
 					<Reveal kind="rise">
-						<p
-							id="band-line"
-							className="font-display max-w-[30ch] text-[clamp(1.75rem,3.6vw,3rem)] leading-[1.1] tracking-[-0.02em]"
-						>
+						<p id="band-line" className="font-display text-quote max-w-[30ch]">
 							A place to belong, before a place to believe.
 						</p>
 					</Reveal>

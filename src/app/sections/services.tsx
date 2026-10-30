@@ -48,7 +48,7 @@ const Services = () => {
 					<Rail number="01" label="Worship" />
 					<div>
 						<Lines
-							className="font-display max-w-[24ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] tracking-[-0.025em]"
+							className="font-display text-title max-w-[24ch]"
 							lines={[
 								'Sunday services,',
 								<React.Fragment key="servicesDesc">every week of the year</React.Fragment>,

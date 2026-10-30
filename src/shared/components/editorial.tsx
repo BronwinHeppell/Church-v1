@@ -1,7 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { cn } from '@/lib/utils';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -30,84 +29,41 @@ export function Lines({
 	lines,
 	className,
 	as: Tag = 'h2',
-	delay = 0,
 }: {
 	lines: React.ReactNode[];
 	className?: string;
 	as?: 'h1' | 'h2';
 	delay?: number;
 }) {
-	const reduce = useReducedMotion();
-
-	if (reduce) {
-		return (
-			<Tag className={className}>
-				{lines.map((line, i) => (
-					<span key={i} className="block">
-						{line}
-					</span>
-				))}
-			</Tag>
-		);
-	}
-
-	const Heading = Tag === 'h1' ? motion.h1 : motion.h2;
-
 	return (
-		<Heading
-			className={className}
-			initial="hidden"
-			whileInView="shown"
-			viewport={{ once: true, amount: 0.3 }}
-			variants={{
-				hidden: {},
-				shown: { transition: { staggerChildren: 0.09, delayChildren: delay } },
-			}}
-		>
+		<Tag className={className}>
 			{lines.map((line, i) => (
-				<span
-					key={i}
-					className="-mx-[0.15em] -my-[0.2em] block overflow-hidden px-[0.15em] py-[0.2em]"
-				>
-					<motion.span
-						className="block"
-						variants={{ hidden: { y: '105%' }, shown: { y: '0%' } }}
-						transition={{ duration: 1, ease: EASE }}
-					>
-						{line}
-					</motion.span>
+				<span key={i} className="block">
+					{line}
 				</span>
 			))}
-		</Heading>
+		</Tag>
 	);
 }
 
+// Keep existing image sizing while replacing scroll-linked movement with a brief reveal.
 export function Parallax({
 	children,
 	className,
-	distance = 80,
 }: {
 	children: React.ReactNode;
 	className?: string;
 	distance?: number;
 }) {
-	const ref = useRef<HTMLDivElement>(null);
 	const reduce = useReducedMotion();
-	const { scrollYProgress } = useScroll({
-		target: ref,
-		offset: ['start end', 'end start'],
-	});
-	const y = useTransform(scrollYProgress, [0, 1], [-distance / 2, distance / 2]);
-
 	return (
-		<div ref={ref} className={cn('overflow-hidden', className)}>
+		<div className={cn('overflow-hidden', className)}>
 			<motion.div
-				className="h-[calc(100%+var(--drift))] w-full"
-				style={{
-					['--drift' as string]: `${distance}px`,
-					y: reduce ? 0 : y,
-					marginTop: `calc(var(--drift) / -2)`,
-				}}
+				className="h-full w-full"
+				initial={reduce ? false : { opacity: 0, y: 8 }}
+				whileInView={{ opacity: 1, y: 0 }}
+				viewport={{ once: true, amount: 0.1 }}
+				transition={{ duration: 0.35, ease: EASE }}
 			>
 				{children}
 			</motion.div>

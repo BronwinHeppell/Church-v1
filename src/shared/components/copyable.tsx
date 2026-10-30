@@ -34,7 +34,7 @@ export function Copyable({
 				onClick={copy}
 				aria-label={copied ? `${label} copied` : `Copy ${label}`}
 				className={cn(
-					'ease-fluid inline-flex size-7 shrink-0 items-center justify-center rounded-full transition-colors duration-500 hover:bg-white/10',
+					'ease-fluid inline-flex size-11 shrink-0 items-center justify-center rounded-full transition-colors duration-200 hover:bg-white/10',
 					className,
 				)}
 			>

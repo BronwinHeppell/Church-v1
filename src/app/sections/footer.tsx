@@ -32,7 +32,7 @@ const Footer = () => {
 								decoding="async"
 								className="w-[104px]"
 							/>
-							<p className="font-display mt-6 max-w-[20ch] text-[clamp(1.75rem,3vw,2.5rem)] leading-[1.08] tracking-[-0.02em]">
+							<p className="font-display text-quote mt-6 max-w-[20ch]">
 								Join us for worship every Sunday.
 							</p>
 							<Link
